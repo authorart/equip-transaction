@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ยืม/คืนอุปกรณ์ — Chest MSKH</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: #EEF2F7;
+  color: #1A2B45;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.header {
+  background: linear-gradient(135deg, #095E61 0%, #0D7377 100%);
+  padding: 18px 20px 20px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+.header-icon  { font-size: 32px; margin-bottom: 6px; }
+.header-title { font-size: 20px; font-weight: 800; color: #fff; line-height: 1.3; }
+.header-sub   { font-size: 14px; color: rgba(255,255,255,.75); margin-top: 2px; }
+
+/* ── Equip badge ────────────────────────────────────────────── */
+.equip-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.2); border-radius: 20px;
+  padding: 6px 16px; margin-top: 10px;
+  color: #fff; font-size: 15px; font-weight: 700;
+}
+
+/* ── Card ──────────────────────────────────────────────────── */
+.card {
+  background: #fff; border-radius: 16px;
+  border: 1px solid #D4DCE8; box-shadow: 0 1px 6px rgba(0,0,0,.08);
+  margin: 20px 16px; padding: 24px 20px;
+}
+@media(min-width:540px) { .card { margin: 24px auto; max-width: 500px; } }
+
+/* ── Field ─────────────────────────────────────────────────── */
+.field { margin-bottom: 18px; }
+.field-label {
+  display: block; font-size: 15px; font-weight: 700;
+  color: #374151; margin-bottom: 7px;
+}
+.required::after { content: " *"; color: #B91C1C; }
+
+.field-control {
+  width: 100%; padding: 13px 16px;
+  border: 2px solid #D4DCE8; border-radius: 10px;
+  font-size: 16px; font-family: 'Sarabun', sans-serif;
+  color: #1A2B45; background: #fff;
+  transition: border-color .18s, box-shadow .18s;
+  -webkit-appearance: none; appearance: none;
+}
+.field-control:focus {
+  border-color: #0D7377; outline: none;
+  box-shadow: 0 0 0 3px rgba(13,115,119,.15);
+}
+.field-control:disabled {
+  background: #F1F5F9; color: #64748B; cursor: not-allowed;
+}
+
+select.field-control { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748B' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+
+textarea.field-control { resize: vertical; min-height: 90px; }
+
+/* ── Auto-fill indicator ────────────────────────────────────── */
+.autofill-note {
+  font-size: 12px; color: #0D7377; font-weight: 600;
+  margin-top: 5px; display: none;
+}
+.autofill-note.show { display: block; }
+
+/* ── Loading overlay for sub-select ─────────────────────────── */
+.loading-row {
+  display: none; align-items: center; gap: 8px;
+  padding: 10px 0; color: #64748B; font-size: 14px;
+}
+.loading-row.show { display: flex; }
+.spinner-sm {
+  width: 18px; height: 18px; border: 2.5px solid #D4DCE8;
+  border-top-color: #0D7377; border-radius: 50%;
+  animation: spin .7s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Section divider ────────────────────────────────────────── */
+.section-title {
+  font-size: 13px; font-weight: 800; color: #64748B;
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: #D4DCE8; }
+
+/* ── Submit button ──────────────────────────────────────────── */
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: #0D7377; color: #fff;
+  border: none; border-radius: 12px;
+  font-size: 17px; font-weight: 800; font-family: 'Sarabun', sans-serif;
+  cursor: pointer; margin-top: 8px;
+  transition: background .2s, transform .1s;
+  box-shadow: 0 3px 10px rgba(13,115,119,.3);
+}
+.btn-submit:hover  { background: #095E61; }
+.btn-submit:active { transform: scale(.98); }
+.btn-submit:disabled { background: #94A3B8; box-shadow: none; cursor: not-allowed; }
+.btn-submit.return-btn { background: #1A6DC8; box-shadow: 0 3px 10px rgba(26,109,200,.3); }
+.btn-submit.return-btn:hover { background: #155AAA; }
+
+/* ── Success screen ─────────────────────────────────────────── */
+#successScreen {
+  display: none;
+  min-height: 100vh; align-items: center; justify-content: center;
+  text-align: center; padding: 40px 20px;
+  background: #EEF2F7;
+}
+#successScreen.show { display: flex; flex-direction: column; animation: fadeIn .4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+.success-icon  { font-size: 64px; margin-bottom: 16px; }
+.success-title { font-size: 24px; font-weight: 800; color: #0D7377; margin-bottom: 8px; }
+.success-sub   { font-size: 16px; color: #64748B; }
+.success-detail {
+  background: #fff; border-radius: 12px; border: 1px solid #D4DCE8;
+  padding: 16px 20px; margin-top: 20px; text-align: left;
+  max-width: 360px; width: 100%;
+}
+.detail-row { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 15px; }
+.detail-row:last-child { border-bottom: none; }
+.detail-lbl { color: #94A3B8; font-weight: 600; min-width: 80px; }
+.detail-val { color: #1A2B45; font-weight: 700; }
+.btn-close {
+  margin-top: 24px; padding: 14px 36px;
+  background: #0D7377; color: #fff; border: none;
+  border-radius: 12px; font-size: 16px; font-weight: 700;
+  font-family: 'Sarabun', sans-serif; cursor: pointer;
+}
+
+/* ── Error banner ───────────────────────────────────────────── */
+.error-banner {
+  background: #FEE2E2; border: 1px solid #FECACA;
+  border-radius: 10px; padding: 12px 16px;
+  color: #B91C1C; font-size: 14px; font-weight: 600;
+  margin-bottom: 16px; display: none;
+}
+.error-banner.show { display: block; }
+
+/* ── No units warning ───────────────────────────────────────── */
+.no-units {
+  text-align: center; padding: 30px 20px; color: #64748B;
+  font-size: 16px; display: none;
+}
+.no-units.show { display: block; }
+.no-units .icon { font-size: 40px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ── Main form ────────────────────────────────────────────── -->
+<div id="mainForm">
+  <div class="header">
+    <div class="header-icon" id="headerIcon">📋</div>
+    <div class="header-title" id="headerTitle">กำลังโหลด...</div>
+    <div class="header-sub">หน่วยโรคระบบการหายใจ · MSKH</div>
+    <div class="equip-badge" id="equipBadge" style="display:none">
+      <span>📦</span><span id="equipBadgeText">—</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="error-banner" id="errorBanner"></div>
+
+    <!-- Loading state -->
+    <div class="loading-row show" id="loadingRow" style="justify-content:center">
+      <div class="spinner-sm"></div>
+      <span>กำลังโหลดข้อมูลอุปกรณ์...</span>
+    </div>
+
+    <!-- No units warning -->
+    <div class="no-units" id="noUnitsMsg">
+      <div class="icon" id="noUnitsIcon">📦</div>
+      <div id="noUnitsText">ไม่มีอุปกรณ์ที่พร้อมดำเนินการ</div>
+    </div>
+
+    <!-- Form body -->
+    <div id="formBody" style="display:none">
+
+      <!-- ── เลือกชิ้นอุปกรณ์ ── -->
+      <div class="section-title">ข้อมูลอุปกรณ์</div>
+      <div class="field">
+        <label class="field-label required" id="subIdLabel">เลือกชิ้นอุปกรณ์</label>
+        <select class="field-control" id="subIdSelect" onchange="onSubIdChange()">
+          <option value="">— กรุณาเลือก —</option>
+        </select>
+        <div class="loading-row" id="borrowerLoadingRow">
+          <div class="spinner-sm"></div><span>กำลังดึงข้อมูล...</span>
+        </div>
+      </div>
+
+      <!-- ── ข้อมูลผู้ยืม/คืน ── -->
+      <div class="section-title">ข้อมูลผู้<span id="borrowReturnText">ยืม</span></div>
+
+      <div class="field">
+        <label class="field-label required">ชื่อ-นามสกุล</label>
+        <input type="text" class="field-control" id="borrowerName" placeholder="เช่น นพ.สมชาย ใจดี" autocomplete="name">
+        <div class="autofill-note" id="noteNameAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label required">Ward / หน่วยงาน</label>
+        <input type="text" class="field-control" id="ward" placeholder="เช่น ICU 3, MICU, Ward 8B" autocomplete="organization">
+        <div class="autofill-note" id="noteWardAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">เบอร์โทรติดต่อ</label>
+        <input type="tel" class="field-control" id="phone" placeholder="เช่น 081-234-5678" autocomplete="tel">
+        <div class="autofill-note" id="notePhoneAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
+      </div>
+
+      <!-- ── Borrow only fields ── -->
+      <div id="borrowFields">
+        <div class="field">
+          <label class="field-label required">วัตถุประสงค์การยืม</label>
+          <input type="text" class="field-control" id="purpose" placeholder="เช่น ใช้กับผู้ป่วย ICU เตียง 3">
+        </div>
+        <div class="field">
+          <label class="field-label required">วันที่คาดว่าจะคืน</label>
+          <input type="date" class="field-control" id="returnDate">
+        </div>
+      </div>
+
+      <!-- ── Return only fields ── -->
+      <div id="returnFields" style="display:none">
+        <div class="section-title">สภาพอุปกรณ์</div>
+        <div class="field">
+          <label class="field-label required">สภาพอุปกรณ์เมื่อคืน</label>
+          <select class="field-control" id="condition">
+            <option value="">— กรุณาเลือก —</option>
+            <option>ดี — ใช้งานได้ปกติ</option>
+            <option>พอใช้ — มีรอยหรือสกปรกเล็กน้อย</option>
+            <option>ชำรุด — ต้องซ่อมหรือตรวจสอบ</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">หมายเหตุ</label>
+          <textarea class="field-control" id="notes" placeholder="รายละเอียดเพิ่มเติม เช่น อาการชำรุด หรือข้อมูลที่ต้องการแจ้ง"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()">
+        <span id="submitLabel">📋 ยืนยันการยืม</span>
+      </button>
+    </div><!-- /formBody -->
+  </div><!-- /card -->
+</div><!-- /mainForm -->
+
+<!-- ── Success screen ──────────────────────────────────────── -->
+<div id="successScreen">
+  <div class="success-icon" id="successIcon">✅</div>
+  <div class="success-title" id="successTitle">บันทึกสำเร็จ!</div>
+  <div class="success-sub" id="successSub">ระบบได้แจ้งเตือน LINE group แล้ว</div>
+  <div class="success-detail" id="successDetail"></div>
+  <button class="btn-close" onclick="closePage()">✕ ปิดหน้าต่างนี้</button>
+</div>
+
+<script>
+// ============================================================
+//  CONFIG — แก้ค่านี้ให้ตรงกับ Dashboard deployment URL ของคุณ
+// ============================================================
+const APPS_SCRIPT_URL = 'YOUR_DASHBOARD_DEPLOYMENT_URL_HERE';
+// ตัวอย่าง:
+// const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfy.../exec';
+
+// ── Parse URL params ──────────────────────────────────────────
+const params      = new URLSearchParams(window.location.search);
+const formType    = params.get('type')        || 'borrow'; // 'borrow' or 'return'
+const equipmentId = (params.get('equipmentId') || '').toUpperCase();
+
+// ── Init ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  initForm();
+});
+
+function initForm() {
+  // Header
+  const isBorrow = formType === 'borrow';
+  document.getElementById('headerIcon').textContent  = isBorrow ? '📋' : '↩️';
+  document.getElementById('headerTitle').textContent = isBorrow ? 'แบบฟอร์มยืมอุปกรณ์' : 'แบบฟอร์มคืนอุปกรณ์';
+  document.getElementById('subIdLabel').textContent  = isBorrow ? 'เลือกชิ้นที่ต้องการยืม' : 'เลือกชิ้นที่ต้องการคืน';
+  document.getElementById('borrowReturnText').textContent = isBorrow ? 'ยืม' : 'คืน';
+  document.getElementById('submitLabel').textContent = isBorrow ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+
+  // Equipment badge
+  if (equipmentId) {
+    document.getElementById('equipBadge').style.display = 'inline-flex';
+    document.getElementById('equipBadgeText').textContent = equipmentId;
+  }
+
+  // Show/hide form sections
+  document.getElementById('borrowFields').style.display = isBorrow ? 'block' : 'none';
+  document.getElementById('returnFields').style.display = isBorrow ? 'none'  : 'block';
+
+  // Submit button color
+  if (!isBorrow) document.getElementById('submitBtn').classList.add('return-btn');
+
+  // Set default return date (borrow form: 7 days from today)
+  if (isBorrow) {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    document.getElementById('returnDate').value = d.toISOString().split('T')[0];
+    document.getElementById('returnDate').min   = new Date().toISOString().split('T')[0];
+  }
+
+  // Fetch available subIDs
+  fetchSubIds();
+}
+
+// ── Fetch SubIDs ──────────────────────────────────────────────
+async function fetchSubIds() {
+  if (!equipmentId) {
+    showError('ไม่พบข้อมูล equipmentId — กรุณาเปิดจาก LINE ใหม่อีกครั้ง');
+    document.getElementById('loadingRow').classList.remove('show');
+    return;
+  }
+
+  try {
+    const url = APPS_SCRIPT_URL + '?action=getSubIds&equipmentId=' + encodeURIComponent(equipmentId) + '&type=' + formType;
+    const resp = await fetch(url, { redirect: 'follow' });
+    const data = await resp.json();
+
+    document.getElementById('loadingRow').classList.remove('show');
+
+    if (!data.success || !data.subIds || data.subIds.length === 0) {
+      // No available units
+      const noMsg = formType === 'borrow'
+        ? '📦 ' + equipmentId + ' ไม่มีชิ้นว่างในขณะนี้\nลองจองคิวจาก LINE OA ได้ครับ'
+        : '✅ ' + equipmentId + ' ไม่มีชิ้นที่ถูกยืมอยู่ในขณะนี้';
+      document.getElementById('noUnitsIcon').textContent = formType === 'borrow' ? '📦' : '✅';
+      document.getElementById('noUnitsText').textContent = noMsg;
+      document.getElementById('noUnitsMsg').classList.add('show');
+      return;
+    }
+
+    // Populate dropdown
+    const select = document.getElementById('subIdSelect');
+    data.subIds.forEach(function(item) {
+      const opt   = document.createElement('option');
+      opt.value   = item.subId;
+      opt.textContent = item.subId;
+      select.appendChild(opt);
+    });
+
+    // If only one option, auto-select it
+    if (data.subIds.length === 1) {
+      select.value = data.subIds[0].subId;
+      onSubIdChange();
+    }
+
+    document.getElementById('formBody').style.display = 'block';
+
+  } catch (err) {
+    document.getElementById('loadingRow').classList.remove('show');
+    showError('โหลดข้อมูลไม่สำเร็จ: ' + err.message + '\nกรุณาลองใหม่อีกครั้ง');
+  }
+}
+
+// ── SubID changed (return form: auto-fill borrower) ───────────
+async function onSubIdChange() {
+  const subId = document.getElementById('subIdSelect').value;
+  if (!subId || formType !== 'return') return;
+
+  // Clear previous autofill
+  ['Name', 'Ward', 'Phone'].forEach(function(f) {
+    document.getElementById('note' + f + 'Autofill').classList.remove('show');
+  });
+
+  document.getElementById('borrowerLoadingRow').classList.add('show');
+
+  try {
+    const url  = APPS_SCRIPT_URL + '?action=getBorrowerInfo&subId=' + encodeURIComponent(subId);
+    const resp = await fetch(url, { redirect: 'follow' });
+    const data = await resp.json();
+
+    document.getElementById('borrowerLoadingRow').classList.remove('show');
+
+    if (data.success) {
+      if (data.borrowerName) {
+        document.getElementById('borrowerName').value = data.borrowerName;
+        document.getElementById('noteNameAutofill').classList.add('show');
+      }
+      if (data.ward) {
+        document.getElementById('ward').value = data.ward;
+        document.getElementById('noteWardAutofill').classList.add('show');
+      }
+      if (data.phone) {
+        document.getElementById('phone').value = data.phone;
+        document.getElementById('notePhoneAutofill').classList.add('show');
+      }
+    }
+  } catch (err) {
+    document.getElementById('borrowerLoadingRow').classList.remove('show');
+  }
+}
+
+// ── Submit ────────────────────────────────────────────────────
+async function submitForm() {
+  hideError();
+
+  // Validate
+  const subId        = document.getElementById('subIdSelect').value;
+  const borrowerName = document.getElementById('borrowerName').value.trim();
+  const ward         = document.getElementById('ward').value.trim();
+  const purpose      = formType === 'borrow' ? document.getElementById('purpose').value.trim() : '';
+  const returnDate   = formType === 'borrow' ? document.getElementById('returnDate').value : '';
+  const condition    = formType === 'return' ? document.getElementById('condition').value : '';
+  const notes        = formType === 'return' ? document.getElementById('notes').value.trim() : '';
+  const phone        = document.getElementById('phone').value.trim();
+
+  if (!subId)        { showError('กรุณาเลือกชิ้นอุปกรณ์'); return; }
+  if (!borrowerName) { showError('กรุณากรอกชื่อ-นามสกุล'); return; }
+  if (!ward)         { showError('กรุณากรอก Ward / หน่วยงาน'); return; }
+  if (formType === 'borrow' && !purpose)    { showError('กรุณากรอกวัตถุประสงค์การยืม'); return; }
+  if (formType === 'borrow' && !returnDate) { showError('กรุณาเลือกวันที่คาดว่าจะคืน'); return; }
+  if (formType === 'return' && !condition)  { showError('กรุณาเลือกสภาพอุปกรณ์'); return; }
+
+  // Disable button
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('submitLabel').textContent = '⏳ กำลังบันทึก...';
+
+  const payload = {
+    source         : 'webform',
+    type           : formType,
+    equipmentId    : equipmentId,
+    equipmentSubId : subId,
+    borrowerName   : borrowerName,
+    ward           : ward,
+    phone          : phone,
+    purpose        : purpose,
+    returnDate     : returnDate,
+    condition      : condition,
+    notes          : notes,
+  };
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method      : 'POST',
+      // ใช้ text/plain เพื่อหลีกเลี่ยง CORS preflight
+      headers     : { 'Content-Type': 'text/plain' },
+      redirect    : 'follow',
+      body        : JSON.stringify(payload),
+    });
+    const data = await resp.json();
+
+    if (data.success) {
+      showSuccess(payload);
+    } else {
+      showError('บันทึกไม่สำเร็จ: ' + (data.error || 'กรุณาลองใหม่'));
+      btn.disabled = false;
+      document.getElementById('submitLabel').textContent = formType === 'borrow' ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+    }
+  } catch (err) {
+    showError('เกิดข้อผิดพลาด: ' + err.message + '\nกรุณาลองใหม่หรือติดต่อเจ้าหน้าที่');
+    btn.disabled = false;
+    document.getElementById('submitLabel').textContent = formType === 'borrow' ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+  }
+}
+
+// ── Show success ──────────────────────────────────────────────
+function showSuccess(payload) {
+  document.getElementById('mainForm').style.display = 'none';
+  const ss = document.getElementById('successScreen');
+  ss.classList.add('show');
+
+  const isBorrow = formType === 'borrow';
+  document.getElementById('successIcon').textContent  = isBorrow ? '✅' : '🔄';
+  document.getElementById('successTitle').textContent = isBorrow ? 'ยืมอุปกรณ์สำเร็จ!' : 'คืนอุปกรณ์สำเร็จ!';
+  document.getElementById('successSub').textContent   = 'ระบบบันทึกและแจ้งเตือน LINE group แล้ว';
+
+  const rows = [
+    { label: 'ชิ้น',    value: payload.equipmentSubId },
+    { label: 'ชื่อ',    value: payload.borrowerName },
+    { label: 'Ward',    value: payload.ward },
+  ];
+  if (isBorrow && payload.returnDate) rows.push({ label: 'คืนวันที่', value: formatDateTH(payload.returnDate) });
+  if (!isBorrow && payload.condition) rows.push({ label: 'สภาพ', value: payload.condition });
+
+  document.getElementById('successDetail').innerHTML = rows.map(function(r) {
+    return '<div class="detail-row"><span class="detail-lbl">' + r.label + '</span><span class="detail-val">' + r.value + '</span></div>';
+  }).join('');
+}
+
+// ── Close page ────────────────────────────────────────────────
+function closePage() {
+  // ปิดหน้าต่าง (ทำงานใน LINE in-app browser)
+  if (window.liff && typeof window.liff.closeWindow === 'function') {
+    window.liff.closeWindow();
+  } else {
+    window.close();
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function showError(msg) {
+  const el = document.getElementById('errorBanner');
+  el.textContent = '⚠️ ' + msg;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function hideError() {
+  document.getElementById('errorBanner').classList.remove('show');
+}
+function formatDateTH(isoDate) {
+  if (!isoDate) return '';
+  const d = new Date(isoDate);
+  return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+</script>
+</body>
+</html>
