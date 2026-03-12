@@ -494,41 +494,6 @@ function onConditionChange() {
   warn.style.display = val.includes('Major damage') ? 'block' : 'none';
 }
 
-    document.getElementById('borrowerLoadingRow').classList.remove('show');
-
-    if (data.success) {
-      if (data.borrowerName) {
-        document.getElementById('borrowerName').value = data.borrowerName;
-        document.getElementById('noteNameAutofill').classList.add('show');
-      }
-      if (data.ward) {
-        // พยายาม match กับ option ใน wardSelect ก่อน ถ้าไม่เจอให้ใส่ใน wardOther
-        const wardSel = document.getElementById('wardSelect');
-        let matched = false;
-        for (let i = 0; i < wardSel.options.length; i++) {
-          if (wardSel.options[i].value === data.ward) {
-            wardSel.value = data.ward;
-            matched = true;
-            break;
-          }
-        }
-        if (!matched) {
-          wardSel.value = 'other';
-          document.getElementById('wardOther').style.display = 'block';
-          document.getElementById('wardOther').value = data.ward;
-        }
-        document.getElementById('noteWardAutofill').classList.add('show');
-      }
-      if (data.phone) {
-        document.getElementById('phone').value = data.phone;
-        document.getElementById('notePhoneAutofill').classList.add('show');
-      }
-    }
-  } catch (err) {
-    document.getElementById('borrowerLoadingRow').classList.remove('show');
-  }
-}
-
 // ── Submit ────────────────────────────────────────────────────
 async function submitForm() {
   hideError();
