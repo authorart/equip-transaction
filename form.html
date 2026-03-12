@@ -205,6 +205,21 @@ textarea.field-control { resize: vertical; min-height: 90px; }
         </div>
       </div>
 
+      <!-- ── สภาพอุปกรณ์ (ทั้งยืมและคืน) ── -->
+      <div class="field">
+        <label class="field-label required" id="conditionLabel">ประเมินสภาพอุปกรณ์ก่อนยืม</label>
+        <select class="field-control" id="condition" onchange="onConditionChange()">
+          <option value="">— กรุณาเลือก —</option>
+          <option value="สภาพพร้อมใช้งาน (Ready for use)">สภาพพร้อมใช้งาน (Ready for use)</option>
+          <option value="ชำรุดเล็กน้อย (Minor damage)">ชำรุดเล็กน้อย (Minor damage)</option>
+          <option value="ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)">ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)</option>
+        </select>
+        <!-- แจ้งเตือนกรณีชำรุดมาก -->
+        <div id="conditionWarning" style="display:none;margin-top:8px;padding:10px 14px;background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;font-size:13px;color:#92400E;font-weight:600;">
+          ⚠️ อุปกรณ์ชำรุด — กรุณาแจ้งรายละเอียดในช่องหมายเหตุ และแจ้งผู้รับผิดชอบทราบด้วย
+        </div>
+      </div>
+
       <!-- ── ข้อมูลผู้ยืม/คืน ── -->
       <div class="section-title">ข้อมูลผู้<span id="borrowReturnText">ยืม</span></div>
 
@@ -214,46 +229,66 @@ textarea.field-control { resize: vertical; min-height: 90px; }
         <div class="autofill-note" id="noteNameAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
       </div>
 
+      <!-- Ward dropdown + อื่นๆ -->
       <div class="field">
         <label class="field-label required">Ward / หน่วยงาน</label>
-        <input type="text" class="field-control" id="ward" placeholder="เช่น ICU 3, MICU, Ward 8B" autocomplete="organization">
+        <select class="field-control" id="wardSelect" onchange="onWardChange()">
+          <option value="">— กรุณาเลือก —</option>
+          <option value="MICU1">MICU1</option>
+          <option value="MICU2">MICU2</option>
+          <option value="MICU3">MICU3</option>
+          <option value="CCU">CCU</option>
+          <option value="เฉพาะโรค">เฉพาะโรค</option>
+          <option value="อายุรกรรมชาย1">อายุรกรรมชาย1</option>
+          <option value="อายุรกรรมชาย2">อายุรกรรมชาย2</option>
+          <option value="อายุรกรรมหญิง1">อายุรกรรมหญิง1</option>
+          <option value="อายุรกรรมหญิง2">อายุรกรรมหญิง2</option>
+          <option value="stroke">Stroke</option>
+          <option value="พิเศษอายุรกรรมชั้น2">พิเศษอายุรกรรมชั้น 2</option>
+          <option value="พิเศษอายุรกรรมชั้น3">พิเศษอายุรกรรมชั้น 3</option>
+          <option value="พิเศษรวมอายุรกรรมชั้น9">พิเศษรวมอายุรกรรมชั้น 9</option>
+          <option value="สงฆ์อาพาธ">สงฆ์อาพาธ</option>
+          <option value="other">อื่นๆ ระบุ...</option>
+        </select>
+        <input type="text" class="field-control" id="wardOther"
+               placeholder="ระบุ Ward / หน่วยงาน"
+               style="display:none;margin-top:8px">
         <div class="autofill-note" id="noteWardAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
       </div>
 
       <div class="field">
-        <label class="field-label">เบอร์โทรติดต่อ</label>
+        <label class="field-label required">เบอร์โทรติดต่อ</label>
         <input type="tel" class="field-control" id="phone" placeholder="เช่น 081-234-5678" autocomplete="tel">
         <div class="autofill-note" id="notePhoneAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
       </div>
 
       <!-- ── Borrow only fields ── -->
       <div id="borrowFields">
+        <!-- วัตถุประสงค์ dropdown + อื่นๆ -->
         <div class="field">
           <label class="field-label required">วัตถุประสงค์การยืม</label>
-          <input type="text" class="field-control" id="purpose" placeholder="เช่น ใช้กับผู้ป่วย ICU เตียง 3">
+          <select class="field-control" id="purposeSelect" onchange="onPurposeChange()">
+            <option value="">— กรุณาเลือก —</option>
+            <option value="ใช้ในกรณีฉุกเฉิน/เร่งด่วน">ใช้ในกรณีฉุกเฉิน/เร่งด่วน</option>
+            <option value="ใช้ในกรณีไม่เร่งด่วน เพื่อการวินิจฉัยหรือการรักษาโรค">ใช้ในกรณีไม่เร่งด่วน เพื่อการวินิจฉัยหรือการรักษาโรค</option>
+            <option value="other">อื่นๆ ระบุ...</option>
+          </select>
+          <input type="text" class="field-control" id="purposeOther"
+                 placeholder="ระบุวัตถุประสงค์"
+                 style="display:none;margin-top:8px">
         </div>
+
         <div class="field">
           <label class="field-label required">วันที่คาดว่าจะคืน</label>
           <input type="date" class="field-control" id="returnDate">
         </div>
       </div>
 
-      <!-- ── Return only fields ── -->
-      <div id="returnFields" style="display:none">
-        <div class="section-title">สภาพอุปกรณ์</div>
-        <div class="field">
-          <label class="field-label required">สภาพอุปกรณ์เมื่อคืน</label>
-          <select class="field-control" id="condition">
-            <option value="">— กรุณาเลือก —</option>
-            <option>ดี — ใช้งานได้ปกติ</option>
-            <option>พอใช้ — มีรอยหรือสกปรกเล็กน้อย</option>
-            <option>ชำรุด — ต้องซ่อมหรือตรวจสอบ</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="field-label">หมายเหตุ</label>
-          <textarea class="field-control" id="notes" placeholder="รายละเอียดเพิ่มเติม เช่น อาการชำรุด หรือข้อมูลที่ต้องการแจ้ง"></textarea>
-        </div>
+      <!-- ── หมายเหตุ (ทั้งยืมและคืน) ── -->
+      <div class="field">
+        <label class="field-label">หมายเหตุเพิ่มเติม</label>
+        <textarea class="field-control" id="notes"
+          placeholder="รายละเอียดเพิ่มเติม เช่น อาการชำรุด ข้อสังเกต หรือข้อมูลที่ต้องการแจ้ง"></textarea>
       </div>
 
       <!-- Submit -->
@@ -277,6 +312,10 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 // ============================================================
 //  CONFIG — แก้ค่านี้ให้ตรงกับ Dashboard deployment URL ของคุณ
 // ============================================================
+// ============================================================
+//  ⚠️  แก้ URL ด้านล่างให้ตรงกับ Apps Script Deployment URL ของคุณ
+//  วิธีหา: Apps Script → Deploy → Manage deployments → copy URL
+// ============================================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrnODe6na-5NNGzIt9ae7-qu8X-wLxnp71vOtTihMY5s-Qxg-XvVEKU5w/exec';
 // ตัวอย่าง:
 // const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfy.../exec';
@@ -292,28 +331,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initForm() {
-  // Header
   const isBorrow = formType === 'borrow';
   document.getElementById('headerIcon').textContent  = isBorrow ? '📋' : '↩️';
   document.getElementById('headerTitle').textContent = isBorrow ? 'แบบฟอร์มยืมอุปกรณ์' : 'แบบฟอร์มคืนอุปกรณ์';
   document.getElementById('subIdLabel').textContent  = isBorrow ? 'เลือกชิ้นที่ต้องการยืม' : 'เลือกชิ้นที่ต้องการคืน';
   document.getElementById('borrowReturnText').textContent = isBorrow ? 'ยืม' : 'คืน';
   document.getElementById('submitLabel').textContent = isBorrow ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+  document.getElementById('conditionLabel').textContent = isBorrow
+    ? 'ประเมินสภาพอุปกรณ์ก่อนยืม'
+    : 'ประเมินสภาพอุปกรณ์ก่อนคืน';
 
-  // Equipment badge
   if (equipmentId) {
     document.getElementById('equipBadge').style.display = 'inline-flex';
     document.getElementById('equipBadgeText').textContent = equipmentId;
   }
 
-  // Show/hide form sections
+  // แสดง/ซ่อน borrowFields (returnDate + purpose)
   document.getElementById('borrowFields').style.display = isBorrow ? 'block' : 'none';
-  document.getElementById('returnFields').style.display = isBorrow ? 'none'  : 'block';
 
-  // Submit button color
   if (!isBorrow) document.getElementById('submitBtn').classList.add('return-btn');
 
-  // Set default return date (borrow form: 7 days from today)
   if (isBorrow) {
     const d = new Date();
     d.setDate(d.getDate() + 7);
@@ -321,7 +358,6 @@ function initForm() {
     document.getElementById('returnDate').min   = new Date().toISOString().split('T')[0];
   }
 
-  // Fetch available subIDs
   fetchSubIds();
 }
 
@@ -379,7 +415,6 @@ async function onSubIdChange() {
   const subId = document.getElementById('subIdSelect').value;
   if (!subId || formType !== 'return') return;
 
-  // Clear previous autofill
   ['Name', 'Ward', 'Phone'].forEach(function(f) {
     document.getElementById('note' + f + 'Autofill').classList.remove('show');
   });
@@ -399,7 +434,89 @@ async function onSubIdChange() {
         document.getElementById('noteNameAutofill').classList.add('show');
       }
       if (data.ward) {
-        document.getElementById('ward').value = data.ward;
+        // พยายาม match กับ option ใน wardSelect ก่อน ถ้าไม่เจอให้ใส่ใน wardOther
+        const wardSel = document.getElementById('wardSelect');
+        let matched = false;
+        for (let i = 0; i < wardSel.options.length; i++) {
+          if (wardSel.options[i].value === data.ward) {
+            wardSel.value = data.ward;
+            matched = true;
+            break;
+          }
+        }
+        if (!matched) {
+          wardSel.value = 'other';
+          document.getElementById('wardOther').style.display = 'block';
+          document.getElementById('wardOther').value = data.ward;
+        }
+        document.getElementById('noteWardAutofill').classList.add('show');
+      }
+      if (data.phone) {
+        document.getElementById('phone').value = data.phone;
+        document.getElementById('notePhoneAutofill').classList.add('show');
+      }
+    }
+  } catch (err) {
+    document.getElementById('borrowerLoadingRow').classList.remove('show');
+  }
+}
+
+// ── Ward dropdown handler ─────────────────────────────────────
+function onWardChange() {
+  const sel   = document.getElementById('wardSelect');
+  const other = document.getElementById('wardOther');
+  if (sel.value === 'other') {
+    other.style.display = 'block';
+    other.focus();
+  } else {
+    other.style.display = 'none';
+    other.value = '';
+  }
+}
+
+// ── Purpose dropdown handler ──────────────────────────────────
+function onPurposeChange() {
+  const sel   = document.getElementById('purposeSelect');
+  const other = document.getElementById('purposeOther');
+  if (sel.value === 'other') {
+    other.style.display = 'block';
+    other.focus();
+  } else {
+    other.style.display = 'none';
+    other.value = '';
+  }
+}
+
+// ── Condition change: แสดง warning ถ้าชำรุดมาก ───────────────
+function onConditionChange() {
+  const val  = document.getElementById('condition').value;
+  const warn = document.getElementById('conditionWarning');
+  warn.style.display = val.includes('Major damage') ? 'block' : 'none';
+}
+
+    document.getElementById('borrowerLoadingRow').classList.remove('show');
+
+    if (data.success) {
+      if (data.borrowerName) {
+        document.getElementById('borrowerName').value = data.borrowerName;
+        document.getElementById('noteNameAutofill').classList.add('show');
+      }
+      if (data.ward) {
+        // พยายาม match กับ option ใน wardSelect ก่อน ถ้าไม่เจอให้ใส่ใน wardOther
+        const wardSel = document.getElementById('wardSelect');
+        let matched = false;
+        for (let i = 0; i < wardSel.options.length; i++) {
+          if (wardSel.options[i].value === data.ward) {
+            wardSel.value = data.ward;
+            matched = true;
+            break;
+          }
+        }
+        if (!matched) {
+          wardSel.value = 'other';
+          document.getElementById('wardOther').style.display = 'block';
+          document.getElementById('wardOther').value = data.ward;
+        }
         document.getElementById('noteWardAutofill').classList.add('show');
       }
       if (data.phone) {
@@ -416,24 +533,40 @@ async function onSubIdChange() {
 async function submitForm() {
   hideError();
 
-  // Validate
+  const isBorrow = formType === 'borrow';
+
+  // ── ดึงค่าจาก fields ──────────────────────────────────────
   const subId        = document.getElementById('subIdSelect').value;
   const borrowerName = document.getElementById('borrowerName').value.trim();
-  const ward         = document.getElementById('ward').value.trim();
-  const purpose      = formType === 'borrow' ? document.getElementById('purpose').value.trim() : '';
-  const returnDate   = formType === 'borrow' ? document.getElementById('returnDate').value : '';
-  const condition    = formType === 'return' ? document.getElementById('condition').value : '';
-  const notes        = formType === 'return' ? document.getElementById('notes').value.trim() : '';
   const phone        = document.getElementById('phone').value.trim();
+  const condition    = document.getElementById('condition').value;
+  const notes        = document.getElementById('notes').value.trim();
 
+  // Ward: dropdown + อื่นๆ
+  const wardSel   = document.getElementById('wardSelect').value;
+  const wardOther = document.getElementById('wardOther').value.trim();
+  const ward      = wardSel === 'other' ? wardOther : wardSel;
+
+  // Purpose (borrow only): dropdown + อื่นๆ
+  let purpose = '';
+  if (isBorrow) {
+    const purposeSel   = document.getElementById('purposeSelect').value;
+    const purposeOther = document.getElementById('purposeOther').value.trim();
+    purpose = purposeSel === 'other' ? purposeOther : purposeSel;
+  }
+
+  const returnDate = isBorrow ? document.getElementById('returnDate').value : '';
+
+  // ── Validate ───────────────────────────────────────────────
   if (!subId)        { showError('กรุณาเลือกชิ้นอุปกรณ์'); return; }
+  if (!condition)    { showError('กรุณาประเมินสภาพอุปกรณ์'); return; }
   if (!borrowerName) { showError('กรุณากรอกชื่อ-นามสกุล'); return; }
-  if (!ward)         { showError('กรุณากรอก Ward / หน่วยงาน'); return; }
-  if (formType === 'borrow' && !purpose)    { showError('กรุณากรอกวัตถุประสงค์การยืม'); return; }
-  if (formType === 'borrow' && !returnDate) { showError('กรุณาเลือกวันที่คาดว่าจะคืน'); return; }
-  if (formType === 'return' && !condition)  { showError('กรุณาเลือกสภาพอุปกรณ์'); return; }
+  if (!ward)         { showError('กรุณาเลือก Ward / หน่วยงาน'); return; }
+  if (!phone)        { showError('กรุณากรอกเบอร์โทรติดต่อ'); return; }
+  if (isBorrow && !purpose)    { showError('กรุณาเลือกวัตถุประสงค์การยืม'); return; }
+  if (isBorrow && !returnDate) { showError('กรุณาเลือกวันที่คาดว่าจะคืน'); return; }
 
-  // Disable button
+  // ── Disable button ─────────────────────────────────────────
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   document.getElementById('submitLabel').textContent = '⏳ กำลังบันทึก...';
@@ -454,11 +587,10 @@ async function submitForm() {
 
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
-      method      : 'POST',
-      // ใช้ text/plain เพื่อหลีกเลี่ยง CORS preflight
-      headers     : { 'Content-Type': 'text/plain' },
-      redirect    : 'follow',
-      body        : JSON.stringify(payload),
+      method  : 'POST',
+      headers : { 'Content-Type': 'text/plain' },
+      redirect: 'follow',
+      body    : JSON.stringify(payload),
     });
     const data = await resp.json();
 
@@ -467,12 +599,12 @@ async function submitForm() {
     } else {
       showError('บันทึกไม่สำเร็จ: ' + (data.error || 'กรุณาลองใหม่'));
       btn.disabled = false;
-      document.getElementById('submitLabel').textContent = formType === 'borrow' ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+      document.getElementById('submitLabel').textContent = isBorrow ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
     }
   } catch (err) {
     showError('เกิดข้อผิดพลาด: ' + err.message + '\nกรุณาลองใหม่หรือติดต่อเจ้าหน้าที่');
     btn.disabled = false;
-    document.getElementById('submitLabel').textContent = formType === 'borrow' ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+    document.getElementById('submitLabel').textContent = isBorrow ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
   }
 }
 
@@ -488,12 +620,13 @@ function showSuccess(payload) {
   document.getElementById('successSub').textContent   = 'ระบบบันทึกและแจ้งเตือน LINE group แล้ว';
 
   const rows = [
-    { label: 'ชิ้น',    value: payload.equipmentSubId },
-    { label: 'ชื่อ',    value: payload.borrowerName },
-    { label: 'Ward',    value: payload.ward },
+    { label: 'ชิ้น',   value: payload.equipmentSubId },
+    { label: 'ชื่อ',   value: payload.borrowerName },
+    { label: 'Ward',   value: payload.ward },
+    { label: 'สภาพ',   value: payload.condition },
   ];
   if (isBorrow && payload.returnDate) rows.push({ label: 'คืนวันที่', value: formatDateTH(payload.returnDate) });
-  if (!isBorrow && payload.condition) rows.push({ label: 'สภาพ', value: payload.condition });
+  if (payload.notes) rows.push({ label: 'หมายเหตุ', value: payload.notes });
 
   document.getElementById('successDetail').innerHTML = rows.map(function(r) {
     return '<div class="detail-row"><span class="detail-lbl">' + r.label + '</span><span class="detail-val">' + r.value + '</span></div>';
@@ -527,6 +660,4 @@ function formatDateTH(isoDate) {
 }
 </script>
 </body>
-
 </html>
-
