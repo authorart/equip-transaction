@@ -160,6 +160,35 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 }
 .no-units.show { display: block; }
 .no-units .icon { font-size: 40px; margin-bottom: 12px; }
+
+/* ── QR Mismatch banner ─────────────────────────────────────── */
+.qr-mismatch {
+  background: #FFF7ED; border: 2px solid #F59E0B;
+  border-radius: 12px; padding: 18px 18px 16px;
+  margin-bottom: 4px; display: none;
+}
+.qr-mismatch.show { display: block; }
+.qr-mismatch-icon { font-size: 36px; margin-bottom: 10px; }
+.qr-mismatch-title {
+  font-size: 17px; font-weight: 800; color: #92400E; margin-bottom: 6px;
+}
+.qr-mismatch-body {
+  font-size: 14px; color: #78350F; line-height: 1.7; margin-bottom: 16px;
+}
+.qr-mismatch-body strong { color: #7C2D12; }
+.qr-mismatch-actions { display: flex; flex-direction: column; gap: 10px; }
+.btn-mismatch {
+  width: 100%; padding: 13px 16px; border-radius: 10px;
+  font-size: 15px; font-weight: 800; font-family: 'Sarabun', sans-serif;
+  cursor: pointer; border: none; transition: opacity .15s;
+}
+.btn-mismatch:active { opacity: .8; }
+.btn-mismatch.primary   { background: #0D7377; color: #fff; }
+.btn-mismatch.blue      { background: #1A6DC8; color: #fff; }
+.btn-mismatch.secondary {
+  background: transparent; color: #64748B;
+  border: 1.5px solid #D4DCE8;
+}
 </style>
 </head>
 <body>
@@ -177,6 +206,14 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 
   <div class="card">
     <div class="error-banner" id="errorBanner"></div>
+
+    <!-- QR Mismatch warning -->
+    <div class="qr-mismatch" id="qrMismatch">
+      <div class="qr-mismatch-icon" id="qrMismatchIcon">⚠️</div>
+      <div class="qr-mismatch-title" id="qrMismatchTitle"></div>
+      <div class="qr-mismatch-body"  id="qrMismatchBody"></div>
+      <div class="qr-mismatch-actions" id="qrMismatchActions"></div>
+    </div>
 
     <!-- Loading state -->
     <div class="loading-row show" id="loadingRow" style="justify-content:center">
@@ -305,7 +342,11 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   <div class="success-title" id="successTitle">บันทึกสำเร็จ!</div>
   <div class="success-sub" id="successSub">ระบบได้แจ้งเตือน LINE group แล้ว</div>
   <div class="success-detail" id="successDetail"></div>
-  <button class="btn-close" onclick="closePage()">✕ ปิดหน้าต่างนี้</button>
+  <div style="margin-top:20px;padding:12px 16px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;font-size:14px;color:#166534;text-align:center;max-width:360px;width:100%;">
+    ✅ บันทึกเรียบร้อยแล้ว<br>
+    <span style="font-size:13px;color:#4B7A5E;">กรุณากดปุ่ม <strong>← ย้อนกลับ</strong> หรือ <strong>✕</strong> ของ browser เพื่อปิดหน้านี้</span>
+  </div>
+  <button class="btn-close" onclick="goBack()">← กลับหน้าก่อนหน้า</button>
 </div>
 
 <script>
@@ -324,6 +365,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrn
 const params      = new URLSearchParams(window.location.search);
 const formType    = params.get('type')        || 'borrow'; // 'borrow' or 'return'
 const equipmentId = (params.get('equipmentId') || '').toUpperCase();
+const scannedSubId = (params.get('subId') || '').toUpperCase(); // set when scanned from QR
 
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
@@ -377,17 +419,21 @@ async function fetchSubIds() {
     document.getElementById('loadingRow').classList.remove('show');
 
     if (!data.success || !data.subIds || data.subIds.length === 0) {
-      // No available units
-      const noMsg = formType === 'borrow'
-        ? '📦 ' + equipmentId + ' ไม่มีชิ้นว่างในขณะนี้\nลองจองคิวจาก LINE OA ได้ครับ'
-        : '✅ ' + equipmentId + ' ไม่มีชิ้นที่ถูกยืมอยู่ในขณะนี้';
-      document.getElementById('noUnitsIcon').textContent = formType === 'borrow' ? '📦' : '✅';
-      document.getElementById('noUnitsText').textContent = noMsg;
-      document.getElementById('noUnitsMsg').classList.add('show');
+      // ── ไม่มีรายการ → ตรวจว่าสแกน QR ผิดหรือเปล่า ──────────
+      if (scannedSubId) {
+        showQRMismatch(scannedSubId);
+      } else {
+        const noMsg = formType === 'borrow'
+          ? '📦 ' + equipmentId + ' ไม่มีชิ้นว่างในขณะนี้\nลองจองคิวจาก LINE OA ได้ครับ'
+          : '✅ ' + equipmentId + ' ไม่มีชิ้นที่ถูกยืมอยู่ในขณะนี้';
+        document.getElementById('noUnitsIcon').textContent = formType === 'borrow' ? '📦' : '✅';
+        document.getElementById('noUnitsText').textContent = noMsg;
+        document.getElementById('noUnitsMsg').classList.add('show');
+      }
       return;
     }
 
-    // Populate dropdown
+    // ── Populate dropdown ─────────────────────────────────────
     const select = document.getElementById('subIdSelect');
     data.subIds.forEach(function(item) {
       const opt   = document.createElement('option');
@@ -396,13 +442,30 @@ async function fetchSubIds() {
       select.appendChild(opt);
     });
 
-    // If only one option, auto-select it
+    document.getElementById('formBody').style.display = 'block';
+
+    // ── QR scan: ตรวจว่า scannedSubId อยู่ในรายการหรือไม่ ────
+    if (scannedSubId) {
+      const found = data.subIds.some(function(item) {
+        return item.subId.toUpperCase() === scannedSubId;
+      });
+      if (!found) {
+        // subId สแกนมาแต่ไม่อยู่ในรายการ → แสดง mismatch
+        document.getElementById('formBody').style.display = 'none';
+        showQRMismatch(scannedSubId);
+        return;
+      }
+      // พบ subId ที่สแกนมาในรายการ → auto-select ทันที
+      select.value = scannedSubId;
+      onSubIdChange();
+      return;
+    }
+
+    // ── ไม่ได้มาจาก QR: auto-select ถ้ามีแค่ชิ้นเดียว ────────
     if (data.subIds.length === 1) {
       select.value = data.subIds[0].subId;
       onSubIdChange();
     }
-
-    document.getElementById('formBody').style.display = 'block';
 
   } catch (err) {
     document.getElementById('loadingRow').classList.remove('show');
@@ -573,6 +636,45 @@ async function submitForm() {
   }
 }
 
+// ── QR Mismatch handler ───────────────────────────────────────
+function showQRMismatch(subId) {
+  const isBorrow = formType === 'borrow';
+  const mismatch = document.getElementById('qrMismatch');
+
+  if (isBorrow) {
+    // สแกน QR ยืม แต่ชิ้นนี้ถูกยืมไปแล้ว (ไม่อยู่ในรายการว่าง)
+    document.getElementById('qrMismatchIcon').textContent  = '🔴';
+    document.getElementById('qrMismatchTitle').textContent = subId + ' ไม่ว่าง — กำลังถูกยืมอยู่';
+    document.getElementById('qrMismatchBody').innerHTML    =
+      'คุณสแกน <strong>QR ยืม</strong> แต่อุปกรณ์ชิ้นนี้<strong>ถูกยืมออกไปแล้ว</strong><br>' +
+      'ต้องการดำเนินการอย่างไรต่อ?';
+    document.getElementById('qrMismatchActions').innerHTML =
+      '<button class="btn-mismatch blue"      onclick="redirectToForm(\'return\')">↩️  เปลี่ยนเป็นฟอร์มคืนอุปกรณ์</button>' +
+      '<button class="btn-mismatch secondary" onclick="goBack()">← กลับ LINE OA เพื่อจองคิว</button>';
+  } else {
+    // สแกน QR คืน แต่ชิ้นนี้ยังว่าง (ไม่มีการยืม)
+    document.getElementById('qrMismatchIcon').textContent  = '🟡';
+    document.getElementById('qrMismatchTitle').textContent = subId + ' ยังไม่มีการยืม';
+    document.getElementById('qrMismatchBody').innerHTML    =
+      'คุณสแกน <strong>QR คืน</strong> แต่อุปกรณ์ชิ้นนี้<strong>ยังว่างอยู่ ไม่มีการยืมในระบบ</strong><br>' +
+      'ต้องการยืมอุปกรณ์ชิ้นนี้แทนหรือไม่?';
+    document.getElementById('qrMismatchActions').innerHTML =
+      '<button class="btn-mismatch primary"   onclick="redirectToForm(\'borrow\')">📋  เปลี่ยนเป็นฟอร์มยืมอุปกรณ์</button>' +
+      '<button class="btn-mismatch secondary" onclick="goBack()">← ยกเลิก</button>';
+  }
+
+  mismatch.classList.add('show');
+}
+
+// เปลี่ยน type แล้ว reload (ส่ง subId ไปด้วยเพื่อ auto-select)
+function redirectToForm(newType) {
+  const base = window.location.pathname;
+  window.location.href = base
+    + '?type='        + encodeURIComponent(newType)
+    + '&equipmentId=' + encodeURIComponent(equipmentId)
+    + '&subId='       + encodeURIComponent(scannedSubId);
+}
+
 // ── Show success ──────────────────────────────────────────────
 function showSuccess(payload) {
   document.getElementById('mainForm').style.display = 'none';
@@ -598,13 +700,18 @@ function showSuccess(payload) {
   }).join('');
 }
 
-// ── Close page ────────────────────────────────────────────────
-function closePage() {
-  // ปิดหน้าต่าง (ทำงานใน LINE in-app browser)
+// ── Close / go back ───────────────────────────────────────────
+function goBack() {
+  // LINE LIFF (ถ้า init แล้ว)
   if (window.liff && typeof window.liff.closeWindow === 'function') {
-    window.liff.closeWindow();
+    try { window.liff.closeWindow(); return; } catch(e) {}
+  }
+  // มี history → ย้อนกลับ
+  if (window.history.length > 1) {
+    window.history.back();
   } else {
-    window.close();
+    // ไม่มี history (เปิดตรงๆ) → ปิดเองไม่ได้ แจ้ง user
+    alert('บันทึกเรียบร้อยแล้ว!\nกรุณากดปุ่ม ← หรือ ✕ ของ browser เพื่อปิดหน้านี้ครับ');
   }
 }
 
