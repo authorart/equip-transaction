@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Admin — Chest MSKH</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-height:1.6;min-height:100vh}
+
+/* ── Header ── */
+.header{background:linear-gradient(135deg,#095E61,#0D7377);padding:16px 16px 0;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-top{display:flex;align-items:center;gap:10px;padding-bottom:14px}
+.header-icon{font-size:26px}
+.header-title{font-size:18px;font-weight:800;color:#fff}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:1px}
+
+/* ── Tabs ── */
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none;gap:2px;padding-bottom:0;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:9px 14px;font-size:13px;font-weight:700;font-family:'Sarabun',sans-serif;
+     color:rgba(255,255,255,.65);background:transparent;border:none;border-bottom:3px solid transparent;
+     cursor:pointer;white-space:nowrap;transition:all .15s}
+.tab.active{color:#fff;border-bottom-color:#fff}
+.tab:hover:not(.active){color:rgba(255,255,255,.9)}
+
+/* ── Auth state ── */
+.auth-loading,.auth-error{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:60vh;text-align:center;padding:40px 20px;gap:12px;color:#64748B}
+.auth-error{color:#B91C1C}
+.spinner{width:36px;height:36px;border:3px solid #D4DCE8;border-top-color:#0D7377;
+  border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Page sections ── */
+.page{display:none;padding:16px 16px 60px}
+.page.active{display:block}
+@media(min-width:540px){.page{max-width:600px;margin:0 auto;padding:20px 20px 60px}}
+
+/* ── Cards ── */
+.card{background:#fff;border-radius:14px;border:1px solid #D4DCE8;
+      box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden}
+.card-header{padding:12px 16px;background:#F8FAFC;border-bottom:1px solid #E5E7EB;
+             display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-title{font-size:15px;font-weight:800;color:#1A2B45}
+.card-body{padding:16px}
+
+/* ── Info rows ── */
+.info-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid #F1F5F9;font-size:14px}
+.info-row:last-child{border-bottom:none}
+.info-lbl{color:#94A3B8;font-weight:600;min-width:90px;flex-shrink:0}
+.info-val{color:#1A2B45;font-weight:500;flex:1;word-break:break-all}
+
+/* ── Timer badge ── */
+.timer{font-size:12px;font-weight:800;padding:4px 10px;border-radius:12px;white-space:nowrap}
+.timer.urgent{background:#FEE2E2;color:#B91C1C}
+.timer.warn{background:#FEF3C7;color:#92400E}
+.timer.ok{background:#D1FAE5;color:#065F46}
+
+/* ── Status badge ── */
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:10px}
+.badge.pending{background:#FEF3C7;color:#92400E}
+.badge.available{background:#D1FAE5;color:#065F46}
+.badge.in_use{background:#DBEAFE;color:#1E3A8A}
+.badge.pending_admin_return{background:#EDE9FE;color:#5B21B6}
+.badge.pending_sterilization{background:#FEE2E2;color:#9B1C1C}
+.badge.at_central{background:#E0F2FE;color:#075985}
+.badge.damaged{background:#FEE2E2;color:#7F1D1D}
+.badge.repair{background:#FEF3C7;color:#78350F}
+.badge.disposed,.badge.lost{background:#F1F5F9;color:#475569}
+
+/* ── Fields ── */
+.field{margin-bottom:16px}
+.field-label{display:block;font-size:14px;font-weight:700;color:#374151;margin-bottom:6px}
+.field-control{width:100%;padding:12px 14px;border:2px solid #D4DCE8;border-radius:10px;
+  font-size:15px;font-family:'Sarabun',sans-serif;color:#1A2B45;background:#fff;
+  transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.field-control:focus{border-color:#0D7377;outline:none;box-shadow:0 0 0 3px rgba(13,115,119,.12)}
+.field-control:disabled{background:#F1F5F9;color:#64748B;cursor:not-allowed}
+select.field-control{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748B' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+textarea.field-control{resize:vertical;min-height:80px}
+
+/* ── Buttons ── */
+.btn{width:100%;padding:14px;border:none;border-radius:11px;font-size:16px;font-weight:800;
+     font-family:'Sarabun',sans-serif;cursor:pointer;transition:opacity .15s,transform .1s;margin-top:6px}
+.btn:active{transform:scale(.98);opacity:.85}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-approve{background:#0D7377;color:#fff;box-shadow:0 3px 10px rgba(13,115,119,.3)}
+.btn-reject{background:#B91C1C;color:#fff;box-shadow:0 3px 10px rgba(185,28,28,.25)}
+.btn-primary{background:#0D7377;color:#fff;box-shadow:0 3px 10px rgba(13,115,119,.3)}
+.btn-blue{background:#1A6DC8;color:#fff;box-shadow:0 3px 10px rgba(26,109,200,.25)}
+.btn-amber{background:#D97706;color:#fff}
+.btn-sm{padding:9px 14px;font-size:14px;border-radius:8px;width:auto}
+.btn-row{display:flex;gap:8px;margin-top:8px}
+.btn-row .btn{flex:1;margin-top:0}
+
+/* ── Error / empty / success ── */
+.error-box{background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;
+           padding:12px 14px;color:#B91C1C;font-size:14px;font-weight:600;
+           margin-bottom:14px;display:none}
+.error-box.show{display:block}
+.empty-state{text-align:center;padding:40px 20px;color:#94A3B8;font-size:15px}
+.empty-state .icon{font-size:40px;margin-bottom:10px}
+.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;
+  min-height:60vh;text-align:center;padding:40px 20px}
+.success-screen.show{display:flex}
+.success-icon{font-size:64px;margin-bottom:16px}
+.success-title{font-size:22px;font-weight:800;color:#0D7377;margin-bottom:8px}
+.success-sub{font-size:15px;color:#64748B;margin-bottom:24px}
+
+/* ── Condition warning ── */
+.condition-warn{display:none;background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;
+  padding:10px 12px;font-size:13px;color:#92400E;font-weight:600;margin-top:8px}
+.condition-warn.show{display:block}
+
+/* ── Loading overlay ── */
+.loading-row{display:none;align-items:center;gap:8px;padding:12px 0;color:#64748B;font-size:14px}
+.loading-row.show{display:flex}
+.spinner-sm{width:18px;height:18px;border:2.5px solid #D4DCE8;border-top-color:#0D7377;
+  border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+
+/* ── Refresh btn ── */
+.refresh-btn{background:none;border:none;color:rgba(255,255,255,.75);font-size:18px;
+  cursor:pointer;padding:4px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- ── Header + Tabs ── -->
+<div class="header">
+  <div class="header-top">
+    <div class="header-icon">🔑</div>
+    <div style="flex:1">
+      <div class="header-title">Admin Panel</div>
+      <div class="header-sub" id="adminName">กำลังตรวจสิทธิ์...</div>
+    </div>
+    <button class="refresh-btn" onclick="refreshCurrentTab()" title="รีเฟรช">🔄</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('approve')" id="tab-approve">✅ อนุมัติ</button>
+    <button class="tab" onclick="switchTab('return')"  id="tab-return">📥 รับคืน</button>
+    <button class="tab" onclick="switchTab('central')" id="tab-central">📤 ส่งจ่ายกลาง</button>
+    <button class="tab" onclick="switchTab('receive_central')" id="tab-receive_central">📦 รับจากจ่ายกลาง</button>
+    <button class="tab" onclick="switchTab('status')"  id="tab-status">🔧 จัดการสถานะ</button>
+  </div>
+</div>
+
+<!-- ── Auth states ── -->
+<div id="authLoading" class="auth-loading">
+  <div class="spinner"></div>
+  <div>กำลังตรวจสิทธิ์...</div>
+</div>
+<div id="authError" class="auth-error" style="display:none">
+  <div style="font-size:48px">🔒</div>
+  <div style="font-size:18px;font-weight:800;margin-bottom:4px">ไม่มีสิทธิ์เข้าถึง</div>
+  <div style="font-size:14px" id="authErrorMsg">กรุณาติดต่อผู้ดูแลระบบ</div>
+</div>
+
+<!-- ═══ PAGE 1: APPROVE ═══════════════════════════════════════ -->
+<div class="page" id="page-approve">
+  <div class="loading-row show" id="load-approve" style="justify-content:center">
+    <div class="spinner-sm"></div><span>กำลังโหลดคำร้อง...</span>
+  </div>
+  <div id="approve-list"></div>
+  <div id="approve-success" class="success-screen">
+    <div class="success-icon">✅</div>
+    <div class="success-title" id="approve-success-title">ดำเนินการสำเร็จ</div>
+    <div class="success-sub" id="approve-success-sub"></div>
+    <button class="btn btn-primary" style="max-width:280px" onclick="reloadApprove()">← ดูรายการอื่น</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE 2: CONFIRM RETURN ══════════════════════════════════ -->
+<div class="page" id="page-return">
+  <div class="loading-row show" id="load-return" style="justify-content:center">
+    <div class="spinner-sm"></div><span>กำลังโหลด...</span>
+  </div>
+  <div id="return-list"></div>
+  <div id="return-form" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📥 รับคืนอุปกรณ์</div>
+      </div>
+      <div class="card-body">
+        <div class="error-box" id="return-error"></div>
+        <div id="return-info"></div>
+        <div class="field" style="margin-top:14px">
+          <label class="field-label">ประเมินสภาพอุปกรณ์หลังใช้ <span style="color:#B91C1C">*</span></label>
+          <select class="field-control" id="return-condition" onchange="onReturnConditionChange()">
+            <option value="">— กรุณาเลือก —</option>
+            <option value="สภาพพร้อมใช้งาน (Ready for use)">สภาพพร้อมใช้งาน (Ready for use)</option>
+            <option value="ชำรุดเล็กน้อย (Minor damage)">ชำรุดเล็กน้อย (Minor damage)</option>
+            <option value="ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)">ชำรุดมาก/ใช้งานไม่ได้ (Major damage)</option>
+          </select>
+          <div class="condition-warn" id="return-condition-warn">⚠️ สภาพชำรุดมาก — อุปกรณ์จะถูกระงับการใช้งาน กรุณาระบุรายละเอียดในหมายเหตุ</div>
+        </div>
+        <div class="field">
+          <label class="field-label">หมายเหตุ</label>
+          <textarea class="field-control" id="return-notes" placeholder="รายละเอียดสภาพอุปกรณ์ ข้อสังเกต ฯลฯ"></textarea>
+        </div>
+        <button class="btn btn-primary" id="return-submit-btn" onclick="submitConfirmReturn()">
+          <span id="return-submit-label">📥 ยืนยันรับคืน</span>
+        </button>
+        <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToReturnList()">← กลับรายการ</button>
+      </div>
+    </div>
+  </div>
+  <div id="return-success" class="success-screen">
+    <div class="success-icon">📥</div>
+    <div class="success-title">รับคืนอุปกรณ์สำเร็จ</div>
+    <div class="success-sub" id="return-success-sub"></div>
+    <button class="btn btn-primary" style="max-width:280px" onclick="reloadReturn()">← ดูรายการอื่น</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE 3: SEND TO CENTRAL ════════════════════════════════ -->
+<div class="page" id="page-central">
+  <div class="loading-row show" id="load-central" style="justify-content:center">
+    <div class="spinner-sm"></div><span>กำลังโหลด...</span>
+  </div>
+  <div id="central-list"></div>
+  <div id="central-form" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📤 ส่งอุปกรณ์ไปจ่ายกลาง</div>
+      </div>
+      <div class="card-body">
+        <div class="error-box" id="central-error"></div>
+        <div id="central-info"></div>
+        <div class="field" style="margin-top:14px">
+          <label class="field-label">หมายเหตุ</label>
+          <textarea class="field-control" id="central-notes" placeholder="ข้อมูลที่ต้องการแจ้งจ่ายกลาง (ถ้ามี)"></textarea>
+        </div>
+        <button class="btn btn-blue" id="central-submit-btn" onclick="submitSendCentral()">
+          <span id="central-submit-label">📤 ยืนยันส่งจ่ายกลาง</span>
+        </button>
+        <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToCentralList()">← กลับรายการ</button>
+      </div>
+    </div>
+  </div>
+  <div id="central-success" class="success-screen">
+    <div class="success-icon">📤</div>
+    <div class="success-title">ส่งจ่ายกลางสำเร็จ</div>
+    <div class="success-sub" id="central-success-sub"></div>
+    <button class="btn btn-primary" style="max-width:280px" onclick="reloadCentral()">← ดูรายการอื่น</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE 4: RECEIVE FROM CENTRAL ══════════════════════════ -->
+<div class="page" id="page-receive_central">
+  <div class="loading-row show" id="load-receive_central" style="justify-content:center">
+    <div class="spinner-sm"></div><span>กำลังโหลด...</span>
+  </div>
+  <div id="receive_central-list"></div>
+  <div id="receive_central-form" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📦 รับอุปกรณ์จากจ่ายกลาง</div>
+      </div>
+      <div class="card-body">
+        <div class="error-box" id="receive_central-error"></div>
+        <div id="receive_central-info"></div>
+        <div class="field" style="margin-top:14px">
+          <label class="field-label">ประเมินสภาพหลังฆ่าเชื้อ <span style="color:#B91C1C">*</span></label>
+          <select class="field-control" id="rc-condition" onchange="onRCConditionChange()">
+            <option value="">— กรุณาเลือก —</option>
+            <option value="สภาพพร้อมใช้งาน (Ready for use)">สภาพพร้อมใช้งาน (Ready for use)</option>
+            <option value="ชำรุดเล็กน้อย (Minor damage)">ชำรุดเล็กน้อย (Minor damage)</option>
+            <option value="ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)">ชำรุดมาก/ใช้งานไม่ได้ (Major damage)</option>
+          </select>
+          <div class="condition-warn" id="rc-condition-warn">⚠️ สภาพชำรุดมาก — อุปกรณ์จะถูกระงับการใช้งาน</div>
+        </div>
+        <div class="field">
+          <label class="field-label">หมายเหตุ</label>
+          <textarea class="field-control" id="rc-notes" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
+        </div>
+        <button class="btn btn-primary" id="rc-submit-btn" onclick="submitReceiveCentral()">
+          <span id="rc-submit-label">📦 ยืนยันรับจากจ่ายกลาง</span>
+        </button>
+        <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToRCList()">← กลับรายการ</button>
+      </div>
+    </div>
+  </div>
+  <div id="receive_central-success" class="success-screen">
+    <div class="success-icon">📦</div>
+    <div class="success-title">รับจากจ่ายกลางสำเร็จ</div>
+    <div class="success-sub" id="receive_central-success-sub"></div>
+    <button class="btn btn-primary" style="max-width:280px" onclick="reloadRC()">← ดูรายการอื่น</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE 5: UPDATE STATUS ══════════════════════════════════ -->
+<div class="page" id="page-status">
+  <div class="loading-row show" id="load-status" style="justify-content:center">
+    <div class="spinner-sm"></div><span>กำลังโหลด...</span>
+  </div>
+  <div id="status-list"></div>
+  <div id="status-form" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🔧 อัปเดตสถานะอุปกรณ์</div>
+      </div>
+      <div class="card-body">
+        <div class="error-box" id="status-error"></div>
+        <div id="status-info"></div>
+        <div class="field" style="margin-top:14px">
+          <label class="field-label">สถานะใหม่ <span style="color:#B91C1C">*</span></label>
+          <select class="field-control" id="status-select">
+            <option value="">— กรุณาเลือก —</option>
+            <option value="damaged">🔴 ชำรุด (Damaged)</option>
+            <option value="repair">🔧 ส่งซ่อม (Under Repair)</option>
+            <option value="available">✅ พร้อมใช้งาน (Available)</option>
+            <option value="disposed">🗑️ จำหน่าย (Disposed) — ถาวร</option>
+            <option value="lost">❓ สูญหาย (Lost) — ถาวร</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">หมายเหตุ <span style="color:#B91C1C">*</span></label>
+          <textarea class="field-control" id="status-notes" placeholder="เหตุผลหรือรายละเอียดที่เกี่ยวข้อง"></textarea>
+        </div>
+        <button class="btn btn-amber" id="status-submit-btn" onclick="submitUpdateStatus()">
+          <span id="status-submit-label">🔧 ยืนยันอัปเดตสถานะ</span>
+        </button>
+        <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToStatusList()">← กลับรายการ</button>
+      </div>
+    </div>
+  </div>
+  <div id="status-success" class="success-screen">
+    <div class="success-icon">🔧</div>
+    <div class="success-title">อัปเดตสถานะสำเร็จ</div>
+    <div class="success-sub" id="status-success-sub"></div>
+    <button class="btn btn-primary" style="max-width:280px" onclick="reloadStatus()">← ดูรายการอื่น</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════════════
+const LIFF_ID      = '2009365358-XIHw2A0N';        // ← ใส่ LIFF ID จริง
+const SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrnODe6na-5NNGzIt9ae7-qu8X-wLxnp71vOtTihMY5s-Qxg-XvVEKU5w/exec';     // ← ใส่ Apps Script Web App URL จริง
+
+let currentUserId  = '';
+let currentAuth    = null;
+let currentTab     = 'approve';
+let selectedItem   = null; // รายการที่เลือกใน list
+
+// ═══════════════════════════════════════════════════════════════
+//  INIT — LIFF + AUTH
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    await liff.init({ liffId: LIFF_ID });
+    if (!liff.isLoggedIn()) { liff.login(); return; }
+    const profile    = await liff.getProfile();
+    currentUserId    = profile.userId;
+    // ตรวจสิทธิ์
+    const resp = await fetch(SCRIPT_URL + '?action=checkAuth&userId=' + encodeURIComponent(currentUserId), { redirect:'follow' });
+    const auth = await resp.json();
+    if (!auth.success) {
+      document.getElementById('authLoading').style.display = 'none';
+      document.getElementById('authError').style.display   = 'flex';
+      document.getElementById('authErrorMsg').textContent  = auth.error || 'ไม่มีสิทธิ์ admin';
+      return;
+    }
+    if (auth.role !== 'admin' && auth.role !== 'superadmin') {
+      document.getElementById('authLoading').style.display = 'none';
+      document.getElementById('authError').style.display   = 'flex';
+      document.getElementById('authErrorMsg').textContent  = 'บัญชีนี้ไม่ใช่ Admin';
+      return;
+    }
+    currentAuth = auth;
+    document.getElementById('authLoading').style.display = 'none';
+    document.getElementById('adminName').textContent = auth.name + ' · ' + auth.ward;
+    // โหลด tab ตาม URL param หรือ default
+    const urlTab = new URLSearchParams(window.location.search).get('view') || 'approve';
+    switchTab(urlTab);
+  } catch (err) {
+    document.getElementById('authLoading').style.display = 'none';
+    document.getElementById('authError').style.display   = 'flex';
+    document.getElementById('authErrorMsg').textContent  = 'เกิดข้อผิดพลาด: ' + err.message;
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  TAB NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('page-' + tab).classList.add('active');
+  loadTabData(tab);
+}
+
+function refreshCurrentTab() { loadTabData(currentTab); }
+
+function loadTabData(tab) {
+  if (tab === 'approve')          loadApprove();
+  else if (tab === 'return')      loadReturn();
+  else if (tab === 'central')     loadCentral();
+  else if (tab === 'receive_central') loadRC();
+  else if (tab === 'status')      loadStatus();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════
+async function apiFetch(action, params) {
+  const qs  = Object.entries(params || {}).map(function([k,v]){ return k+'='+encodeURIComponent(v); }).join('&');
+  const url = SCRIPT_URL + '?action=' + action + '&userId=' + encodeURIComponent(currentUserId) + (qs ? '&' + qs : '');
+  const r   = await fetch(url, { redirect: 'follow' });
+  return r.json();
+}
+
+async function apiPost(payload) {
+  const r = await fetch(SCRIPT_URL, {
+    method:'POST', headers:{'Content-Type':'text/plain'},
+    redirect:'follow', body: JSON.stringify(payload),
+  });
+  return r.json();
+}
+
+function statusBadge(s) {
+  const labels = {
+    available:'พร้อมใช้งาน', pending_approval:'รออนุมัติ', in_use:'กำลังใช้งาน',
+    pending_admin_return:'รอรับคืน', pending_sterilization:'รอส่งจ่ายกลาง',
+    at_central:'อยู่ที่จ่ายกลาง', damaged:'ชำรุด', repair:'ส่งซ่อม',
+    disposed:'จำหน่ายแล้ว', lost:'สูญหาย',
+  };
+  return '<span class="badge ' + s + '">' + (labels[s] || s) + '</span>';
+}
+
+function infoRow(label, value) {
+  if (!value) return '';
+  return '<div class="info-row"><span class="info-lbl">' + label + '</span><span class="info-val">' + value + '</span></div>';
+}
+
+function setBtn(id, disabled, label) {
+  const btn = document.getElementById(id);
+  if (btn) btn.disabled = disabled;
+  const lbl = document.getElementById(id.replace('-btn', '-label') );
+  if (lbl && label) lbl.textContent = label;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  TAB 1: APPROVE
+// ═══════════════════════════════════════════════════════════════
+async function loadApprove() {
+  document.getElementById('approve-list').innerHTML    = '';
+  document.getElementById('approve-success').classList.remove('show');
+  document.getElementById('load-approve').classList.add('show');
+  try {
+    const data = await apiFetch('getPendingRequests');
+    document.getElementById('load-approve').classList.remove('show');
+    if (!data.success) { document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>'; return; }
+    if (!data.data || data.data.length === 0) {
+      document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">✅</div><div>ไม่มีคำร้องรออนุมัติ</div></div>';
+      return;
+    }
+    document.getElementById('approve-list').innerHTML = data.data.map(function(r) {
+      const left      = r.minutesLeft;
+      const timerCls  = left <= 30 ? 'urgent' : (left <= 60 ? 'warn' : 'ok');
+      const timerTxt  = left <= 0 ? 'กำลัง auto-reject' : ('เหลือ ' + left + ' นาที');
+      return `<div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📦 ${r.equipmentSubId} — ${r.equipmentName}</div>
+            <div style="font-size:12px;color:#64748B;margin-top:2px">🆔 ${r.requestId} · ${r.timestamp}</div>
+          </div>
+          <span class="timer ${timerCls}">${timerTxt}</span>
+        </div>
+        <div class="card-body">
+          ${infoRow('🏥 Ward ดูแล', r.homeWard)}
+          ${infoRow('👤 ผู้ขอ', r.requesterName)}
+          ${infoRow('🏢 Ward ผู้ขอ', r.requesterWard)}
+          ${infoRow('📞 โทร', r.phone)}
+          ${infoRow('📋 วัตถุประสงค์', r.purpose)}
+          ${infoRow('📅 คืนวันที่', r.returnDate)}
+          ${infoRow('🔍 สภาพก่อนยืม', r.conditionBefore)}
+          ${r.notes ? infoRow('📝 หมายเหตุ', r.notes) : ''}
+          <div id="approve-err-${r.requestId}" class="error-box"></div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn btn-approve" onclick="submitApprove('${r.requestId}')">✅ อนุมัติ</button>
+            <button class="btn btn-reject"  onclick="openRejectModal('${r.requestId}','${r.equipmentSubId}')">❌ ปฏิเสธ</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch (err) {
+    document.getElementById('load-approve').classList.remove('show');
+    document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>โหลดไม่สำเร็จ: ' + err.message + '</div>';
+  }
+}
+
+async function submitApprove(requestId) {
+  const errEl = document.getElementById('approve-err-' + requestId);
+  if (errEl) { errEl.classList.remove('show'); }
+  try {
+    const result = await apiPost({ source:'admin', action:'approve', userId:currentUserId, requestId, notes:'' });
+    if (result.success) {
+      document.getElementById('approve-success-title').textContent = 'อนุมัติสำเร็จ!';
+      document.getElementById('approve-success-sub').textContent   = 'Request ID: ' + requestId;
+      document.getElementById('approve-list').innerHTML             = '';
+      document.getElementById('approve-success').classList.add('show');
+    } else {
+      if (errEl) { errEl.textContent = '⚠️ ' + result.error; errEl.classList.add('show'); }
+    }
+  } catch (err) {
+    if (errEl) { errEl.textContent = '⚠️ เกิดข้อผิดพลาด: ' + err.message; errEl.classList.add('show'); }
+  }
+}
+
+function openRejectModal(requestId, subId) {
+  const reason = prompt('เหตุผลที่ปฏิเสธ (ถ้ามี):') || '';
+  submitReject(requestId, subId, reason);
+}
+
+async function submitReject(requestId, subId, reason) {
+  const errEl = document.getElementById('approve-err-' + requestId);
+  try {
+    const result = await apiPost({ source:'admin', action:'reject', userId:currentUserId, requestId, notes:reason });
+    if (result.success) {
+      document.getElementById('approve-success-title').textContent = 'ปฏิเสธคำร้องแล้ว';
+      document.getElementById('approve-success-sub').textContent   = subId + ' · ' + requestId;
+      document.getElementById('approve-list').innerHTML             = '';
+      document.getElementById('approve-success').classList.add('show');
+    } else {
+      if (errEl) { errEl.textContent = '⚠️ ' + result.error; errEl.classList.add('show'); }
+    }
+  } catch (err) {
+    if (errEl) { errEl.textContent = '⚠️ ' + err.message; errEl.classList.add('show'); }
+  }
+}
+
+function reloadApprove() { document.getElementById('approve-success').classList.remove('show'); loadApprove(); }
+
+// ═══════════════════════════════════════════════════════════════
+//  TAB 2: CONFIRM RETURN
+// ═══════════════════════════════════════════════════════════════
+async function loadReturn() {
+  document.getElementById('return-list').innerHTML    = '';
+  document.getElementById('return-form').style.display  = 'none';
+  document.getElementById('return-success').classList.remove('show');
+  document.getElementById('load-return').classList.add('show');
+  try {
+    const data = await apiFetch('getEquipmentByStatus', { status:'pending_admin_return' });
+    document.getElementById('load-return').classList.remove('show');
+    if (!data.success) { document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>'; return; }
+    if (!data.data || data.data.length === 0) {
+      document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">📥</div><div>ไม่มีอุปกรณ์รอรับคืน</div></div>';
+      return;
+    }
+    document.getElementById('return-list').innerHTML = data.data.map(function(eq) {
+      return `<div class="card" onclick="openReturnForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+            <div style="font-size:12px;color:#64748B;margin-top:2px">🏥 ${eq.homeWard}</div>
+          </div>
+          ${statusBadge(eq.status)}
+        </div>
+        <div class="card-body">
+          ${infoRow('👤 ผู้ยืม', eq.borrowerName)}
+          ${infoRow('🏢 Ward', eq.ward)}
+          ${infoRow('📅 กำหนดคืน', eq.expectedReturn)}
+          <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">กดเพื่อรับคืน →</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch (err) {
+    document.getElementById('load-return').classList.remove('show');
+    document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + err.message + '</div>';
+  }
+}
+
+function openReturnForm(eq) {
+  selectedItem = eq;
+  document.getElementById('return-list').innerHTML  = '';
+  document.getElementById('return-form').style.display = 'block';
+  document.getElementById('return-condition').value  = '';
+  document.getElementById('return-notes').value      = '';
+  document.getElementById('return-error').classList.remove('show');
+  document.getElementById('return-condition-warn').classList.remove('show');
+  document.getElementById('return-info').innerHTML   =
+    infoRow('📦 อุปกรณ์', eq.equipmentSubId + ' — ' + eq.equipmentName) +
+    infoRow('👤 ผู้ยืม', eq.borrowerName) +
+    infoRow('🏢 Ward ผู้ยืม', eq.ward) +
+    infoRow('📅 กำหนดคืน', eq.expectedReturn);
+}
+
+function onReturnConditionChange() {
+  const v = document.getElementById('return-condition').value;
+  document.getElementById('return-condition-warn').classList.toggle('show', v.includes('Major'));
+}
+
+async function submitConfirmReturn() {
+  const condition = document.getElementById('return-condition').value;
+  const notes     = document.getElementById('return-notes').value.trim();
+  const errEl     = document.getElementById('return-error');
+  if (!condition) { errEl.textContent='⚠️ กรุณาประเมินสภาพอุปกรณ์'; errEl.classList.add('show'); return; }
+  setBtn('return-submit-btn', true, '⏳ กำลังบันทึก...');
+  try {
+    const result = await apiPost({ source:'admin', action:'confirm_return', userId:currentUserId,
+      equipmentSubId:selectedItem.equipmentSubId, condition, notes });
+    if (result.success) {
+      document.getElementById('return-form').style.display = 'none';
+      const nextMsg = { available:'✅ พร้อมใช้งานแล้ว', pending_sterilization:'🧪 รอส่งจ่ายกลาง', damaged:'🔴 บันทึกสถานะชำรุดแล้ว' };
+      document.getElementById('return-success-sub').textContent = selectedItem.equipmentSubId + ' · ' + (nextMsg[result.nextStatus] || result.nextStatus);
+      document.getElementById('return-success').classList.add('show');
+    } else {
+      errEl.textContent='⚠️ '+result.error; errEl.classList.add('show');
+      setBtn('return-submit-btn', false, '📥 ยืนยันรับคืน');
+    }
+  } catch (err) {
+    errEl.textContent='⚠️ '+err.message; errEl.classList.add('show');
+    setBtn('return-submit-btn', false, '📥 ยืนยันรับคืน');
+  }
+}
+
+function backToReturnList()  { document.getElementById('return-form').style.display='none'; loadReturn(); }
+function reloadReturn()      { document.getElementById('return-success').classList.remove('show'); loadReturn(); }
+
+// ═══════════════════════════════════════════════════════════════
+//  TAB 3: SEND TO CENTRAL
+// ═══════════════════════════════════════════════════════════════
+async function loadCentral() {
+  document.getElementById('central-list').innerHTML   = '';
+  document.getElementById('central-form').style.display = 'none';
+  document.getElementById('central-success').classList.remove('show');
+  document.getElementById('load-central').classList.add('show');
+  try {
+    const data = await apiFetch('getEquipmentByStatus', { status:'pending_sterilization' });
+    document.getElementById('load-central').classList.remove('show');
+    if (!data.success) { document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+data.error+'</div>'; return; }
+    if (!data.data || data.data.length===0) {
+      document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">📤</div><div>ไม่มีอุปกรณ์รอส่งจ่ายกลาง</div></div>';
+      return;
+    }
+    document.getElementById('central-list').innerHTML = data.data.map(function(eq) {
+      return `<div class="card" onclick="openCentralForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+        <div class="card-header">
+          <div class="card-title">🧪 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+          ${statusBadge(eq.status)}
+        </div>
+        <div class="card-body">
+          ${infoRow('🏥 Ward ดูแล', eq.homeWard)}
+          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">กดเพื่อส่งจ่ายกลาง →</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(err) {
+    document.getElementById('load-central').classList.remove('show');
+    document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+err.message+'</div>';
+  }
+}
+
+function openCentralForm(eq) {
+  selectedItem=eq;
+  document.getElementById('central-list').innerHTML='';
+  document.getElementById('central-form').style.display='block';
+  document.getElementById('central-notes').value='';
+  document.getElementById('central-error').classList.remove('show');
+  document.getElementById('central-info').innerHTML=
+    infoRow('📦 อุปกรณ์', eq.equipmentSubId+' — '+eq.equipmentName)+
+    infoRow('🏥 Ward ดูแล', eq.homeWard);
+}
+
+async function submitSendCentral() {
+  const notes=document.getElementById('central-notes').value.trim();
+  const errEl=document.getElementById('central-error');
+  setBtn('central-submit-btn',true,'⏳ กำลังบันทึก...');
+  try {
+    const result=await apiPost({source:'admin',action:'send_central',userId:currentUserId,
+      equipmentSubId:selectedItem.equipmentSubId,notes});
+    if(result.success){
+      document.getElementById('central-form').style.display='none';
+      document.getElementById('central-success-sub').textContent=selectedItem.equipmentSubId+' · STR ID: '+(result.sterilId||'');
+      document.getElementById('central-success').classList.add('show');
+    } else {
+      errEl.textContent='⚠️ '+result.error; errEl.classList.add('show');
+      setBtn('central-submit-btn',false,'📤 ยืนยันส่งจ่ายกลาง');
+    }
+  } catch(err){ errEl.textContent='⚠️ '+err.message; errEl.classList.add('show'); setBtn('central-submit-btn',false,'📤 ยืนยันส่งจ่ายกลาง'); }
+}
+
+function backToCentralList(){ document.getElementById('central-form').style.display='none'; loadCentral(); }
+function reloadCentral()    { document.getElementById('central-success').classList.remove('show'); loadCentral(); }
+
+// ═══════════════════════════════════════════════════════════════
+//  TAB 4: RECEIVE FROM CENTRAL
+// ═══════════════════════════════════════════════════════════════
+async function loadRC() {
+  document.getElementById('receive_central-list').innerHTML='';
+  document.getElementById('receive_central-form').style.display='none';
+  document.getElementById('receive_central-success').classList.remove('show');
+  document.getElementById('load-receive_central').classList.add('show');
+  try {
+    const data=await apiFetch('getEquipmentByStatus',{status:'at_central'});
+    document.getElementById('load-receive_central').classList.remove('show');
+    if(!data.success){document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+data.error+'</div>';return;}
+    if(!data.data||data.data.length===0){
+      document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">📦</div><div>ไม่มีอุปกรณ์รอรับจากจ่ายกลาง</div></div>';
+      return;
+    }
+    document.getElementById('receive_central-list').innerHTML=data.data.map(function(eq){
+      return `<div class="card" onclick="openRCForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+        <div class="card-header">
+          <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+          ${statusBadge(eq.status)}
+        </div>
+        <div class="card-body">
+          ${infoRow('🏥 Ward ดูแล', eq.homeWard)}
+          <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:6px">กดเพื่อรับจากจ่ายกลาง →</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(err){
+    document.getElementById('load-receive_central').classList.remove('show');
+    document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+err.message+'</div>';
+  }
+}
+
+function openRCForm(eq){
+  selectedItem=eq;
+  document.getElementById('receive_central-list').innerHTML='';
+  document.getElementById('receive_central-form').style.display='block';
+  document.getElementById('rc-condition').value='';
+  document.getElementById('rc-notes').value='';
+  document.getElementById('receive_central-error').classList.remove('show');
+  document.getElementById('rc-condition-warn').classList.remove('show');
+  document.getElementById('receive_central-info').innerHTML=
+    infoRow('📦 อุปกรณ์',eq.equipmentSubId+' — '+eq.equipmentName)+
+    infoRow('🏥 Ward ดูแล',eq.homeWard);
+}
+
+function onRCConditionChange(){ document.getElementById('rc-condition-warn').classList.toggle('show',document.getElementById('rc-condition').value.includes('Major')); }
+
+async function submitReceiveCentral(){
+  const condition=document.getElementById('rc-condition').value;
+  const notes=document.getElementById('rc-notes').value.trim();
+  const errEl=document.getElementById('receive_central-error');
+  if(!condition){errEl.textContent='⚠️ กรุณาประเมินสภาพอุปกรณ์';errEl.classList.add('show');return;}
+  setBtn('rc-submit-btn',true,'⏳ กำลังบันทึก...');
+  try {
+    const result=await apiPost({source:'admin',action:'receive_central',userId:currentUserId,
+      equipmentSubId:selectedItem.equipmentSubId,condition,notes});
+    if(result.success){
+      document.getElementById('receive_central-form').style.display='none';
+      const nm={available:'✅ พร้อมใช้งานแล้ว',damaged:'🔴 บันทึกชำรุด'};
+      document.getElementById('receive_central-success-sub').textContent=selectedItem.equipmentSubId+' · '+(nm[result.nextStatus]||result.nextStatus);
+      document.getElementById('receive_central-success').classList.add('show');
+    } else { errEl.textContent='⚠️ '+result.error;errEl.classList.add('show');setBtn('rc-submit-btn',false,'📦 ยืนยันรับจากจ่ายกลาง'); }
+  } catch(err){ errEl.textContent='⚠️ '+err.message;errEl.classList.add('show');setBtn('rc-submit-btn',false,'📦 ยืนยันรับจากจ่ายกลาง'); }
+}
+
+function backToRCList(){ document.getElementById('receive_central-form').style.display='none'; loadRC(); }
+function reloadRC()    { document.getElementById('receive_central-success').classList.remove('show'); loadRC(); }
+
+// ═══════════════════════════════════════════════════════════════
+//  TAB 5: UPDATE STATUS
+// ═══════════════════════════════════════════════════════════════
+async function loadStatus(){
+  document.getElementById('status-list').innerHTML='';
+  document.getElementById('status-form').style.display='none';
+  document.getElementById('status-success').classList.remove('show');
+  document.getElementById('load-status').classList.add('show');
+  try {
+    const data=await apiFetch('getEquipmentByStatus',{status:''}); // ทุกสถานะ
+    document.getElementById('load-status').classList.remove('show');
+    if(!data.success){document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+data.error+'</div>';return;}
+    if(!data.data||data.data.length===0){
+      document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">📦</div><div>ไม่พบอุปกรณ์</div></div>';return;
+    }
+    document.getElementById('status-list').innerHTML=data.data.map(function(eq){
+      return `<div class="card" onclick="openStatusForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+            <div style="font-size:12px;color:#64748B;margin-top:2px">🏥 ${eq.homeWard}</div>
+          </div>
+          ${statusBadge(eq.status)}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(err){
+    document.getElementById('load-status').classList.remove('show');
+    document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+err.message+'</div>';
+  }
+}
+
+function openStatusForm(eq){
+  selectedItem=eq;
+  document.getElementById('status-list').innerHTML='';
+  document.getElementById('status-form').style.display='block';
+  document.getElementById('status-select').value='';
+  document.getElementById('status-notes').value='';
+  document.getElementById('status-error').classList.remove('show');
+  document.getElementById('status-info').innerHTML=
+    infoRow('📦 อุปกรณ์',eq.equipmentSubId+' — '+eq.equipmentName)+
+    infoRow('🏥 Ward ดูแล',eq.homeWard)+
+    infoRow('📋 สถานะปัจจุบัน','').replace('</div>','')+'<span class="badge '+eq.status+'">'+eq.status+'</span></span></div>';
+}
+
+async function submitUpdateStatus(){
+  const status=document.getElementById('status-select').value;
+  const notes=document.getElementById('status-notes').value.trim();
+  const errEl=document.getElementById('status-error');
+  if(!status){errEl.textContent='⚠️ กรุณาเลือกสถานะ';errEl.classList.add('show');return;}
+  if(!notes){errEl.textContent='⚠️ กรุณาระบุหมายเหตุ';errEl.classList.add('show');return;}
+  if((status==='disposed'||status==='lost')&&!confirm('⚠️ สถานะนี้เป็นการถาวร อุปกรณ์จะไม่สามารถนำกลับมาใช้งานได้ ยืนยันหรือไม่?'))return;
+  setBtn('status-submit-btn',true,'⏳ กำลังบันทึก...');
+  try {
+    const result=await apiPost({source:'admin',action:'update_status',userId:currentUserId,
+      equipmentSubId:selectedItem.equipmentSubId,status,notes});
+    if(result.success){
+      document.getElementById('status-form').style.display='none';
+      document.getElementById('status-success-sub').textContent=selectedItem.equipmentSubId+' → '+status;
+      document.getElementById('status-success').classList.add('show');
+    } else { errEl.textContent='⚠️ '+result.error;errEl.classList.add('show');setBtn('status-submit-btn',false,'🔧 ยืนยันอัปเดตสถานะ'); }
+  } catch(err){ errEl.textContent='⚠️ '+err.message;errEl.classList.add('show');setBtn('status-submit-btn',false,'🔧 ยืนยันอัปเดตสถานะ'); }
+}
+
+function backToStatusList(){ document.getElementById('status-form').style.display='none'; loadStatus(); }
+function reloadStatus()    { document.getElementById('status-success').classList.remove('show'); loadStatus(); }
+</script>
+</body>
+</html>
