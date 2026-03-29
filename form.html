@@ -299,6 +299,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
         <div class="autofill-note" id="notePhoneAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
       </div>
 
+
       <!-- ── Borrow only fields ── -->
       <div id="borrowFields">
         <!-- วัตถุประสงค์ dropdown + อื่นๆ -->
@@ -357,9 +358,9 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 //  ⚠️  แก้ URL ด้านล่างให้ตรงกับ Apps Script Deployment URL ของคุณ
 //  วิธีหา: Apps Script → Deploy → Manage deployments → copy URL
 // ============================================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3Kf3UhTqU-wvUP9gMDCB9DTgs4wHJlkDyr9ST4lZoSs5b22Cjo4BT5HYqMP70epshyA/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrnODe6na-5NNGzIt9ae7-qu8X-wLxnp71vOtTihMY5s-Qxg-XvVEKU5w/exec'; // ← ใส่ URL ของ ChestEquipment_LineOA_v5.gs
 // ตัวอย่าง:
-// const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfy.../exec';
+// ตัวอย่าง: const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfy.../exec';
 
 // ── Parse URL params ──────────────────────────────────────────
 const params      = new URLSearchParams(window.location.search);
@@ -518,6 +519,7 @@ async function onSubIdChange() {
         document.getElementById('phone').value = data.phone;
         document.getElementById('notePhoneAutofill').classList.add('show');
       }
+
     }
   } catch (err) {
     document.getElementById('borrowerLoadingRow').classList.remove('show');
@@ -601,7 +603,7 @@ async function submitForm() {
 
   const payload = {
     source         : 'webform',
-    type           : formType,
+    action         : formType,  // v5: ใช้ 'action' แทน 'type' สำหรับ routing
     equipmentId    : equipmentId,
     equipmentSubId : subId,
     borrowerName   : borrowerName,
