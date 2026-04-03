@@ -358,7 +358,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     const profile    = await liff.getProfile();
     currentUserId    = profile.userId;
     // ตรวจสิทธิ์
-    const resp = await fetch(SCRIPT_URL + '?action=checkAuth&userId=' + encodeURIComponent(currentUserId), { redirect:'follow' });
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      redirect: 'follow',
+      body: JSON.stringify({ source: 'admin', action: 'checkAuth', userId: currentUserId }),
+    });
     const auth = await resp.json();
     if (!auth.success) {
       document.getElementById('authLoading').style.display = 'none';
@@ -411,9 +416,14 @@ function loadTabData(tab) {
 //  HELPERS
 // ═══════════════════════════════════════════════════════════════
 async function apiFetch(action, params) {
-  const qs  = Object.entries(params || {}).map(function([k,v]){ return k+'='+encodeURIComponent(v); }).join('&');
-  const url = SCRIPT_URL + '?action=' + action + '&userId=' + encodeURIComponent(currentUserId) + (qs ? '&' + qs : '');
-  const r   = await fetch(url, { redirect: 'follow' });
+  // POST แทน GET เพื่อหลีกเลี่ยง CORS redirect ของ Apps Script
+  const payload = Object.assign({ source: 'admin', action, userId: currentUserId }, params || {});
+  const r = await fetch(SCRIPT_URL, {
+    method  : 'POST',
+    headers : { 'Content-Type': 'text/plain' },
+    redirect: 'follow',
+    body    : JSON.stringify(payload),
+  });
   return r.json();
 }
 
