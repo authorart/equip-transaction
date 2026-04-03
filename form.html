@@ -194,6 +194,28 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 <body>
 
 <!-- ── Main form ────────────────────────────────────────────── -->
+<!-- ── CANCEL SECTION (แสดงเมื่อ type=cancel) ── -->
+<div id="cancelSection" style="display:none;padding:20px">
+  <div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:14px;padding:24px;text-align:center;margin-bottom:16px">
+    <div style="font-size:48px;margin-bottom:12px">❌</div>
+    <div style="font-size:18px;font-weight:800;color:#B91C1C;margin-bottom:8px">ยืนยันยกเลิกคำร้อง</div>
+    <div style="font-size:14px;color:#374151;margin-bottom:6px">Request ID:</div>
+    <div id="cancelRequestId" style="font-size:15px;font-weight:800;color:#1A2B45;word-break:break-all"></div>
+  </div>
+  <div id="cancelError" style="display:none;background:#FEE2E2;border-radius:10px;padding:12px;color:#B91C1C;font-size:14px;margin-bottom:12px"></div>
+  <button id="cancelBtn" onclick="submitCancel()" style="width:100%;padding:15px;background:#B91C1C;color:#fff;border:none;border-radius:11px;font-size:16px;font-weight:800;font-family:'Sarabun',sans-serif;cursor:pointer">
+    ❌ ยืนยันยกเลิกคำร้อง
+  </button>
+  <div style="margin-top:10px;font-size:13px;color:#64748B;text-align:center">หากยังต้องการยืม กรุณาส่งคำร้องใหม่อีกครั้ง</div>
+</div>
+
+<!-- ── SUCCESS SECTION ── -->
+<div id="successSection" style="display:none;padding:40px 20px;text-align:center">
+  <div style="font-size:64px;margin-bottom:16px">✅</div>
+  <div style="font-size:20px;font-weight:800;color:#0D7377;margin-bottom:8px">สำเร็จ</div>
+  <div id="successMsg" style="font-size:15px;color:#64748B"></div>
+</div>
+
 <div id="mainForm">
   <div class="header">
     <div class="header-icon" id="headerIcon">📋</div>
@@ -364,7 +386,9 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrn
 
 // ── Parse URL params ──────────────────────────────────────────
 const params      = new URLSearchParams(window.location.search);
-const formType    = params.get('type')        || 'borrow'; // 'borrow' or 'return'
+const formType    = params.get('type')        || 'borrow'; // 'borrow' | 'return' | 'cancel'
+const urlSubId    = params.get('subId')       || '';       // pre-select SubID (return flow)
+const urlRequestId= params.get('requestId')   || '';       // cancel flow
 const equipmentId = (params.get('equipmentId') || '').toUpperCase();
 const scannedSubId = (params.get('subId') || '').toUpperCase(); // set when scanned from QR
 
@@ -374,6 +398,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initForm() {
+  // ── Cancel mode ─────────────────────────────────────────────
+  if (formType === 'cancel') {
+    initCancelForm();
+    return;
+  }
+
   const isBorrow = formType === 'borrow';
   document.getElementById('headerIcon').textContent  = isBorrow ? '📋' : '↩️';
   document.getElementById('headerTitle').textContent = isBorrow ? 'แบบฟอร์มยืมอุปกรณ์' : 'แบบฟอร์มคืนอุปกรณ์';
@@ -560,6 +590,46 @@ function onConditionChange() {
 }
 
 // ── Submit ────────────────────────────────────────────────────
+// ── Cancel form ─────────────────────────────────────────────
+function initCancelForm() {
+  document.getElementById('formTitle').textContent   = '❌ ยกเลิกคำร้องยืม';
+  document.getElementById('mainForm').style.display  = 'none';
+  const cancelDiv = document.getElementById('cancelSection');
+  if (cancelDiv) {
+    cancelDiv.style.display = 'block';
+    document.getElementById('cancelRequestId').textContent = urlRequestId || '—';
+  }
+}
+
+async function submitCancel() {
+  const errEl = document.getElementById('cancelError');
+  errEl.style.display = 'none';
+  document.getElementById('cancelBtn').disabled = true;
+  document.getElementById('cancelBtn').textContent = '⏳ กำลังยกเลิก...';
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'text/plain' }, redirect: 'follow',
+      body: JSON.stringify({ source: 'webform', action: 'cancel', requestId: urlRequestId }),
+    });
+    const result = await resp.json();
+    if (result.success) {
+      document.getElementById('cancelSection').style.display  = 'none';
+      document.getElementById('successSection').style.display = 'block';
+      document.getElementById('successMsg').textContent = 'ยกเลิกคำร้อง ' + urlRequestId + ' เรียบร้อยแล้วครับ';
+    } else {
+      errEl.textContent = '⚠️ ' + (result.error || 'เกิดข้อผิดพลาด');
+      errEl.style.display = 'block';
+      document.getElementById('cancelBtn').disabled = false;
+      document.getElementById('cancelBtn').textContent = '❌ ยืนยันยกเลิกคำร้อง';
+    }
+  } catch(e) {
+    errEl.textContent = '⚠️ ' + e.message;
+    errEl.style.display = 'block';
+    document.getElementById('cancelBtn').disabled = false;
+    document.getElementById('cancelBtn').textContent = '❌ ยืนยันยกเลิกคำร้อง';
+  }
+}
+
 async function submitForm() {
   hideError();
 
