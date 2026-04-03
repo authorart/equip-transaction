@@ -210,10 +210,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       body: JSON.stringify({ source: 'central', action: 'checkAuth', userId: currentUserId }),
     });
     const auth = await resp.json();
-    if (!auth.success || auth.role !== 'central') {
+    const allowedRoles = ['central', 'superadmin'];
+    if (!auth.success || !allowedRoles.includes(auth.role)) {
       document.getElementById('authLoading').style.display = 'none';
       document.getElementById('authError').style.display   = 'flex';
-      document.getElementById('authErrorMsg').textContent  = auth.success ? 'บัญชีนี้ไม่ใช่ Central Supplier' : (auth.error || 'ไม่มีสิทธิ์');
+      document.getElementById('authErrorMsg').textContent  = auth.success ? 'บัญชีนี้ไม่มีสิทธิ์เข้า Central' : (auth.error || 'ไม่มีสิทธิ์');
       return;
     }
     currentAuth = auth;
