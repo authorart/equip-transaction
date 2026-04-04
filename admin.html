@@ -380,9 +380,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     currentAuth = auth;
     document.getElementById('authLoading').style.display = 'none';
     document.getElementById('adminName').textContent = auth.name + ' · ' + auth.ward;
-    // โหลด tab ตาม URL param หรือ default
+    // โหลด tab ตาม URL param หรือ default (setTimeout ให้ DOM render ก่อน)
     const urlTab = new URLSearchParams(window.location.search).get('view') || 'approve';
-    switchTab(urlTab);
+    setTimeout(function(){ switchTab(urlTab); }, 300);
   } catch (err) {
     document.getElementById('authLoading').style.display = 'none';
     document.getElementById('authError').style.display   = 'flex';

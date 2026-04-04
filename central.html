@@ -220,7 +220,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     currentAuth = auth;
     document.getElementById('authLoading').style.display = 'none';
     document.getElementById('centralName').textContent   = auth.name + ' · จ่ายกลาง';
-    loadReceive();
+    // โหลดข้อมูลทันทีหลัง auth สำเร็จ (ไม่ต้องปิด-เปิดใหม่)
+    setTimeout(function(){ loadReceive(); }, 300);
   } catch(err) {
     document.getElementById('authLoading').style.display = 'none';
     document.getElementById('authError').style.display   = 'flex';
@@ -282,23 +283,20 @@ async function loadReceive() {
   document.getElementById('receive-success').classList.remove('show');
   document.getElementById('load-receive').classList.add('show');
   try {
-    const data = await apiFetch('getEquipmentByStatus', { status: 'at_central' });
-    // at_central = admin ส่งมาแล้ว รอจ่ายกลางรับ
-    // แต่ Central จะเห็น sent_to_central status จาก sterilization log
-    // ดึง inventory ที่ status = at_central แต่ central ยังไม่ได้กด receive
-    // ใช้ status at_central ซึ่ง backend set ตอน admin send
+    const data = await apiFetch('getCentralPipeline', {});
     document.getElementById('load-receive').classList.remove('show');
     if (!data.success) {
       document.getElementById('receive-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>';
       return;
     }
-    // กรอง: at_central = ส่งมาแล้ว รอจ่ายกลางรับ
-    const pending = (data.data || []).filter(function(eq){ return eq.status === 'at_central'; });
+    const pending = data.data.toReceive || [];
     if (pending.length === 0) {
       document.getElementById('receive-list').innerHTML = '<div class="empty-state"><div class="icon">📭</div><div>ไม่มีอุปกรณ์รอรับจากหน่วย</div></div>';
       return;
     }
     document.getElementById('receive-list').innerHTML = pending.map(function(eq) {
+      const sentBy   = (eq.steril && eq.steril.sentBy)   ? eq.steril.sentBy   : '-';
+      const sentTime = (eq.steril && eq.steril.sentTime)  ? eq.steril.sentTime : '-';
       return `<div class="card" onclick="openReceiveForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
         <div class="card-header">
           <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
@@ -306,7 +304,9 @@ async function loadReceive() {
         </div>
         <div class="card-body">
           ${infoRow('🏥 หน่วยที่ส่ง', eq.homeWard)}
-          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">กดเพื่อยืนยันรับ →</div>
+          ${infoRow('👤 ส่งโดย', sentBy)}
+          ${infoRow('⏰ เวลาส่ง', sentTime)}
+          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">แตะเพื่อยืนยันรับ →</div>
         </div>
       </div>`;
     }).join('');
@@ -360,26 +360,30 @@ async function loadReturn() {
   document.getElementById('return-success').classList.remove('show');
   document.getElementById('load-return').classList.add('show');
   try {
-    // at_central status = จ่ายกลางรับแล้ว รอส่งคืน (central received แต่ยัง at_central)
-    const data = await apiFetch('getEquipmentByStatus', { status: 'at_central' });
+    const data = await apiFetch('getCentralPipeline', {});
     document.getElementById('load-return').classList.remove('show');
     if (!data.success) {
       document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>';
       return;
     }
-    if (!data.data || data.data.length === 0) {
+    const pending = data.data.toReturn || [];
+    if (pending.length === 0) {
       document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">📤</div><div>ไม่มีอุปกรณ์ที่ต้องส่งคืน</div></div>';
       return;
     }
-    document.getElementById('return-list').innerHTML = data.data.map(function(eq) {
+    document.getElementById('return-list').innerHTML = pending.map(function(eq) {
+      const recBy   = (eq.steril && eq.steril.centralReceivedBy)   ? eq.steril.centralReceivedBy   : '-';
+      const recTime = (eq.steril && eq.steril.centralReceivedTime) ? eq.steril.centralReceivedTime : '-';
       return `<div class="card" onclick="openReturnForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
         <div class="card-header">
           <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
-          <span class="badge at_central">อยู่จ่ายกลาง</span>
+          <span class="badge at_central">รับแล้ว รอส่งคืน</span>
         </div>
         <div class="card-body">
           ${infoRow('🏥 ส่งคืนไปที่', eq.homeWard)}
-          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">กดเพื่อส่งคืน →</div>
+          ${infoRow('👤 รับโดย', recBy)}
+          ${infoRow('⏰ เวลารับ', recTime)}
+          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">แตะเพื่อส่งคืน →</div>
         </div>
       </div>`;
     }).join('');

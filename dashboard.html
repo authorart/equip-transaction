@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Dashboard — Chest Equipment MSKH</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -10,96 +10,103 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
-body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-height:1.6;min-height:100vh}
+body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-height:1.6;min-height:100vh}
 
 /* ── Header ── */
 .header{background:linear-gradient(135deg,#095E61,#0D7377);padding:14px 16px;
-        display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.15);
-        position:sticky;top:0;z-index:100}
-.header-icon{font-size:24px}
+  display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.2);
+  position:sticky;top:0;z-index:200}
+.header-logo{font-size:22px}
 .header-info{flex:1}
 .header-title{font-size:17px;font-weight:800;color:#fff}
-.header-sub{font-size:12px;color:rgba(255,255,255,.7)}
-.header-btns{display:flex;gap:8px;align-items:center}
-.btn-icon{background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:8px;
-  padding:7px 10px;cursor:pointer;font-size:14px;font-family:'Sarabun',sans-serif}
-.btn-icon:hover{background:rgba(255,255,255,.25)}
+.header-sub{font-size:12px;color:rgba(255,255,255,.75)}
+.btn-hdr{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;
+  padding:7px 10px;cursor:pointer;font-size:13px;font-family:'Sarabun',sans-serif;font-weight:700}
+.btn-hdr:hover{background:rgba(255,255,255,.28)}
 
-/* ── Landing (role selector) ── */
-#landing{display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px}
-#landing .hero-icon{font-size:72px;margin-bottom:16px}
-#landing h1{font-size:22px;font-weight:800;color:#1A2B45;margin-bottom:6px;text-align:center}
-#landing p{font-size:14px;color:#64748B;margin-bottom:32px;text-align:center}
-.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:400px}
-.role-card{background:#fff;border:2px solid #D4DCE8;border-radius:16px;padding:22px 16px;
-  text-align:center;cursor:pointer;transition:all .15s}
-.role-card:hover{border-color:#0D7377;background:#F0F9F9}
-.role-card.full-width{grid-column:1/-1}
-.role-icon{font-size:36px;margin-bottom:8px}
-.role-name{font-size:15px;font-weight:800;color:#1A2B45}
-.role-desc{font-size:12px;color:#64748B;margin-top:4px}
+/* ── Landing ── */
+#landing{padding:32px 16px 60px;max-width:480px;margin:0 auto;text-align:center}
+.land-hero{font-size:60px;margin-bottom:12px}
+.land-title{font-size:22px;font-weight:800;margin-bottom:6px}
+.land-sub{font-size:14px;color:#64748B;margin-bottom:28px}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.role-card{background:#fff;border:2px solid #D4DCE8;border-radius:16px;padding:20px 14px;
+  text-align:center;cursor:pointer;transition:.15s}
+.role-card:hover{border-color:#0D7377;transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,115,119,.15)}
+.role-card.full{grid-column:1/-1}
+.role-icon{font-size:34px;margin-bottom:8px}
+.role-name{font-size:15px;font-weight:800}
+.role-desc{font-size:12px;color:#64748B;margin-top:3px}
 
-/* ── Tabs ── */
+/* ── Tab bar ── */
 .tab-bar{display:flex;background:#fff;border-bottom:2px solid #E5E7EB;
-  overflow-x:auto;scrollbar-width:none;position:sticky;top:56px;z-index:99}
+  overflow-x:auto;scrollbar-width:none;position:sticky;top:56px;z-index:100}
 .tab-bar::-webkit-scrollbar{display:none}
-.tab-btn{flex-shrink:0;padding:11px 16px;font-size:13px;font-weight:700;
+.tab-btn{flex-shrink:0;padding:11px 14px;font-size:13px;font-weight:700;
   font-family:'Sarabun',sans-serif;color:#64748B;background:none;
   border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
 .tab-btn.active{color:#0D7377;border-bottom-color:#0D7377}
 
-/* ── Page content ── */
-.page-content{display:none;padding:16px 16px 70px;max-width:800px;margin:0 auto}
-.page-content.active{display:block}
+/* ── Views ── */
+.view{display:none;padding:16px 16px 70px;max-width:860px;margin:0 auto}
+.view.active{display:block}
 
-/* ── KPI cards ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
-@media(min-width:480px){.kpi-grid{grid-template-columns:repeat(4,1fr)}}
-.kpi-card{background:#fff;border-radius:12px;border:1px solid #E5E7EB;
-  padding:14px 12px;text-align:center}
-.kpi-icon{font-size:24px;margin-bottom:4px}
-.kpi-val{font-size:26px;font-weight:800;line-height:1.1}
-.kpi-lbl{font-size:12px;color:#64748B;margin-top:2px}
+/* ── Spinner ── */
+.spin-box{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:#64748B}
+.spinner{width:28px;height:28px;border:3px solid #D4DCE8;border-top-color:#0D7377;
+  border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Auth ── */
+#authBox{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:60vh;gap:12px;color:#64748B;text-align:center;padding:20px}
+
+/* ── KPI ── */
+.kpi-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+@media(min-width:480px){.kpi-row{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:#fff;border-radius:14px;border:1px solid #E5E7EB;
+  padding:14px 12px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.kpi-icon{font-size:24px;margin-bottom:2px}
+.kpi-val{font-size:28px;font-weight:800;line-height:1}
+.kpi-lbl{font-size:12px;color:#64748B;margin-top:3px}
 
 /* ── Section title ── */
-.section-title{font-size:14px;font-weight:800;color:#64748B;
-  text-transform:uppercase;letter-spacing:.06em;
-  margin:20px 0 10px;display:flex;align-items:center;gap:8px}
-.section-title::after{content:'';flex:1;height:1px;background:#D4DCE8}
+.sec{font-size:13px;font-weight:800;color:#64748B;text-transform:uppercase;
+  letter-spacing:.06em;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:#D4DCE8}
 
-/* ── Cards ── */
-.card{background:#fff;border-radius:12px;border:1px solid #D4DCE8;
-  box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:10px;overflow:hidden}
-.card-hd{padding:11px 14px;background:#F8FAFC;border-bottom:1px solid #E5E7EB;
+/* ── Card ── */
+.card{background:#fff;border-radius:14px;border:1px solid #E0E7EF;
+  box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:12px;overflow:hidden}
+.card-hd{padding:12px 14px;background:#F8FAFC;border-bottom:1px solid #E5E7EB;
   display:flex;align-items:center;justify-content:space-between;gap:8px}
-.card-title{font-size:14px;font-weight:800;color:#1A2B45}
+.card-title{font-size:14px;font-weight:800}
 .card-body{padding:14px}
 
-/* ── Equipment grid ── */
-.eq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:4px}
-@media(min-width:480px){.eq-grid{grid-template-columns:repeat(3,1fr)}}
-.eq-card{background:#fff;border:2px solid #D4DCE8;border-radius:12px;padding:14px 12px;cursor:default}
-.eq-card.status-available{border-color:#86EFAC}
-.eq-card.status-in_use{border-color:#93C5FD}
-.eq-card.status-pending_approval{border-color:#FDE68A}
-.eq-card.status-damaged,.eq-card.status-repair{border-color:#FCA5A5}
-.eq-card.status-at_central,.eq-card.status-pending_sterilization{border-color:#67E8F9}
-.eq-name{font-size:13px;font-weight:800;color:#1A2B45;margin-bottom:6px}
-.eq-units{display:flex;flex-wrap:wrap;gap:4px}
-.unit-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0}
-.unit-dot.available{background:#22C55E}
-.unit-dot.in_use{background:#3B82F6}
-.unit-dot.pending_approval{background:#EAB308}
-.unit-dot.pending_admin_return{background:#A855F7}
-.unit-dot.pending_sterilization{background:#06B6D4}
-.unit-dot.at_central{background:#0EA5E9}
-.unit-dot.damaged,.unit-dot.repair{background:#EF4444}
-.unit-dot.disposed,.unit-dot.lost{background:#9CA3AF}
-.eq-stat{font-size:12px;color:#64748B;margin-top:6px}
+/* ── Equipment grid (public) ── */
+.eq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:500px){.eq-grid{grid-template-columns:repeat(3,1fr)}}
+.eq-card{background:#fff;border:2px solid #E0E7EF;border-radius:14px;overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.eq-card.avail{border-color:#86EFAC}
+.eq-card.busy{border-color:#93C5FD}
+.eq-card.other{border-color:#FCA5A5}
+.eq-img{width:100%;aspect-ratio:16/9;object-fit:cover;background:#F1F5F9;
+  display:flex;align-items:center;justify-content:center;font-size:32px}
+.eq-img img{width:100%;height:100%;object-fit:cover}
+.eq-body{padding:10px 10px 0}
+.eq-name{font-size:13px;font-weight:800;color:#1A2B45;margin-bottom:4px}
+.eq-stat{font-size:12px;color:#64748B;margin-bottom:8px}
 .eq-stat strong{color:#1A2B45}
+.eq-footer{display:flex;flex-direction:column;gap:5px;padding:8px 10px}
+.btn-eq{width:100%;padding:9px 8px;border:none;border-radius:9px;font-size:13px;
+  font-weight:800;font-family:'Sarabun',sans-serif;cursor:pointer}
+.btn-eq.borrow{background:#0D7377;color:#fff}
+.btn-eq.ret{background:#E8F4F4;color:#0D7377;border:1.5px solid #0D7377}
+.btn-eq.queue{background:#1A6DC8;color:#fff}
 
-/* ── Status badges ── */
-.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px}
+/* ── Badge ── */
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:9px}
 .badge.pending{background:#FEF3C7;color:#92400E}
 .badge.approved{background:#D1FAE5;color:#065F46}
 .badge.rejected,.badge.auto_rejected{background:#FEE2E2;color:#7F1D1D}
@@ -107,611 +114,983 @@ body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-heig
 .badge.in_use{background:#DBEAFE;color:#1E3A8A}
 .badge.overdue{background:#FEE2E2;color:#7F1D1D}
 .badge.ok{background:#D1FAE5;color:#065F46}
-.badge.at_central{background:#E0F2FE;color:#075985}
-.badge.pending_sterilization{background:#CFFAFE;color:#164E63}
+.badge.at_central,.badge.pending_sterilization{background:#CFFAFE;color:#164E63}
+.badge.pending_admin_return{background:#EDE9FE;color:#5B21B6}
+.badge.available{background:#D1FAE5;color:#065F46}
+.badge.warn{background:#FEF3C7;color:#92400E}
+.badge.damaged,.badge.repair{background:#FEE2E2;color:#7F1D1D}
+
+/* ── Info row ── */
+.ir{display:flex;gap:6px;padding:4px 0;border-bottom:1px solid #F1F5F9;font-size:13px}
+.ir:last-child{border:none}
+.ir-l{color:#94A3B8;min-width:85px;flex-shrink:0;font-weight:600}
+.ir-v{color:#1A2B45;font-weight:500;flex:1;word-break:break-all}
+
+/* ── Action buttons (admin) ── */
+.btn{padding:10px 16px;border:none;border-radius:10px;font-size:14px;font-weight:800;
+  font-family:'Sarabun',sans-serif;cursor:pointer;transition:.15s}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:#0D7377;color:#fff}
+.btn.danger{background:#B91C1C;color:#fff}
+.btn.secondary{background:#F1F5F9;color:#374151}
+.btn.blue{background:#1A6DC8;color:#fff}
+.btn-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn-full{width:100%;padding:13px;border-radius:11px;font-size:15px}
+
+/* ── Timer ── */
+.timer{font-size:12px;font-weight:800;padding:3px 9px;border-radius:10px;white-space:nowrap}
+.timer.ok{background:#D1FAE5;color:#065F46}
+.timer.warn{background:#FEF3C7;color:#92400E}
+.timer.urgent{background:#FEE2E2;color:#B91C1C}
 
 /* ── Table ── */
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:440px}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid #E0E7EF}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px}
 th{background:#0D7377;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:700}
 td{padding:9px 12px;border-bottom:1px solid #F1F5F9;vertical-align:top}
-tr:last-child td{border-bottom:none}
+tr:last-child td{border:none}
 tr:nth-child(even) td{background:#F8FAFC}
-
-/* ── Timeline (sterilization pipeline) ── */
-.pipeline-item{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
-.pipeline-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;font-size:16px;flex-shrink:0}
-.pipeline-dot.sent{background:#FEF3C7}
-.pipeline-dot.received{background:#CFFAFE}
-.pipeline-dot.returned{background:#DBEAFE}
-.pipeline-dot.ready{background:#D1FAE5}
-.pipeline-body{flex:1}
-.pipeline-title{font-size:14px;font-weight:800;color:#1A2B45}
-.pipeline-sub{font-size:12px;color:#64748B;line-height:1.7}
-
-/* ── Chart container ── */
-.chart-wrap{background:#fff;border-radius:12px;border:1px solid #D4DCE8;
-  padding:16px;margin-bottom:14px}
-.chart-wrap canvas{max-height:200px}
-
-/* ── Auth states ── */
-#authLoading{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:60vh;gap:12px;color:#64748B;text-align:center;padding:20px}
-#authError{display:none;flex-direction:column;align-items:center;justify-content:center;
-  min-height:60vh;gap:12px;color:#B91C1C;text-align:center;padding:20px}
-.spinner{width:36px;height:36px;border:3px solid #D4DCE8;border-top-color:#0D7377;
-  border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spinner-sm{width:18px;height:18px;border:2.5px solid #D4DCE8;border-top-color:#0D7377;
-  border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-.loading-inline{display:flex;align-items:center;gap:8px;color:#64748B;font-size:14px;padding:20px 0}
 
 /* ── Date filter ── */
 .date-filter{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-.date-filter input{flex:1;min-width:120px;padding:8px 10px;border:2px solid #D4DCE8;
+.date-filter input{flex:1;min-width:110px;padding:8px 10px;border:2px solid #D4DCE8;
   border-radius:8px;font-size:13px;font-family:'Sarabun',sans-serif}
 .date-filter input:focus{border-color:#0D7377;outline:none}
-.date-filter button{padding:8px 14px;border:none;border-radius:8px;background:#0D7377;
-  color:#fff;font-size:13px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer}
-
-/* ── Legend ── */
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:#374151}
-.legend-dot{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.date-filter .btn{padding:8px 14px}
 
 /* ── Empty state ── */
-.empty-state{text-align:center;padding:30px;color:#94A3B8}
-.empty-state .icon{font-size:36px;margin-bottom:8px}
+.empty{text-align:center;padding:30px 16px;color:#94A3B8}
+.empty .icon{font-size:36px;margin-bottom:8px}
 
-/* ── Back button ── */
-.btn-back{background:none;border:none;color:#0D7377;font-size:14px;font-weight:700;
-  cursor:pointer;padding:0;display:flex;align-items:center;gap:4px;margin-bottom:14px}
+/* ── Pipeline steps ── */
+.step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.step-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:16px;flex-shrink:0}
+.step-dot.s1{background:#FEF3C7}
+.step-dot.s2{background:#CFFAFE}
+.step-dot.s3{background:#DBEAFE}
+.step-body{flex:1}
+.step-title{font-size:14px;font-weight:800;color:#1A2B45}
+.step-sub{font-size:12px;color:#64748B;line-height:1.7}
+
+/* ── Chart ── */
+.chart-wrap{background:#fff;border-radius:14px;border:1px solid #E0E7EF;
+  padding:16px;margin-bottom:14px}
+
+/* ── Success overlay ── */
+.success-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;
+  align-items:center;justify-content:center;padding:20px}
+.success-ov.show{display:flex}
+.success-box{background:#fff;border-radius:20px;padding:32px 24px;text-align:center;max-width:340px;width:100%}
+
+/* ── Error box ── */
+.err-box{background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;
+  padding:11px 14px;color:#B91C1C;font-size:13px;margin-bottom:12px;display:none}
+.err-box.show{display:block}
+
+/* ── Condition select ── */
+.cond-warn{display:none;background:#FEF3C7;border-radius:8px;padding:9px 12px;
+  font-size:13px;color:#92400E;font-weight:600;margin-top:6px}
+.cond-warn.show{display:block}
+
+/* ── Detail panel (slide-up) ── */
+.panel-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300}
+.panel-bg.show{display:block}
+.panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;
+  padding:20px 16px 36px;z-index:301;max-height:90vh;overflow-y:auto;max-width:600px;margin:0 auto}
+.panel-title{font-size:17px;font-weight:800;margin-bottom:16px;display:flex;justify-content:space-between}
+.close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#64748B}
+
+select.fld,textarea.fld,input.fld{width:100%;padding:11px 13px;border:2px solid #D4DCE8;
+  border-radius:10px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1A2B45;background:#fff;
+  margin-top:4px;-webkit-appearance:none}
+select.fld:focus,textarea.fld:focus,input.fld:focus{border-color:#0D7377;outline:none}
+textarea.fld{resize:vertical;min-height:70px}
+label.lbl{font-size:14px;font-weight:700;color:#374151;display:block;margin-top:12px}
+
+/* ── Print/PDF ── */
+@media print{
+  .header,.tab-bar,.btn,.btn-row,.date-filter,#landing,.eq-footer{display:none!important}
+  .view{display:block!important;padding:0}
+  .card,.kpi,.tbl-wrap,.chart-wrap{box-shadow:none;border:1px solid #ccc}
+  body{background:#fff}
+}
 </style>
 </head>
 <body>
 
-<!-- ── Header (hidden until auth) ── -->
 <div class="header" id="mainHeader" style="display:none">
-  <div class="header-icon">📊</div>
+  <div class="header-logo">📊</div>
   <div class="header-info">
-    <div class="header-title">Chest Equipment Monitor</div>
-    <div class="header-sub" id="headerSub">หน่วยโรคระบบการหายใจ · MSKH</div>
+    <div class="header-title">Chest Equipment MSKH</div>
+    <div class="header-sub" id="headerSub">หน่วยโรคระบบการหายใจ</div>
   </div>
-  <div class="header-btns">
-    <button class="btn-icon" onclick="refreshData()" title="รีเฟรช">🔄</button>
-    <button class="btn-icon" onclick="showLanding()" title="เปลี่ยนบทบาท">🔀</button>
-  </div>
+  <button class="btn-hdr" onclick="refreshData()" style="margin-right:4px">🔄</button>
+  <button class="btn-hdr" onclick="showLanding()">🔀</button>
 </div>
 
-<!-- ── Auth loading / error ── -->
-<div id="authLoading"><div class="spinner"></div><div>กำลังเชื่อมต่อ...</div></div>
-<div id="authError">
-  <div style="font-size:48px">⚠️</div>
-  <div style="font-size:17px;font-weight:800" id="authErrMsg">เกิดข้อผิดพลาด</div>
-  <button class="btn-icon" style="background:#B91C1C;margin-top:12px" onclick="location.reload()">ลองใหม่</button>
-</div>
-
-<!-- ── Landing: role selector ── -->
+<div id="authBox"><div class="spinner"></div><div>กำลังเชื่อมต่อ...</div></div>
 <div id="landing" style="display:none">
-  <div class="hero-icon">📊</div>
-  <h1>Chest Equipment MSKH</h1>
-  <p>เลือกบทบาทที่ต้องการดู Dashboard</p>
-  <div class="role-grid" id="roleGrid">
-    <!-- populated by JS based on auth -->
-  </div>
+  <div class="land-hero">📊</div>
+  <div class="land-title">Chest Equipment MSKH</div>
+  <div class="land-sub">เลือกบทบาทที่ต้องการดู Dashboard</div>
+  <div class="role-grid" id="roleGrid"></div>
 </div>
-
-<!-- ── Tab bar (hidden until role selected) ── -->
 <div class="tab-bar" id="tabBar" style="display:none"></div>
 
-<!-- ═══ USER VIEW ════════════════════════════════════════════ -->
-<div class="page-content" id="view-user">
-  <div id="user-content"><div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div></div>
+<!-- ═══ PUBLIC VIEW ══════════════════════════════════ -->
+<div class="view" id="view-public">
+  <div id="pub-content"><div class="spin-box"><div class="spinner"></div>กำลังโหลด...</div></div>
 </div>
 
-<!-- ═══ ADMIN VIEW ═══════════════════════════════════════════ -->
-<div class="page-content" id="view-admin">
-  <div class="date-filter">
-    <input type="date" id="adminFrom">
-    <input type="date" id="adminTo">
-    <button onclick="loadAdminData()">กรอง</button>
+<!-- ═══ ADMIN VIEW ═══════════════════════════════════ -->
+<div class="view" id="view-admin">
+  <div id="adm-pending" class="adm-tab"></div>
+  <div id="adm-return"  class="adm-tab" style="display:none"></div>
+  <div id="adm-steril"  class="adm-tab" style="display:none"></div>
+  <div id="adm-rcv"     class="adm-tab" style="display:none"></div>
+  <div id="adm-status"  class="adm-tab" style="display:none"></div>
+  <div id="adm-report"  class="adm-tab" style="display:none">
+    <div class="sec">📊 ส่งออกรายงาน</div>
+    <div class="card"><div class="card-body">
+      <div class="date-filter">
+        <input type="date" id="rptFrom">
+        <input type="date" id="rptTo">
+        <button class="btn primary" onclick="loadReport()">ดูรายงาน</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="btn secondary" onclick="setRange(7)">7 วัน</button>
+        <button class="btn secondary" onclick="setRange(30)">30 วัน</button>
+        <button class="btn secondary" onclick="setRange(90)">3 เดือน</button>
+        <button class="btn secondary" onclick="setRange(365)">1 ปี</button>
+        <button class="btn primary" onclick="printReport()">🖨️ พิมพ์ / PDF</button>
+      </div>
+      <div id="rpt-content"><div class="empty"><div class="icon">📋</div>เลือกช่วงเวลาแล้วกด "ดูรายงาน"</div></div>
+    </div></div>
   </div>
-  <div id="admin-content"><div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div></div>
 </div>
 
-<!-- ═══ CENTRAL VIEW ═════════════════════════════════════════ -->
-<div class="page-content" id="view-central">
-  <div id="central-content"><div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div></div>
-</div>
-
-<!-- ═══ FULL VIEW (superadmin) ══════════════════════════════ -->
-<div class="page-content" id="view-full">
-  <div class="date-filter">
-    <input type="date" id="fullFrom">
-    <input type="date" id="fullTo">
-    <button onclick="loadFullData()">กรอง</button>
+<!-- ═══ CENTRAL VIEW ═════════════════════════════════ -->
+<div class="view" id="view-central">
+  <div id="cen-receive" class="cen-tab"></div>
+  <div id="cen-return"  class="cen-tab" style="display:none"></div>
+  <div id="cen-report"  class="cen-tab" style="display:none">
+    <div class="sec">📊 สรุปรายงานจ่ายกลาง</div>
+    <div id="cen-rpt-content"><div class="spin-box"><div class="spinner"></div>กำลังโหลด...</div></div>
   </div>
-  <div id="full-content"><div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div></div>
+</div>
+
+<!-- ═══ SUPERADMIN VIEW ══════════════════════════════ -->
+<div class="view" id="view-super">
+  <div id="sup-content"><div class="spin-box"><div class="spinner"></div>กำลังโหลด...</div></div>
+</div>
+
+<!-- ── Detail Panel (bottom sheet) ── -->
+<div class="panel-bg" id="panelBg" onclick="closePanel()"></div>
+<div class="panel" id="detailPanel" style="display:none">
+  <div class="panel-title"><span id="panelTitle">รายละเอียด</span><button class="close-btn" onclick="closePanel()">✕</button></div>
+  <div id="panelBody"></div>
+</div>
+
+<!-- ── Success overlay ── -->
+<div class="success-ov" id="successOv">
+  <div class="success-box">
+    <div style="font-size:56px;margin-bottom:12px" id="successIcon">✅</div>
+    <div style="font-size:20px;font-weight:800;color:#0D7377;margin-bottom:8px" id="successTitle">สำเร็จ</div>
+    <div style="font-size:14px;color:#64748B;margin-bottom:20px" id="successSub"></div>
+    <button class="btn primary btn-full" onclick="hideSuccess()">เรียบร้อย</button>
+  </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  CONFIG
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 const LIFF_ID    = '2009365358-XIHw2A0N';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrnODe6na-5NNGzIt9ae7-qu8X-wLxnp71vOtTihMY5s-Qxg-XvVEKU5w/exec';
+const FORM_URL   = 'https://authorart.github.io/equip-transaction/form.html';
 
 let userId    = '';
-let userAuth  = null; // { role, ward, name } or null
+let userAuth  = null;
 let curView   = '';
+let curAdmTab = 'pending';
+let curCenTab = 'receive';
+let admData   = null; // cached admin data
+let pubData   = null; // cached public data
+let cenData   = null; // cached central pipeline
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 //  INIT
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async function() {
-  // Set default dates
-  const today = new Date();
-  const d30   = new Date(Date.now()-30*86400000);
-  ['adminFrom','fullFrom'].forEach(function(id){ const el=document.getElementById(id); if(el) el.value=isoDate(d30); });
-  ['adminTo','fullTo'].forEach(function(id){ const el=document.getElementById(id); if(el) el.value=isoDate(today); });
+  const today = new Date(), d30 = new Date(Date.now()-30*86400000);
+  ['rptFrom'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=isoDate(d30); });
+  ['rptTo']  .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=isoDate(today); });
 
   try {
     await liff.init({ liffId: LIFF_ID });
     if (liff.isLoggedIn()) {
       const profile = await liff.getProfile();
       userId        = profile.userId;
-      // Auth check
-      const r    = await fetch(SCRIPT_URL+'?action=checkAuth&userId='+encodeURIComponent(userId),{redirect:'follow'});
-      const auth = await r.json();
-      userAuth   = auth.success ? auth : null;
+      const r  = await post({ source:'dashboard', action:'checkAuth', userId });
+      userAuth = r.success ? r : null;
     }
-  } catch(e) { /* LIFF not available — visitor mode */ }
+  } catch(e) { /* visitor mode */ }
 
-  document.getElementById('authLoading').style.display = 'none';
-  document.getElementById('mainHeader').style.display  = 'flex';
+  document.getElementById('authBox').style.display  = 'none';
+  document.getElementById('mainHeader').style.display = 'flex';
   showLanding();
 });
 
-// ═══════════════════════════════════════════════════════════════
-//  LANDING — ROLE SELECTOR
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+//  LANDING
+// ═══════════════════════════════════════════════════
 function showLanding() {
-  document.getElementById('tabBar').style.display     = 'none';
-  document.querySelectorAll('.page-content').forEach(function(p){ p.classList.remove('active'); });
-  document.getElementById('landing').style.display    = 'flex';
-
+  hide('tabBar'); hide('view-public'); hide('view-admin'); hide('view-central'); hide('view-super');
+  show('landing');
   const grid = document.getElementById('roleGrid');
   grid.innerHTML = '';
-
-  // Everyone sees User/Public view
-  grid.innerHTML += roleCard('👤','ดูสถานะอุปกรณ์','สำหรับทุกคน','user',false);
-
+  grid.innerHTML += roleCardHTML('👤','สถานะอุปกรณ์','ทุกคนดูได้','public',false);
   if (userAuth) {
-    if (userAuth.role === 'admin' || userAuth.role === 'superadmin') {
-      grid.innerHTML += roleCard('🔑','Admin','อนุมัติ / ติดตาม','admin',false);
-    }
-    if (userAuth.role === 'central') {
-      grid.innerHTML += roleCard('🏥','จ่ายกลาง','Sterilization pipeline','central',false);
-    }
-    if (userAuth.role === 'superadmin') {
-      grid.innerHTML += roleCard('🛡️','Superadmin','ภาพรวมทั้งหมด','full',true);
-    }
+    if (userAuth.role==='admin'||userAuth.role==='superadmin')
+      grid.innerHTML += roleCardHTML('🔑','Admin Panel','จัดการอุปกรณ์','admin',false);
+    if (userAuth.role==='central'||userAuth.role==='superadmin')
+      grid.innerHTML += roleCardHTML('🏥','จ่ายกลาง','Sterilization pipeline','central',false);
+    if (userAuth.role==='superadmin')
+      grid.innerHTML += roleCardHTML('🛡️','Superadmin','ภาพรวมทั้งหมด','super',true);
   }
-
   document.getElementById('headerSub').textContent = userAuth
-    ? (userAuth.name + ' · ' + (userAuth.role==='superadmin'?'Superadmin':userAuth.role==='admin'?'Admin '+userAuth.ward:'จ่ายกลาง'))
+    ? userAuth.name + ' · ' + (userAuth.role==='superadmin'?'Superadmin':userAuth.role==='admin'?'Admin '+userAuth.ward:'จ่ายกลาง')
     : 'หน่วยโรคระบบการหายใจ · MSKH';
 }
 
-function roleCard(icon, name, desc, role, fullWidth) {
-  return `<div class="role-card${fullWidth?' full-width':''}" onclick="selectRole('${role}')">
-    <div class="role-icon">${icon}</div>
-    <div class="role-name">${name}</div>
-    <div class="role-desc">${desc}</div>
+function roleCardHTML(icon,name,desc,role,full) {
+  return `<div class="role-card${full?' full':''}" onclick="selectRole('${role}')">
+    <div class="role-icon">${icon}</div><div class="role-name">${name}</div><div class="role-desc">${desc}</div>
   </div>`;
 }
 
 function selectRole(role) {
-  document.getElementById('landing').style.display = 'none';
   curView = role;
-  buildTabBar(role);
-  document.getElementById('tabBar').style.display = 'flex';
-  switchTab(role === 'full' ? 'overview' : role === 'admin' ? 'pending' : role);
+  hide('landing'); show('tabBar'); show('view-'+role);
+  buildTabs(role);
+  if (role==='public')  loadPublicView();
+  else if (role==='admin')   { curAdmTab='pending'; switchAdmTab('pending'); }
+  else if (role==='central') { curCenTab='receive'; switchCenTab('receive'); }
+  else if (role==='super')   loadSuperView();
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  TAB BAR
-// ═══════════════════════════════════════════════════════════════
-const TAB_CONFIG = {
-  user    : [['user',    '📦 สถานะอุปกรณ์']],
-  admin   : [['pending','⏳ รออนุมัติ'], ['loans','📋 กำลังยืม'], ['txn','📊 ประวัติ']],
-  central : [['central','🔬 Sterilization']],
-  full    : [['overview','📈 ภาพรวม'], ['approval','📋 Approval Log'], ['steril','🔬 Sterilization'], ['report','📊 รายงาน']],
+// ═══════════════════════════════════════════════════
+//  TAB BARS
+// ═══════════════════════════════════════════════════
+const TABS = {
+  public : [['pub','📦 สถานะอุปกรณ์']],
+  admin  : [['pending','⏳ รออนุมัติ'],['return','↩️ รอรับคืน'],['steril','🧪 รอส่งจ่ายกลาง'],['rcv','📦 รอรับจากจ่ายกลาง'],['status','🔧 สถานะอุปกรณ์'],['report','📊 รายงาน']],
+  central: [['receive','📥 รับจากวอร์ด'],['return','📤 ส่งคืนวอร์ด'],['report','📊 รายงาน']],
+  super  : [['sup','📈 ภาพรวม']],
 };
 
-function buildTabBar(role) {
-  const bar  = document.getElementById('tabBar');
-  bar.innerHTML = '';
-  (TAB_CONFIG[role]||[]).forEach(function([id, label]) {
-    bar.innerHTML += `<button class="tab-btn" id="tab-${id}" onclick="switchTab('${id}')">${label}</button>`;
-  });
+function buildTabs(role) {
+  const bar = document.getElementById('tabBar');
+  bar.innerHTML = (TABS[role]||[]).map(([id,lbl])=>
+    `<button class="tab-btn" id="tab-${id}" onclick="onTab('${id}','${role}')">${lbl}</button>`
+  ).join('');
+  // set first active
+  const first = (TABS[role]||[])[0];
+  if (first) document.getElementById('tab-'+first[0]).classList.add('active');
 }
 
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
-  document.querySelectorAll('.page-content').forEach(function(p){ p.classList.remove('active'); });
-  const tabEl = document.getElementById('tab-'+tab);
-  if (tabEl) tabEl.classList.add('active');
-
-  // map tab → view container
-  const viewMap = {
-    user:'user', pending:'admin', loans:'admin', txn:'admin',
-    central:'central', overview:'full', approval:'full', steril:'full', report:'full',
-  };
-  const viewId = 'view-'+(viewMap[tab]||tab);
-  const viewEl = document.getElementById(viewId);
-  if (viewEl) viewEl.classList.add('active');
-
-  loadTabData(tab);
+function onTab(id, role) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if (role==='admin')   switchAdmTab(id);
+  else if (role==='central') switchCenTab(id);
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  DATA LOADING
-// ═══════════════════════════════════════════════════════════════
-let cachedData = {};
-
-function refreshData() { cachedData = {}; loadTabData(getCurrentTab()); }
-
-function getCurrentTab() {
-  const active = document.querySelector('.tab-btn.active');
-  return active ? active.id.replace('tab-','') : '';
+function refreshData() {
+  admData=null; pubData=null; cenData=null;
+  if (curView==='public')  loadPublicView();
+  else if (curView==='admin')   switchAdmTab(curAdmTab);
+  else if (curView==='central') switchCenTab(curCenTab);
+  else if (curView==='super')   loadSuperView();
 }
 
-async function loadTabData(tab) {
-  if (tab==='user')            await loadUserView();
-  else if (tab==='pending' || tab==='loans' || tab==='txn') await loadAdminData();
-  else if (tab==='central')    await loadCentralData();
-  else if (tab==='overview' || tab==='approval' || tab==='steril' || tab==='report') await loadFullData();
-}
-
-async function apiFetch(action, params) {
-  // POST แทน GET เพื่อหลีกเลี่ยง CORS redirect ของ Apps Script
-  const payload = Object.assign({ source: 'dashboard', action, userId }, params || {});
+// ═══════════════════════════════════════════════════
+//  API
+// ═══════════════════════════════════════════════════
+async function post(payload) {
   const r = await fetch(SCRIPT_URL, {
-    method  : 'POST',
-    headers : { 'Content-Type': 'text/plain' },
-    redirect: 'follow',
-    body    : JSON.stringify(payload),
+    method:'POST', headers:{'Content-Type':'text/plain'},
+    redirect:'follow', body: JSON.stringify(payload),
   });
   return r.json();
 }
 
-// ── USER VIEW ─────────────────────────────────────────────────
-async function loadUserView() {
-  if (cachedData.public && Date.now()-cachedData.publicTs < 60000) { renderUserView(cachedData.public); return; }
-  document.getElementById('user-content').innerHTML = '<div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div>';
-  try {
-    const resp = await apiFetch('getDashboardPublic');
-    if (!resp.success) throw new Error(resp.error);
-    cachedData.public   = resp.data;
-    cachedData.publicTs = Date.now();
-    renderUserView(resp.data);
-  } catch(e) { document.getElementById('user-content').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>'+e.message+'</div>'; }
+async function get(action, params) {
+  return post(Object.assign({ source:'dashboard', action, userId }, params||{}));
 }
 
-function renderUserView(d) {
-  // Count totals
-  let available=0, inUse=0, other=0;
-  d.statusCount && Object.entries(d.statusCount).forEach(([s,n]) => {
-    if(s==='available') available+=n;
-    else if(s==='in_use') inUse+=n;
-    else other+=n;
-  });
-  const total = available+inUse+other;
+// ═══════════════════════════════════════════════════
+//  PUBLIC VIEW — equipment cards with actions
+// ═══════════════════════════════════════════════════
+async function loadPublicView() {
+  if (pubData) { renderPublicView(pubData); return; }
+  setContent('pub-content', spinHTML());
+  try {
+    const r = await get('getDashboardPublic');
+    if (!r.success) throw new Error(r.error);
+    pubData = r.data;
+    renderPublicView(pubData);
+  } catch(e) { setContent('pub-content', errHTML(e.message)); }
+}
 
-  let html = `<div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:#0D7377">${total}</div><div class="kpi-lbl">ชิ้นทั้งหมด</div></div>
-    <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${available}</div><div class="kpi-lbl">ว่างพร้อมใช้</div></div>
-    <div class="kpi-card"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${inUse}</div><div class="kpi-lbl">กำลังถูกยืม</div></div>
-    <div class="kpi-card"><div class="kpi-icon">⏳</div><div class="kpi-val" style="color:#EAB308">${d.queueData?d.queueData.length:0}</div><div class="kpi-lbl">คิวรออยู่</div></div>
+function renderPublicView(d) {
+  const sc = d.statusCount || {};
+  const total = Object.values(sc).reduce((a,b)=>a+b,0);
+  let html = `<div class="kpi-row">
+    <div class="kpi"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:#0D7377">${total}</div><div class="kpi-lbl">ชิ้นทั้งหมด</div></div>
+    <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${sc.available||0}</div><div class="kpi-lbl">ว่างพร้อมใช้</div></div>
+    <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${sc.in_use||0}</div><div class="kpi-lbl">กำลังถูกยืม</div></div>
+    <div class="kpi"><div class="kpi-icon">⏳</div><div class="kpi-val" style="color:#EAB308">${(d.queueData||[]).length}</div><div class="kpi-lbl">คิวรออยู่</div></div>
   </div>`;
 
-  // Legend
-  html += `<div class="legend">
-    <div class="legend-item"><div class="legend-dot available"></div>ว่าง</div>
-    <div class="legend-item"><div class="legend-dot in_use"></div>กำลังยืม</div>
-    <div class="legend-item"><div class="legend-dot pending_approval"></div>รออนุมัติ</div>
-    <div class="legend-item"><div class="legend-dot pending_admin_return"></div>รอรับคืน</div>
-    <div class="legend-item"><div class="legend-dot at_central"></div>จ่ายกลาง</div>
-    <div class="legend-item"><div class="legend-dot damaged"></div>ชำรุด/ซ่อม</div>
-  </div>`;
-
-  html += '<div class="section-title">สถานะอุปกรณ์</div><div class="eq-grid">';
+  html += '<div class="sec">สถานะอุปกรณ์</div><div class="eq-grid">';
   (d.equipment||[]).forEach(function(eq) {
     const avail  = eq.units.filter(u=>u.status==='available').length;
-    const total2 = eq.units.length;
-    const mainSt = avail>0 ? 'available' : eq.units.find(u=>u.status==='in_use') ? 'in_use' :
-                   eq.units.find(u=>u.status==='pending_approval') ? 'pending_approval' : 'damaged';
-    html += `<div class="eq-card status-${mainSt}">
-      <div class="eq-name">${eq.equipmentName}</div>
-      <div class="eq-units">${eq.units.map(u=>`<div class="unit-dot ${u.status}" title="${u.subId}: ${u.status}${u.borrowerName?' — '+u.borrowerName:''}"></div>`).join('')}</div>
-      <div class="eq-stat"><strong>${avail}</strong>/${total2} ว่าง · ${eq.homeWard}</div>
+    const inUse  = eq.units.filter(u=>u.status==='in_use');
+    const hasAvail = avail>0;
+    const cardCls = hasAvail?'avail':inUse.length>0?'busy':'other';
+    const imgHtml = eq.units[0] && eq.imageId
+      ? `<img src="https://drive.google.com/uc?export=view&id=${eq.imageId}" alt="${eq.equipmentName}" onerror="this.style.display='none'">`
+      : `<span>📦</span>`;
+
+    // buttons
+    let btns = '';
+    if (hasAvail) {
+      btns += `<button class="btn-eq borrow" onclick="window.open('${FORM_URL}?type=borrow&equipmentId=${encodeURIComponent(eq.equipmentId)}','_blank')">📋 ยืม</button>`;
+    }
+    if (inUse.length > 0) {
+      const retUri = inUse.length===1
+        ? `${FORM_URL}?type=return&equipmentId=${encodeURIComponent(eq.equipmentId)}&subId=${encodeURIComponent(inUse[0].subId)}`
+        : `${FORM_URL}?type=return&equipmentId=${encodeURIComponent(eq.equipmentId)}`;
+      btns += `<button class="btn-eq ret" onclick="window.open('${retUri}','_blank')">↩️ คืน</button>`;
+    }
+    if (!hasAvail) {
+      btns += `<button class="btn-eq queue" onclick="alert('กรุณาจองคิวผ่าน LINE OA ครับ')">⏳ จองคิว</button>`;
+    }
+
+    const statParts = [];
+    if (avail>0) statParts.push(`ว่าง ${avail}`);
+    if (inUse.length>0) statParts.push(`ยืม ${inUse.length}`);
+    const other = eq.units.length - avail - inUse.length;
+    if (other>0) statParts.push(`อื่นๆ ${other}`);
+
+    html += `<div class="eq-card ${cardCls}">
+      <div class="eq-img">${imgHtml}</div>
+      <div class="eq-body">
+        <div class="eq-name">${eq.equipmentName}</div>
+        <div class="eq-stat">${statParts.join(' · ')} · <strong>${eq.homeWard||''}</strong></div>
+      </div>
+      <div class="eq-footer">${btns}</div>
     </div>`;
   });
   html += '</div>';
 
-  // Queue
-  if (d.queueData && d.queueData.length>0) {
-    html += '<div class="section-title">คิวอุปกรณ์</div><div class="card"><div class="tbl-wrap"><table><tr><th>#</th><th>อุปกรณ์</th><th>ชื่อ</th><th>สถานะ</th></tr>';
-    d.queueData.forEach(function(q){
-      html += `<tr><td>${q.queuePos}</td><td>${q.equipmentId}</td><td>${q.name}</td><td><span class="badge ${q.status==='notified'?'in_use':'pending'}">${q.status==='notified'?'แจ้งแล้ว':'รออยู่'}</span></td></tr>`;
+  if ((d.queueData||[]).length>0) {
+    html += '<div class="sec">คิวรออยู่</div><div class="tbl-wrap"><table><tr><th>#</th><th>อุปกรณ์</th><th>ชื่อ</th><th>สถานะ</th></tr>';
+    d.queueData.forEach(q=>{
+      html += `<tr><td>${q.queuePos}</td><td>${q.equipmentId}</td><td>${q.name}</td>
+        <td><span class="badge ${q.status==='notified'?'in_use':'pending'}">${q.status==='notified'?'แจ้งแล้ว':'รออยู่'}</span></td></tr>`;
     });
-    html += '</table></div></div>';
+    html += '</table></div>';
   }
 
-  html += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:16px">อัปเดต: ${formatTime(d.lastUpdated)}</div>`;
-  document.getElementById('user-content').innerHTML = html;
+  html += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(d.lastUpdated)}</div>`;
+  setContent('pub-content', html);
 }
 
-// ── ADMIN VIEW ────────────────────────────────────────────────
-async function loadAdminData() {
-  const from = document.getElementById('adminFrom')&&document.getElementById('adminFrom').value;
-  const to   = document.getElementById('adminTo')&&document.getElementById('adminTo').value;
-  const cacheKey = 'admin'+from+to;
-  if (cachedData[cacheKey] && Date.now()-cachedData[cacheKey+'Ts']<60000) { renderAdminView(cachedData[cacheKey]); return; }
-  document.getElementById('admin-content').innerHTML = '<div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div>';
-  try {
-    const resp = await apiFetch('getDashboardAdmin', { fromDate:from||'', toDate:to||'' });
-    if (!resp.success) throw new Error(resp.error);
-    cachedData[cacheKey]       = resp.data;
-    cachedData[cacheKey+'Ts']  = Date.now();
-    renderAdminView(resp.data);
-  } catch(e) { document.getElementById('admin-content').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>'+e.message+'</div>'; }
+// ═══════════════════════════════════════════════════
+//  ADMIN VIEW
+// ═══════════════════════════════════════════════════
+function switchAdmTab(tab) {
+  curAdmTab = tab;
+  document.querySelectorAll('.adm-tab').forEach(el=>el.style.display='none');
+  const el = document.getElementById('adm-'+tab);
+  if (el) el.style.display = 'block';
+  if (tab==='report') return; // report loads manually
+  loadAdmTab(tab);
 }
 
-function renderAdminView(d) {
-  const tab = getCurrentTab();
-  let html = `<div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-icon">⏳</div><div class="kpi-val" style="color:#EAB308">${d.kpi.pendingCount}</div><div class="kpi-lbl">รออนุมัติ</div></div>
-    <div class="kpi-card"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${d.kpi.activeCount}</div><div class="kpi-lbl">กำลังยืม</div></div>
-    <div class="kpi-card"><div class="kpi-icon">🚨</div><div class="kpi-val" style="color:#EF4444">${d.kpi.overdueCount}</div><div class="kpi-lbl">เกินกำหนด</div></div>
-    <div class="kpi-card"><div class="kpi-icon">↩️</div><div class="kpi-val" style="color:#8B5CF6">${d.kpi.returnCount}</div><div class="kpi-lbl">รอรับคืน</div></div>
+async function loadAdmTab(tab) {
+  const el = document.getElementById('adm-'+tab);
+  if (!el) return;
+
+  if (tab==='status') {
+    // ดึงทุกสถานะ
+    el.innerHTML = spinHTML();
+    try {
+      const r = await post({ source:'admin', action:'getEquipmentByStatus', userId, status:'' });
+      renderAdmStatus(r.data||[], el);
+    } catch(e) { el.innerHTML = errHTML(e.message); }
+    return;
+  }
+
+  // รายการอื่นใช้ admData
+  if (!admData) {
+    el.innerHTML = spinHTML();
+    try {
+      const r = await post({ source:'dashboard', action:'getDashboardAdmin', userId, fromDate:'', toDate:'' });
+      if (!r.success) throw new Error(r.error);
+      admData = r.data;
+    } catch(e) { el.innerHTML = errHTML(e.message); return; }
+  }
+  renderAdmTab(tab, el, admData);
+}
+
+function renderAdmTab(tab, el, d) {
+  const kpi = d.kpi||{};
+  const kpiHtml = `<div class="kpi-row">
+    <div class="kpi"><div class="kpi-icon">⏳</div><div class="kpi-val" style="color:#EAB308">${kpi.pendingCount||0}</div><div class="kpi-lbl">รออนุมัติ</div></div>
+    <div class="kpi"><div class="kpi-icon">↩️</div><div class="kpi-val" style="color:#8B5CF6">${kpi.returnCount||0}</div><div class="kpi-lbl">รอรับคืน</div></div>
+    <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${kpi.activeCount||0}</div><div class="kpi-lbl">กำลังยืม</div></div>
+    <div class="kpi"><div class="kpi-icon">🚨</div><div class="kpi-val" style="color:#EF4444">${kpi.overdueCount||0}</div><div class="kpi-lbl">เกินกำหนด</div></div>
   </div>`;
 
-  if (tab==='pending' || tab==='admin') {
-    html += '<div class="section-title">คำร้องรออนุมัติ</div>';
-    if (d.pendingApprovals.length===0) { html += '<div class="empty-state"><div class="icon">✅</div>ไม่มีคำร้องรออนุมัติ</div>'; }
-    else {
-      html += '<div class="tbl-wrap"><table><tr><th>เวลา</th><th>อุปกรณ์</th><th>ผู้ขอ</th><th>Ward</th><th>เหลือ</th></tr>';
-      d.pendingApprovals.forEach(function(r){
-        const cls = r.minutesLeft<=30?'overdue':r.minutesLeft<=60?'pending':'ok';
-        html += `<tr><td>${r.timestamp}</td><td>${r.equipmentSubId}</td><td>${r.requesterName}</td><td>${r.requesterWard}</td><td><span class="badge ${cls}">${r.minutesLeft>0?r.minutesLeft+' นาที':'หมดเวลา'}</span></td></tr>`;
-      });
-      html += '</table></div>';
-    }
-    if (d.pendingReturn.length>0) {
-      html += '<div class="section-title">รอรับคืนจาก User</div><div class="tbl-wrap"><table><tr><th>อุปกรณ์</th><th>ผู้ยืม</th><th>Ward</th></tr>';
-      d.pendingReturn.forEach(function(r){ html += `<tr><td>${r.equipmentSubId}</td><td>${r.borrowerName}</td><td>${r.ward}</td></tr>`; });
-      html += '</table></div>';
-    }
-  }
+  let html = kpiHtml;
 
-  if (tab==='loans') {
-    html += '<div class="section-title">อุปกรณ์กำลังถูกยืม</div>';
-    if (d.activeLoans.length===0) { html += '<div class="empty-state"><div class="icon">✅</div>ไม่มีอุปกรณ์ที่ถูกยืมอยู่</div>'; }
-    else {
-      html += '<div class="tbl-wrap"><table><tr><th>อุปกรณ์</th><th>ผู้ยืม</th><th>Ward</th><th>คืนวันที่</th><th>สถานะ</th></tr>';
-      d.activeLoans.forEach(function(l){
-        const cls = l.isOverdue?'overdue':l.daysLeft<=1?'pending':'ok';
-        const lbl = l.isOverdue?'เกิน '+(Math.abs(l.daysLeft))+' วัน':l.daysLeft===null?'-':l.daysLeft===0?'วันนี้':l.daysLeft+' วัน';
-        html += `<tr><td>${l.equipmentSubId}<br><small style="color:#64748B">${l.homeWard}</small></td><td>${l.borrowerName}</td><td>${l.ward}</td><td>${l.expectedReturn}</td><td><span class="badge ${cls}">${lbl}</span></td></tr>`;
-      });
-      html += '</table></div>';
-    }
-  }
-
-  if (tab==='txn') {
-    html += '<div class="section-title">ประวัติธุรกรรม</div>';
-    if (d.transactions.length===0) { html += '<div class="empty-state"><div class="icon">📋</div>ไม่มีข้อมูลในช่วงเวลาที่เลือก</div>'; }
-    else {
-      html += '<div class="tbl-wrap"><table><tr><th>เวลา</th><th>ประเภท</th><th>อุปกรณ์</th><th>ผู้ยืม</th><th>Ward</th></tr>';
-      d.transactions.forEach(function(t){
-        html += `<tr><td style="white-space:nowrap">${t.timestamp}</td><td><span class="badge ${t.type==='borrow'?'in_use':'approved'}">${t.type==='borrow'?'ยืม':'คืน'}</span></td><td>${t.equipmentSubId}</td><td>${t.borrowerName}</td><td>${t.ward}</td></tr>`;
-      });
-      html += '</table></div>';
-    }
-  }
-
-  html += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:16px">อัปเดต: ${formatTime(d.lastUpdated)}</div>`;
-  document.getElementById('admin-content').innerHTML = html;
-}
-
-// ── CENTRAL VIEW ──────────────────────────────────────────────
-async function loadCentralData() {
-  if (cachedData.central && Date.now()-cachedData.centralTs<60000) { renderCentralView(cachedData.central); return; }
-  document.getElementById('central-content').innerHTML = '<div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div>';
-  try {
-    const resp = await apiFetch('getDashboardCentral');
-    if (!resp.success) throw new Error(resp.error);
-    cachedData.central   = resp.data;
-    cachedData.centralTs = Date.now();
-    renderCentralView(resp.data);
-  } catch(e) { document.getElementById('central-content').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>'+e.message+'</div>'; }
-}
-
-function renderCentralView(d) {
-  const stepIcon  = { sent_to_central:'📤', at_central:'🔬', returned_to_unit:'📦', ready:'✅' };
-  const stepLabel = { sent_to_central:'ส่งมาแล้ว รอรับ', at_central:'อยู่ที่จ่ายกลาง', returned_to_unit:'ส่งคืนแล้ว รอ Admin รับ', ready:'เสร็จสิ้น' };
-  const stepCls   = { sent_to_central:'sent', at_central:'received', returned_to_unit:'returned', ready:'ready' };
-
-  let html = '<div class="section-title">Pipeline ปัจจุบัน</div>';
-  if (!d.pipeline || d.pipeline.length===0) {
-    html += '<div class="empty-state"><div class="icon">✅</div>ไม่มีอุปกรณ์ในกระบวนการ</div>';
-  } else {
-    d.pipeline.forEach(function(item){
-      html += `<div class="card"><div class="card-hd">
-        <div><div class="card-title">📦 ${item.equipmentSubId} — ${item.equipmentName}</div>
-        <div style="font-size:12px;color:#64748B">🆔 ${item.sterilId}</div></div>
-        <span class="badge ${item.status==='at_central'?'at_central':'pending_sterilization'}">${stepLabel[item.status]||item.status}</span>
-      </div><div class="card-body">
-        <div class="pipeline-item">
-          <div class="pipeline-dot sent">${stepIcon.sent_to_central}</div>
-          <div class="pipeline-body">
-            <div class="pipeline-title">ส่งออกจาก Ward</div>
-            <div class="pipeline-sub">โดย: ${item.sentBy||'-'} · ${item.sentTime||'-'}</div>
+  if (tab==='pending') {
+    html += '<div class="sec">คำร้องรออนุมัติ</div>';
+    if (!(d.pendingApprovals||[]).length) { html += emptyHTML('✅','ไม่มีคำร้องรออนุมัติ'); }
+    else d.pendingApprovals.forEach(r=>{
+      const left=r.minutesLeft||0, cls=left<=30?'urgent':left<=60?'warn':'ok';
+      html += `<div class="card">
+        <div class="card-hd">
+          <div><div class="card-title">📦 ${r.equipmentSubId} — ${r.equipmentName}</div>
+          <div style="font-size:11px;color:#64748B">${r.requestId} · ${r.timestamp}</div></div>
+          <span class="timer ${cls}">${left>0?left+' นาที':'หมดเวลา'}</span>
+        </div>
+        <div class="card-body">
+          <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${r.homeWard}</span></div>
+          <div class="ir"><span class="ir-l">👤 ผู้ขอ</span><span class="ir-v">${r.requesterName}</span></div>
+          <div class="ir"><span class="ir-l">🏢 Ward ผู้ขอ</span><span class="ir-v">${r.requesterWard}</span></div>
+          <div class="ir"><span class="ir-l">📋 วัตถุประสงค์</span><span class="ir-v">${r.purpose||'-'}</span></div>
+          <div class="ir"><span class="ir-l">📅 คืนวันที่</span><span class="ir-v">${r.returnDate||'-'}</span></div>
+          <div class="ir"><span class="ir-l">🔍 สภาพก่อนยืม</span><span class="ir-v">${r.conditionBefore||'-'}</span></div>
+          <div class="btn-row">
+            <button class="btn primary" onclick="doApprove('${r.requestId}')">✅ อนุมัติ</button>
+            <button class="btn danger"  onclick="doReject('${r.requestId}','${r.equipmentSubId}')">❌ ปฏิเสธ</button>
           </div>
         </div>
-        ${item.centralReceivedBy?`<div class="pipeline-item">
-          <div class="pipeline-dot received">${stepIcon.at_central}</div>
-          <div class="pipeline-body">
-            <div class="pipeline-title">จ่ายกลางรับแล้ว</div>
-            <div class="pipeline-sub">โดย: ${item.centralReceivedBy} · ${item.centralReceivedTime}</div>
-          </div>
-        </div>`:''}
-        ${item.centralReturnedBy?`<div class="pipeline-item">
-          <div class="pipeline-dot returned">${stepIcon.returned_to_unit}</div>
-          <div class="pipeline-body">
-            <div class="pipeline-title">จ่ายกลางส่งคืนแล้ว</div>
-            <div class="pipeline-sub">โดย: ${item.centralReturnedBy} · ${item.centralReturnTime}</div>
-          </div>
-        </div>`:''}
-      </div></div>`;
+      </div>`;
     });
   }
 
-  if (d.history && d.history.length>0) {
-    html += '<div class="section-title">ประวัติล่าสุด (20 รายการ)</div><div class="tbl-wrap"><table><tr><th>อุปกรณ์</th><th>ส่งออก</th><th>รับกลับ</th><th>สภาพ</th></tr>';
-    d.history.forEach(function(item){
-      html += `<tr><td>${item.equipmentSubId}<br><small style="color:#64748B">${item.equipmentName}</small></td><td>${item.sentTime}</td><td>${item.unitReceivedTime||'-'}</td><td>${item.finalCondition||'-'}</td></tr>`;
+  if (tab==='return') {
+    html += '<div class="sec">รอรับคืนจาก User</div>';
+    if (!(d.pendingReturn||[]).length) { html += emptyHTML('📥','ไม่มีอุปกรณ์รอรับคืน'); }
+    else d.pendingReturn.forEach(r=>{
+      html += `<div class="card" style="cursor:pointer" onclick="openReturnPanel('${r.equipmentSubId}','${r.equipmentName}','${r.borrowerName}','${r.ward}')">
+        <div class="card-hd">
+          <div class="card-title">📦 ${r.equipmentSubId} — ${r.equipmentName}</div>
+          <span class="badge pending_admin_return">รอรับคืน</span>
+        </div>
+        <div class="card-body">
+          <div class="ir"><span class="ir-l">👤 ผู้ยืม</span><span class="ir-v">${r.borrowerName}</span></div>
+          <div class="ir"><span class="ir-l">🏢 Ward</span><span class="ir-v">${r.ward}</span></div>
+          <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">แตะเพื่อรับคืน →</div>
+        </div>
+      </div>`;
     });
-    html += '</table></div>';
-  }
-
-  html += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:16px">อัปเดต: ${formatTime(d.lastUpdated)}</div>`;
-  document.getElementById('central-content').innerHTML = html;
-}
-
-// ── FULL VIEW (superadmin) ────────────────────────────────────
-let chartInstances = {};
-async function loadFullData() {
-  const from = document.getElementById('fullFrom')&&document.getElementById('fullFrom').value;
-  const to   = document.getElementById('fullTo')&&document.getElementById('fullTo').value;
-  const cacheKey = 'full'+from+to;
-  if (cachedData[cacheKey] && Date.now()-cachedData[cacheKey+'Ts']<60000) { renderFullView(cachedData[cacheKey]); return; }
-  document.getElementById('full-content').innerHTML = '<div class="loading-inline"><div class="spinner-sm"></div>กำลังโหลด...</div>';
-  try {
-    const resp = await apiFetch('getDashboardFull', { fromDate:from||'', toDate:to||'' });
-    if (!resp.success) throw new Error(resp.error);
-    cachedData[cacheKey]       = resp.data;
-    cachedData[cacheKey+'Ts']  = Date.now();
-    renderFullView(resp.data);
-  } catch(e) { document.getElementById('full-content').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>'+e.message+'</div>'; }
-}
-
-function renderFullView(d) {
-  const tab = getCurrentTab();
-
-  if (tab==='overview') {
-    const sc = d.statusSummary||{};
-    const total = d.totalUnits||0;
-    let html = `<div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:#0D7377">${total}</div><div class="kpi-lbl">ชิ้นทั้งหมด</div></div>
-      <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${sc.available||0}</div><div class="kpi-lbl">ว่าง</div></div>
-      <div class="kpi-card"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${sc.in_use||0}</div><div class="kpi-lbl">กำลังยืม</div></div>
-      <div class="kpi-card"><div class="kpi-icon">📈</div><div class="kpi-val" style="color:#8B5CF6">${d.utilRate||0}%</div><div class="kpi-lbl">Utilization</div></div>
-    </div>`;
-
-    // Approval stats
-    const as = d.aprStats||{};
-    html += `<div class="section-title">สถิติการอนุมัติ (ช่วงที่เลือก)</div><div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-icon">⏳</div><div class="kpi-val" style="color:#EAB308">${as.pending||0}</div><div class="kpi-lbl">Pending</div></div>
-      <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${as.approved||0}</div><div class="kpi-lbl">Approved</div></div>
-      <div class="kpi-card"><div class="kpi-icon">❌</div><div class="kpi-val" style="color:#EF4444">${(as.rejected||0)+(as.auto_rejected||0)}</div><div class="kpi-lbl">Rejected</div></div>
-      <div class="kpi-card"><div class="kpi-icon">🚫</div><div class="kpi-val" style="color:#64748B">${as.cancelled||0}</div><div class="kpi-lbl">Cancelled</div></div>
-    </div>`;
-
-    // Ward summary
-    html += '<div class="section-title">สถิติแยก Ward</div><div class="tbl-wrap"><table><tr><th>Ward</th><th>ทั้งหมด</th><th>ว่าง</th><th>ยืม</th><th>อื่นๆ</th><th>Util%</th></tr>';
-    Object.entries(d.wardSummary||{}).forEach(function([ward,ws]){
-      const util = ws.total>0 ? Math.round(ws.inUse/ws.total*100) : 0;
-      html += `<tr><td>${ward}</td><td>${ws.total}</td><td>${ws.available}</td><td>${ws.inUse}</td><td>${ws.other}</td><td>${util}%</td></tr>`;
-    });
-    html += '</table></div>';
-
-    // Daily chart
-    if (d.dailyChart && d.dailyChart.length>0) {
-      html += '<div class="section-title">กราฟยืม/คืนรายวัน</div><div class="chart-wrap"><canvas id="dailyChart"></canvas></div>';
-    }
-
-    html += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:12px">อัปเดต: ${formatTime(d.lastUpdated)}</div>`;
-    document.getElementById('full-content').innerHTML = html;
-
-    // Render chart after DOM update
-    if (d.dailyChart && d.dailyChart.length>0) {
-      setTimeout(function(){
-        const ctx = document.getElementById('dailyChart');
-        if (!ctx) return;
-        if (chartInstances.daily) chartInstances.daily.destroy();
-        chartInstances.daily = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: d.dailyChart.map(function(r){ return r.date.slice(5); }),
-            datasets: [
-              { label:'ยืม', data: d.dailyChart.map(function(r){ return r.borrow; }), backgroundColor:'#3B82F6', borderRadius:3 },
-              { label:'คืน', data: d.dailyChart.map(function(r){ return r.return; }), backgroundColor:'#22C55E', borderRadius:3 },
-            ],
-          },
-          options: { responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1 } } } },
-        });
-      }, 100);
-    }
-  }
-
-  if (tab==='approval') {
-    let html = '<div class="section-title">Approval Log ล่าสุด</div>';
-    if (!d.aprRecent || d.aprRecent.length===0) { html += '<div class="empty-state"><div class="icon">📋</div>ไม่มีข้อมูล</div>'; }
-    else {
-      html += '<div class="tbl-wrap"><table><tr><th>เวลา</th><th>Request ID</th><th>อุปกรณ์</th><th>ผู้ขอ</th><th>Ward</th><th>สถานะ</th><th>Admin</th></tr>';
-      d.aprRecent.forEach(function(r){
-        html += `<tr><td style="white-space:nowrap">${r.timestamp}</td><td style="font-size:11px">${r.requestId}</td><td>${r.equipmentSubId}</td><td>${r.requesterName}</td><td>${r.requesterWard}</td><td><span class="badge ${r.status}">${r.status}</span></td><td>${r.adminName||'-'}</td></tr>`;
-      });
-      html += '</table></div>';
-    }
-    document.getElementById('full-content').innerHTML = html;
   }
 
   if (tab==='steril') {
-    // Reuse central view data but call getDashboardPublic for sterilization summary
-    document.getElementById('full-content').innerHTML = '<div class="empty-state"><div class="icon">🔬</div>ดูที่แท็บ "จ่ายกลาง" ในการ login ด้วย role central</div>';
+    html += '<div class="sec">รอส่งไปจ่ายกลาง</div>';
+    // ดึง pending_sterilization
+    el.innerHTML = spinHTML();
+    post({ source:'admin', action:'getEquipmentByStatus', userId, status:'pending_sterilization' }).then(r=>{
+      let h = kpiHtml + '<div class="sec">รอส่งไปจ่ายกลาง</div>';
+      if (!(r.data||[]).length) { h += emptyHTML('🧪','ไม่มีอุปกรณ์รอส่งจ่ายกลาง'); }
+      else r.data.forEach(eq=>{
+        h += `<div class="card" style="cursor:pointer" onclick="openSendCentralPanel('${eq.equipmentSubId}','${eq.equipmentName}','${eq.homeWard}')">
+          <div class="card-hd">
+            <div class="card-title">🧪 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+            <span class="badge at_central">รอส่ง</span>
+          </div>
+          <div class="card-body">
+            <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${eq.homeWard}</span></div>
+            <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:8px">แตะเพื่อส่งจ่ายกลาง →</div>
+          </div>
+        </div>`;
+      });
+      el.innerHTML = h;
+    });
+    return;
   }
 
-  if (tab==='report') {
-    // Queue summary
-    let html = '<div class="section-title">คิวรออยู่แยกอุปกรณ์</div>';
-    const qs = d.queueSummary||{};
-    if (Object.keys(qs).length===0) { html += '<div class="empty-state"><div class="icon">✅</div>ไม่มีคิว</div>'; }
+  if (tab==='rcv') {
+    el.innerHTML = spinHTML();
+    post({ source:'admin', action:'getEquipmentByStatus', userId, status:'at_central' }).then(r=>{
+      let h = kpiHtml + '<div class="sec">รอรับจากจ่ายกลาง</div>';
+      if (!(r.data||[]).length) { h += emptyHTML('📦','ไม่มีอุปกรณ์รอรับจากจ่ายกลาง'); }
+      else r.data.forEach(eq=>{
+        h += `<div class="card" style="cursor:pointer" onclick="openReceiveCentralPanel('${eq.equipmentSubId}','${eq.equipmentName}','${eq.homeWard}')">
+          <div class="card-hd">
+            <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+            <span class="badge at_central">อยู่จ่ายกลาง</span>
+          </div>
+          <div class="card-body">
+            <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${eq.homeWard}</span></div>
+            <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">แตะเพื่อรับคืนจากจ่ายกลาง →</div>
+          </div>
+        </div>`;
+      });
+      el.innerHTML = h;
+    });
+    return;
+  }
+
+  el.innerHTML = html;
+}
+
+function renderAdmStatus(items, el) {
+  const statusLabel = {
+    available:'พร้อมใช้', pending_approval:'รออนุมัติ', in_use:'กำลังยืม',
+    pending_admin_return:'รอรับคืน', pending_sterilization:'รอส่งจ่าย',
+    at_central:'จ่ายกลาง', damaged:'ชำรุด', repair:'ส่งซ่อม', disposed:'จำหน่าย', lost:'สูญหาย',
+  };
+  let h = '<div class="sec">สถานะอุปกรณ์ทั้งหมด</div><div class="tbl-wrap"><table><tr><th>SubID</th><th>ชื่อ</th><th>Ward ดูแล</th><th>สถานะ</th><th>จัดการ</th></tr>';
+  items.forEach(eq=>{
+    const sl = statusLabel[eq.status]||eq.status;
+    const canManage = ['available','damaged','repair'].includes(eq.status);
+    h += `<tr><td><strong>${eq.equipmentSubId}</strong></td><td>${eq.equipmentName}</td>
+      <td>${eq.homeWard}</td>
+      <td><span class="badge ${eq.status}">${sl}</span></td>
+      <td>${canManage?`<button class="btn secondary" style="padding:5px 10px;font-size:12px" onclick="openStatusPanel('${eq.equipmentSubId}','${eq.equipmentName}','${eq.status}')">แก้ไข</button>`:'-'}</td>
+    </tr>`;
+  });
+  h += '</table></div>';
+  el.innerHTML = h;
+}
+
+// ═══════════════════════════════════════════════════
+//  ADMIN PANELS (bottom sheet)
+// ═══════════════════════════════════════════════════
+function openReturnPanel(subId, name, borrower, ward) {
+  showPanel('📥 รับคืน — '+subId, `
+    <div class="card-body" style="padding:0">
+      <div class="ir"><span class="ir-l">📦 อุปกรณ์</span><span class="ir-v">${subId} — ${name}</span></div>
+      <div class="ir"><span class="ir-l">👤 ผู้ยืม</span><span class="ir-v">${borrower}</span></div>
+      <div class="ir"><span class="ir-l">🏢 Ward</span><span class="ir-v">${ward}</span></div>
+    </div>
+    <label class="lbl">ประเมินสภาพ <span style="color:#B91C1C">*</span></label>
+    <select class="fld" id="p-cond" onchange="checkCond()">
+      <option value="">— เลือก —</option>
+      <option value="สภาพพร้อมใช้งาน (Ready for use)">พร้อมใช้งาน</option>
+      <option value="ชำรุดเล็กน้อย (Minor damage)">ชำรุดเล็กน้อย</option>
+      <option value="ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)">ชำรุดมาก</option>
+    </select>
+    <div class="cond-warn" id="p-cond-warn">⚠️ สภาพชำรุดมาก — จะระงับการใช้งานทันที</div>
+    <label class="lbl">หมายเหตุ</label>
+    <textarea class="fld" id="p-notes" placeholder="รายละเอียด..."></textarea>
+    <div class="err-box" id="p-err"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn primary btn-full" id="p-submit" onclick="submitReturn('${subId}')">📥 ยืนยันรับคืน</button>
+    </div>
+  `);
+}
+
+function openSendCentralPanel(subId, name, homeWard) {
+  showPanel('📤 ส่งจ่ายกลาง — '+subId, `
+    <div class="ir"><span class="ir-l">📦 อุปกรณ์</span><span class="ir-v">${subId} — ${name}</span></div>
+    <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${homeWard}</span></div>
+    <label class="lbl">หมายเหตุ</label>
+    <textarea class="fld" id="p-notes" placeholder="ข้อมูลแจ้งจ่ายกลาง..."></textarea>
+    <div class="err-box" id="p-err"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn blue btn-full" id="p-submit" onclick="submitSendCentral('${subId}')">📤 ส่งจ่ายกลาง</button>
+    </div>
+  `);
+}
+
+function openReceiveCentralPanel(subId, name, homeWard) {
+  showPanel('📦 รับจากจ่ายกลาง — '+subId, `
+    <div class="ir"><span class="ir-l">📦 อุปกรณ์</span><span class="ir-v">${subId} — ${name}</span></div>
+    <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${homeWard}</span></div>
+    <label class="lbl">สภาพหลังฆ่าเชื้อ <span style="color:#B91C1C">*</span></label>
+    <select class="fld" id="p-cond" onchange="checkCond()">
+      <option value="">— เลือก —</option>
+      <option value="สภาพพร้อมใช้งาน (Ready for use)">พร้อมใช้งาน</option>
+      <option value="ชำรุดเล็กน้อย (Minor damage)">ชำรุดเล็กน้อย</option>
+      <option value="ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)">ชำรุดมาก</option>
+    </select>
+    <div class="cond-warn" id="p-cond-warn">⚠️ สภาพชำรุดมาก — จะระงับการใช้งานทันที</div>
+    <label class="lbl">หมายเหตุ</label>
+    <textarea class="fld" id="p-notes"></textarea>
+    <div class="err-box" id="p-err"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn primary btn-full" id="p-submit" onclick="submitReceiveCentral('${subId}')">📦 ยืนยันรับ</button>
+    </div>
+  `);
+}
+
+function openStatusPanel(subId, name, curStatus) {
+  showPanel('🔧 จัดการสถานะ — '+subId, `
+    <div class="ir"><span class="ir-l">📦 อุปกรณ์</span><span class="ir-v">${subId} — ${name}</span></div>
+    <div class="ir"><span class="ir-l">📋 ปัจจุบัน</span><span class="ir-v"><span class="badge ${curStatus}">${curStatus}</span></span></div>
+    <label class="lbl">สถานะใหม่ <span style="color:#B91C1C">*</span></label>
+    <select class="fld" id="p-status">
+      <option value="">— เลือก —</option>
+      <option value="available">✅ พร้อมใช้งาน</option>
+      <option value="damaged">🔴 ชำรุด</option>
+      <option value="repair">🔧 ส่งซ่อม</option>
+      <option value="disposed">🗑️ จำหน่าย (ถาวร)</option>
+      <option value="lost">❓ สูญหาย (ถาวร)</option>
+    </select>
+    <label class="lbl">หมายเหตุ <span style="color:#B91C1C">*</span></label>
+    <textarea class="fld" id="p-notes" placeholder="เหตุผล..."></textarea>
+    <div class="err-box" id="p-err"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn primary btn-full" id="p-submit" onclick="submitStatus('${subId}')">🔧 ยืนยัน</button>
+    </div>
+  `);
+}
+
+// ═══════════════════════════════════════════════════
+//  ADMIN ACTIONS
+// ═══════════════════════════════════════════════════
+async function doApprove(requestId) {
+  if (!confirm('อนุมัติคำร้อง '+requestId+'?')) return;
+  const r = await post({ source:'admin', action:'approve', userId, requestId, notes:'' });
+  if (r.success) { admData=null; showSuccess('✅','อนุมัติสำเร็จ','คำร้อง '+requestId); switchAdmTab('pending'); }
+  else alert('⚠️ '+r.error);
+}
+
+async function doReject(requestId, subId) {
+  const notes = prompt('เหตุผลที่ปฏิเสธ (ถ้ามี):') || '';
+  const r = await post({ source:'admin', action:'reject', userId, requestId, notes });
+  if (r.success) { admData=null; showSuccess('❌','ปฏิเสธแล้ว',subId+' · '+requestId); switchAdmTab('pending'); }
+  else alert('⚠️ '+r.error);
+}
+
+function checkCond() {
+  const v = (document.getElementById('p-cond')||{}).value||'';
+  const w = document.getElementById('p-cond-warn');
+  if (w) w.classList.toggle('show', v.includes('Major'));
+}
+
+async function submitReturn(subId) {
+  const cond  = (document.getElementById('p-cond')||{}).value||'';
+  const notes = (document.getElementById('p-notes')||{}).value||'';
+  if (!cond) { showErr('p-err','กรุณาประเมินสภาพ'); return; }
+  setBtnLoading('p-submit', true);
+  const r = await post({ source:'admin', action:'confirm_return', userId, equipmentSubId:subId, condition:cond, notes });
+  setBtnLoading('p-submit', false);
+  if (r.success) { admData=null; closePanel(); showSuccess('📥','รับคืนสำเร็จ',subId); switchAdmTab('return'); }
+  else showErr('p-err', r.error);
+}
+
+async function submitSendCentral(subId) {
+  const notes = (document.getElementById('p-notes')||{}).value||'';
+  setBtnLoading('p-submit', true);
+  const r = await post({ source:'admin', action:'send_central', userId, equipmentSubId:subId, notes });
+  setBtnLoading('p-submit', false);
+  if (r.success) { admData=null; closePanel(); showSuccess('📤','ส่งจ่ายกลางสำเร็จ',subId); switchAdmTab('steril'); }
+  else showErr('p-err', r.error);
+}
+
+async function submitReceiveCentral(subId) {
+  const cond  = (document.getElementById('p-cond')||{}).value||'';
+  const notes = (document.getElementById('p-notes')||{}).value||'';
+  if (!cond) { showErr('p-err','กรุณาประเมินสภาพ'); return; }
+  setBtnLoading('p-submit', true);
+  const r = await post({ source:'admin', action:'receive_central', userId, equipmentSubId:subId, condition:cond, notes });
+  setBtnLoading('p-submit', false);
+  if (r.success) { admData=null; closePanel(); showSuccess('📦','รับจากจ่ายกลางสำเร็จ',subId); switchAdmTab('rcv'); }
+  else showErr('p-err', r.error);
+}
+
+async function submitStatus(subId) {
+  const status = (document.getElementById('p-status')||{}).value||'';
+  const notes  = (document.getElementById('p-notes')||{}).value||'';
+  if (!status) { showErr('p-err','กรุณาเลือกสถานะ'); return; }
+  if (!notes)  { showErr('p-err','กรุณาระบุหมายเหตุ'); return; }
+  if (['disposed','lost'].includes(status) && !confirm('สถานะนี้เป็นการถาวร ยืนยันหรือไม่?')) return;
+  setBtnLoading('p-submit', true);
+  const r = await post({ source:'admin', action:'update_status', userId, equipmentSubId:subId, status, notes });
+  setBtnLoading('p-submit', false);
+  if (r.success) { closePanel(); showSuccess('🔧','อัปเดตสำเร็จ',subId+' → '+status); switchAdmTab('status'); }
+  else showErr('p-err', r.error);
+}
+
+// ═══════════════════════════════════════════════════
+//  ADMIN REPORT
+// ═══════════════════════════════════════════════════
+function setRange(days) {
+  const to = new Date(), from = new Date(Date.now()-days*86400000);
+  document.getElementById('rptFrom').value = isoDate(from);
+  document.getElementById('rptTo').value   = isoDate(to);
+}
+
+async function loadReport() {
+  const from = document.getElementById('rptFrom').value;
+  const to   = document.getElementById('rptTo').value;
+  setContent('rpt-content', spinHTML());
+  try {
+    const r = await post({ source:'dashboard', action:'getDashboardAdmin', userId, fromDate:from, toDate:to });
+    if (!r.success) throw new Error(r.error);
+    const d = r.data;
+    const txns = d.transactions||[];
+    let borrow=0, ret=0;
+    txns.forEach(t=>{ if(t.type==='borrow') borrow++; else ret++; });
+    let h = `<div class="kpi-row">
+      <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#0D7377">${txns.length}</div><div class="kpi-lbl">รายการทั้งหมด</div></div>
+      <div class="kpi"><div class="kpi-icon">📤</div><div class="kpi-val" style="color:#3B82F6">${borrow}</div><div class="kpi-lbl">ยืม</div></div>
+      <div class="kpi"><div class="kpi-icon">📥</div><div class="kpi-val" style="color:#22C55E">${ret}</div><div class="kpi-lbl">คืน</div></div>
+      <div class="kpi"><div class="kpi-icon">🚨</div><div class="kpi-val" style="color:#EF4444">${(d.kpi||{}).overdueCount||0}</div><div class="kpi-lbl">เกินกำหนด</div></div>
+    </div>`;
+    h += '<div class="sec">รายการธุรกรรม</div>';
+    if (!txns.length) { h += emptyHTML('📋','ไม่มีข้อมูลในช่วงที่เลือก'); }
     else {
-      html += '<div class="tbl-wrap"><table><tr><th>อุปกรณ์</th><th>จำนวนคิว</th></tr>';
-      Object.entries(qs).forEach(function([eq,n]){ html += `<tr><td>${eq}</td><td>${n}</td></tr>`; });
-      html += '</table></div>';
+      h += '<div class="tbl-wrap"><table><tr><th>วันที่</th><th>ประเภท</th><th>อุปกรณ์</th><th>ผู้ยืม</th><th>Ward</th><th>สภาพ</th></tr>';
+      txns.forEach(t=>{
+        h += `<tr><td style="white-space:nowrap">${t.timestamp}</td>
+          <td><span class="badge ${t.type==='borrow'?'in_use':'approved'}">${t.type==='borrow'?'ยืม':'คืน'}</span></td>
+          <td>${t.equipmentSubId}</td><td>${t.borrowerName}</td><td>${t.ward}</td><td>${t.condition||'-'}</td></tr>`;
+      });
+      h += '</table></div>';
     }
-    document.getElementById('full-content').innerHTML = html;
+    setContent('rpt-content', h);
+  } catch(e) { setContent('rpt-content', errHTML(e.message)); }
+}
+
+function printReport() { window.print(); }
+
+// ═══════════════════════════════════════════════════
+//  CENTRAL VIEW
+// ═══════════════════════════════════════════════════
+function switchCenTab(tab) {
+  curCenTab = tab;
+  document.querySelectorAll('.cen-tab').forEach(el=>el.style.display='none');
+  const el = document.getElementById('cen-'+tab);
+  if (el) el.style.display = 'block';
+  if (tab==='report') { loadCenReport(); return; }
+  loadCenTab(tab);
+}
+
+async function loadCenTab(tab) {
+  if (!cenData) {
+    const el = document.getElementById('cen-'+tab);
+    if (el) el.innerHTML = spinHTML();
+    try {
+      const r = await post({ source:'central', action:'getCentralPipeline', userId });
+      if (!r.success) throw new Error(r.error);
+      cenData = r.data;
+    } catch(e) {
+      const el2 = document.getElementById('cen-'+tab);
+      if (el2) el2.innerHTML = errHTML(e.message);
+      return;
+    }
+  }
+  renderCenTab(tab);
+}
+
+function renderCenTab(tab) {
+  const el  = document.getElementById('cen-'+tab);
+  if (!el || !cenData) return;
+
+  if (tab==='receive') {
+    const items = cenData.toReceive||[];
+    let h = '<div class="sec">รออุปกรณ์จากวอร์ด ('+items.length+')</div>';
+    if (!items.length) { h += emptyHTML('📭','ไม่มีอุปกรณ์รอรับ'); }
+    else items.forEach(eq=>{
+      const s = eq.steril||{};
+      h += `<div class="card" style="cursor:pointer" onclick="openCenReceivePanel('${eq.equipmentSubId}','${eq.equipmentName}','${eq.homeWard}')">
+        <div class="card-hd">
+          <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+          <span class="badge pending_sterilization">รอรับ</span>
+        </div>
+        <div class="card-body">
+          <div class="ir"><span class="ir-l">🏥 จากวอร์ด</span><span class="ir-v">${eq.homeWard}</span></div>
+          <div class="ir"><span class="ir-l">👤 ส่งโดย</span><span class="ir-v">${s.sentBy||'-'}</span></div>
+          <div class="ir"><span class="ir-l">⏰ เวลาส่ง</span><span class="ir-v">${s.sentTime||'-'}</span></div>
+          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:8px">แตะเพื่อยืนยันรับ →</div>
+        </div>
+      </div>`;
+    });
+    el.innerHTML = h;
+  }
+
+  if (tab==='return') {
+    const items = cenData.toReturn||[];
+    let h = '<div class="sec">รอส่งคืนวอร์ด ('+items.length+')</div>';
+    if (!items.length) { h += emptyHTML('📤','ไม่มีอุปกรณ์รอส่งคืน'); }
+    else items.forEach(eq=>{
+      const s = eq.steril||{};
+      h += `<div class="card" style="cursor:pointer" onclick="openCenReturnPanel('${eq.equipmentSubId}','${eq.equipmentName}','${eq.homeWard}')">
+        <div class="card-hd">
+          <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+          <span class="badge at_central">รับแล้ว รอส่งคืน</span>
+        </div>
+        <div class="card-body">
+          <div class="ir"><span class="ir-l">🏥 ส่งคืนที่</span><span class="ir-v">${eq.homeWard}</span></div>
+          <div class="ir"><span class="ir-l">👤 รับโดย</span><span class="ir-v">${s.centralReceivedBy||'-'}</span></div>
+          <div class="ir"><span class="ir-l">⏰ เวลารับ</span><span class="ir-v">${s.centralReceivedTime||'-'}</span></div>
+          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:8px">แตะเพื่อส่งคืน →</div>
+        </div>
+      </div>`;
+    });
+    el.innerHTML = h;
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  UTILITIES
-// ═══════════════════════════════════════════════════════════════
-function isoDate(d) {
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function openCenReceivePanel(subId, name, homeWard) {
+  showPanel('📥 รับอุปกรณ์ — '+subId, `
+    <div class="ir"><span class="ir-l">📦 อุปกรณ์</span><span class="ir-v">${subId} — ${name}</span></div>
+    <div class="ir"><span class="ir-l">🏥 จากวอร์ด</span><span class="ir-v">${homeWard}</span></div>
+    <label class="lbl">ชื่อผู้รับ</label>
+    <input type="text" class="fld" id="p-by" placeholder="ชื่อเจ้าหน้าที่จ่ายกลาง">
+    <label class="lbl">หมายเหตุ</label>
+    <textarea class="fld" id="p-notes"></textarea>
+    <div class="err-box" id="p-err"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn primary btn-full" id="p-submit" onclick="submitCenReceive('${subId}')">📥 ยืนยันรับ</button>
+    </div>
+  `);
 }
 
-function formatTime(iso) {
-  if (!iso) return '-';
-  try { return new Date(iso).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}); }
-  catch(e){ return iso; }
+function openCenReturnPanel(subId, name, homeWard) {
+  showPanel('📤 ส่งคืนวอร์ด — '+subId, `
+    <div class="ir"><span class="ir-l">📦 อุปกรณ์</span><span class="ir-v">${subId} — ${name}</span></div>
+    <div class="ir"><span class="ir-l">🏥 ส่งคืนที่</span><span class="ir-v">${homeWard}</span></div>
+    <label class="lbl">ชื่อผู้ส่งคืน</label>
+    <input type="text" class="fld" id="p-by" placeholder="ชื่อเจ้าหน้าที่จ่ายกลาง">
+    <label class="lbl">หมายเหตุ</label>
+    <textarea class="fld" id="p-notes" placeholder="รายละเอียดการฆ่าเชื้อ..."></textarea>
+    <div class="err-box" id="p-err"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn primary btn-full" id="p-submit" onclick="submitCenReturn('${subId}')">📤 ส่งคืน</button>
+    </div>
+  `);
 }
+
+async function submitCenReceive(subId) {
+  const receivedBy = (document.getElementById('p-by')||{}).value||'';
+  const notes      = (document.getElementById('p-notes')||{}).value||'';
+  setBtnLoading('p-submit', true);
+  const r = await post({ source:'central', action:'receive', userId, equipmentSubId:subId, receivedBy, notes });
+  setBtnLoading('p-submit', false);
+  if (r.success) { cenData=null; closePanel(); showSuccess('📥','รับอุปกรณ์สำเร็จ',subId); switchCenTab('receive'); }
+  else showErr('p-err', r.error);
+}
+
+async function submitCenReturn(subId) {
+  const returnedBy = (document.getElementById('p-by')||{}).value||'';
+  const notes      = (document.getElementById('p-notes')||{}).value||'';
+  setBtnLoading('p-submit', true);
+  const r = await post({ source:'central', action:'return', userId, equipmentSubId:subId, returnedBy, notes });
+  setBtnLoading('p-submit', false);
+  if (r.success) { cenData=null; closePanel(); showSuccess('📤','ส่งคืนสำเร็จ',subId); switchCenTab('return'); }
+  else showErr('p-err', r.error);
+}
+
+async function loadCenReport() {
+  const el = document.getElementById('cen-rpt-content');
+  if (!cenData) {
+    try {
+      const r = await post({ source:'central', action:'getCentralPipeline', userId });
+      if (!r.success) throw new Error(r.error);
+      cenData = r.data;
+    } catch(e) { el.innerHTML = errHTML(e.message); return; }
+  }
+  const history = cenData.history||[];
+  let h = `<div class="kpi-row">
+    <div class="kpi"><div class="kpi-icon">📥</div><div class="kpi-val" style="color:#1A6DC8">${(cenData.toReceive||[]).length}</div><div class="kpi-lbl">รอรับ</div></div>
+    <div class="kpi"><div class="kpi-icon">📤</div><div class="kpi-val" style="color:#0D7377">${(cenData.toReturn||[]).length}</div><div class="kpi-lbl">รอส่งคืน</div></div>
+    <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${history.length}</div><div class="kpi-lbl">เสร็จสิ้น</div></div>
+  </div>
+  <div class="sec">ประวัติล่าสุด</div>`;
+  if (!history.length) { h += emptyHTML('📋','ยังไม่มีประวัติ'); }
+  else {
+    h += '<div class="tbl-wrap"><table><tr><th>อุปกรณ์</th><th>วันส่ง</th><th>วันรับคืน</th><th>สภาพ</th></tr>';
+    history.forEach(item=>{
+      h += `<tr><td>${item.equipmentSubId}<br><small style="color:#64748B">${item.equipmentName}</small></td>
+        <td>${item.sentTime||'-'}</td><td>${item.unitReceivedTime||'-'}</td><td>${item.finalCondition||'-'}</td></tr>`;
+    });
+    h += '</table></div>';
+  }
+  el.innerHTML = h;
+}
+
+// ═══════════════════════════════════════════════════
+//  SUPERADMIN
+// ═══════════════════════════════════════════════════
+async function loadSuperView() {
+  setContent('sup-content', spinHTML());
+  try {
+    const r = await post({ source:'dashboard', action:'getDashboardFull', userId, fromDate:'', toDate:'' });
+    if (!r.success) throw new Error(r.error);
+    const d = r.data;
+    const sc = d.statusSummary||{};
+    let h = `<div class="kpi-row">
+      <div class="kpi"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:#0D7377">${d.totalUnits||0}</div><div class="kpi-lbl">ชิ้นทั้งหมด</div></div>
+      <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${sc.available||0}</div><div class="kpi-lbl">ว่าง</div></div>
+      <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${sc.in_use||0}</div><div class="kpi-lbl">กำลังยืม</div></div>
+      <div class="kpi"><div class="kpi-icon">📈</div><div class="kpi-val" style="color:#8B5CF6">${d.utilRate||0}%</div><div class="kpi-lbl">Utilization</div></div>
+    </div>`;
+    h += '<div class="sec">สถิติแยก Ward</div><div class="tbl-wrap"><table><tr><th>Ward</th><th>ทั้งหมด</th><th>ว่าง</th><th>ยืม</th><th>Util%</th></tr>';
+    Object.entries(d.wardSummary||{}).forEach(([ward,ws])=>{
+      const util = ws.total>0 ? Math.round(ws.inUse/ws.total*100) : 0;
+      h += `<tr><td>${ward}</td><td>${ws.total}</td><td>${ws.available}</td><td>${ws.inUse}</td><td>${util}%</td></tr>`;
+    });
+    h += '</table></div>';
+    setContent('sup-content', h);
+  } catch(e) { setContent('sup-content', errHTML(e.message)); }
+}
+
+// ═══════════════════════════════════════════════════
+//  PANEL HELPERS
+// ═══════════════════════════════════════════════════
+function showPanel(title, bodyHtml) {
+  document.getElementById('panelTitle').textContent = title;
+  document.getElementById('panelBody').innerHTML    = bodyHtml;
+  document.getElementById('detailPanel').style.display = 'block';
+  document.getElementById('panelBg').classList.add('show');
+}
+
+function closePanel() {
+  document.getElementById('detailPanel').style.display = 'none';
+  document.getElementById('panelBg').classList.remove('show');
+}
+
+function showSuccess(icon, title, sub) {
+  document.getElementById('successIcon').textContent  = icon;
+  document.getElementById('successTitle').textContent = title;
+  document.getElementById('successSub').textContent   = sub;
+  document.getElementById('successOv').classList.add('show');
+}
+
+function hideSuccess() { document.getElementById('successOv').classList.remove('show'); }
+
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent='⚠️ '+msg; el.classList.add('show'); }
+}
+
+function setBtnLoading(id, loading) {
+  const el = document.getElementById(id);
+  if (el) { el.disabled=loading; el.textContent=loading?'⏳ กำลังบันทึก...':el.textContent; }
+}
+
+// ═══════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════
+function show(id)  { const e=document.getElementById(id); if(e) e.style.display=''; }
+function hide(id)  { const e=document.getElementById(id); if(e) e.style.display='none'; }
+function setContent(id, html) { const e=document.getElementById(id); if(e) e.innerHTML=html; }
+function spinHTML() { return '<div class="spin-box"><div class="spinner"></div>กำลังโหลด...</div>'; }
+function errHTML(msg) { return `<div class="empty"><div class="icon">⚠️</div>${msg}</div>`; }
+function emptyHTML(icon, msg) { return `<div class="empty"><div class="icon">${icon}</div>${msg}</div>`; }
+function isoDate(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function fmtTime(iso) { try { return new Date(iso).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}); } catch(e){ return '-'; } }
 </script>
 </body>
 </html>
