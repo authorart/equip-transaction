@@ -460,13 +460,11 @@ function renderPublicView(d) {
     const inUse  = eq.units.filter(u=>u.status==='in_use');
     const hasAvail = avail>0;
     const cardCls = hasAvail?'avail':inUse.length>0?'busy':'other';
-    // Google Drive thumbnail URL (ไม่มีปัญหา CORS)
     const driveThumb = eq.imageId
       ? 'https://drive.google.com/thumbnail?id=' + eq.imageId + '&sz=w400'
       : '';
     const imgHtml = driveThumb
-      ? '<img src="' + driveThumb + '" alt="' + eq.equipmentName + '" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">' +
-        '<span style="display:none;font-size:32px;align-items:center;justify-content:center;width:100%;height:100%">📦</span>'
+      ? '<img src="' + driveThumb + '" alt="" style="width:100%;height:100%;object-fit:cover">'
       : '<span style="font-size:32px">📦</span>';
 
     // buttons
