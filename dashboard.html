@@ -444,6 +444,7 @@ async function loadPublicView() {
 }
 
 function renderPublicView(d) {
+  try {
   const sc = d.statusCount || {};
   const total = Object.values(sc).reduce((a,b)=>a+b,0);
   let html = `<div class="kpi-row">
@@ -506,6 +507,10 @@ function renderPublicView(d) {
 
   html += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(d.lastUpdated)}</div>`;
   setContent('pub-content', html);
+  } catch(renderErr) {
+    console.error('renderPublicView error:', renderErr);
+    setContent('pub-content', errHTML('Render error: ' + renderErr.message));
+  }
 }
 
 // ═══════════════════════════════════════════════════
@@ -1083,7 +1088,7 @@ function setBtnLoading(id, loading) {
 // ═══════════════════════════════════════════════════
 //  UTILS
 // ═══════════════════════════════════════════════════
-function show(id)  { const e=document.getElementById(id); if(e) e.style.display=''; }
+function show(id)  { const e=document.getElementById(id); if(!e) return; e.style.display = e.classList.contains('view') ? 'block' : ''; }
 function hide(id)  { const e=document.getElementById(id); if(e) e.style.display='none'; }
 function setContent(id, html) { const e=document.getElementById(id); if(e) e.innerHTML=html; }
 function spinHTML() { return '<div class="spin-box"><div class="spinner"></div>กำลังโหลด...</div>'; }
