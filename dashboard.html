@@ -459,9 +459,9 @@ function renderPublicView(d) {
     const inUse  = eq.units.filter(u=>u.status==='in_use');
     const hasAvail = avail>0;
     const cardCls = hasAvail?'avail':inUse.length>0?'busy':'other';
-    const imgHtml = eq.units[0] && eq.imageId
-      ? `<img src="https://drive.google.com/uc?export=view&id=${eq.imageId}" alt="${eq.equipmentName}" onerror="this.style.display='none'">`
-      : `<span>📦</span>`;
+    const imgHtml = eq.imageId
+      ? `<img src="https://drive.google.com/uc?export=view&id=${eq.imageId}" alt="${eq.equipmentName}" onerror="this.parentElement.innerHTML='<span style=\"font-size:32px\">📦</span>'">`
+      : `<span style="font-size:32px">📦</span>`;
 
     // buttons
     let btns = '';
