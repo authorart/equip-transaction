@@ -178,7 +178,8 @@ function back() {
 
 async function getPipe(force) {
   if (!force && pipe) return pipe;
-  const r = await fetch(SCRIPT_URL+'?action=getCentralStatus',{redirect:'follow'});
+  const r = await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+    body:JSON.stringify({source:'central',action:'getCentralPipeline'})});
   const d = await r.json();
   if (d.success) { pipe=d.data; return pipe; }
   throw new Error(d.error||'โหลดข้อมูลไม่ได้');
@@ -216,8 +217,8 @@ function selEq(el,subId,name,sentBy,sentTime) {
 
 async function loadDropdowns() {
   const [wr,cr]=await Promise.all([
-    fetch(SCRIPT_URL+'?action=getUsersByRole&role=worker',{redirect:'follow'}),
-    fetch(SCRIPT_URL+'?action=getUsersByRole&role=central',{redirect:'follow'}),
+    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:JSON.stringify({source:'central',action:'getUsersByRole',role:'worker'})}),
+    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:JSON.stringify({source:'central',action:'getUsersByRole',role:'central'})}),
   ]);
   const [wd,cd]=await Promise.all([wr.json(),cr.json()]);
   const ss=document.getElementById('senderSel');
