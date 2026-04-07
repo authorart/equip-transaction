@@ -1,0 +1,296 @@
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+.w{padding:0 0 24px}
+.rtabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.rtab{padding:8px 16px;border-radius:24px;font-size:13px;font-weight:500;border:1.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:.15s}
+.rtab:hover{border-color:#0D7377;color:#0D7377}
+.rtab.on{background:#0D7377;color:#fff;border-color:#0D7377}
+.view{display:none}.view.on{display:block}
+.banner{border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px}
+.bi{font-size:20px;flex-shrink:0;margin-top:2px}
+.bt{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.bs{font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+.steps{display:flex;flex-direction:column;gap:0}
+.srow{display:flex;gap:0;align-items:stretch}
+.slcol{display:flex;flex-direction:column;align-items:center;width:38px;flex-shrink:0}
+.sdot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;border:2px solid}
+.sline{flex:1;width:2px;margin:2px 0;min-height:16px}
+.scard{flex:1;border-radius:12px;border:1.5px solid;padding:13px 15px;margin-bottom:10px;margin-left:9px}
+.sn{font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.stitle{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:5px}
+.sbody{font-size:13px;color:var(--color-text-secondary);line-height:1.65}
+.show{margin-top:9px;padding:10px 12px;border-radius:8px;font-size:13px;line-height:1.65}
+.showlbl{font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.tip{margin-top:7px;padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.6;border-left:3px solid}
+.new-badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle;background:var(--color-background-warning);color:var(--color-text-warning)}
+.dm-box{margin-top:10px;border-radius:10px;border:1.5px dashed;padding:11px 13px;font-size:12px;line-height:1.7}
+.dm-box-title{font-weight:500;font-size:12px;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.dm-btn{display:inline-block;margin-top:4px;margin-right:6px;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:500}
+
+.user .sdot{background:#E1F5EE;border-color:#0D7377;color:#085041}
+.user .sline{background:#9FE1CB}
+.user .scard{background:var(--color-background-primary);border-color:#C0E8D8}
+.user .sn{color:#0D7377}
+.user .show{background:#E1F5EE}
+.user .showlbl{color:#0D7377}
+.user .tip{background:#F0F9F5;border-color:#0D7377;color:#085041}
+.user .dm-box{border-color:#0D7377;background:#F0F9F5;color:#085041}
+
+.admin .sdot{background:#E6F1FB;border-color:#185FA5;color:#0C447C}
+.admin .sline{background:#B5D4F4}
+.admin .scard{background:var(--color-background-primary);border-color:#C5DCF2}
+.admin .sn{color:#185FA5}
+.admin .show{background:#E6F1FB}
+.admin .showlbl{color:#185FA5}
+.admin .tip{background:#EEF5FC;border-color:#185FA5;color:#0C447C}
+
+.central .sdot{background:#EEEDFE;border-color:#534AB7;color:#3C3489}
+.central .sline{background:#AFA9EC}
+.central .scard{background:var(--color-background-primary);border-color:#CECBF6}
+.central .sn{color:#534AB7}
+.central .show{background:#EEEDFE}
+.central .showlbl{color:#534AB7}
+.central .tip{background:#F3F2FE;border-color:#534AB7;color:#3C3489}
+
+.sdot.done{background:#0D7377;border-color:#0D7377;color:#fff}
+.sdot.warn{background:#FAEEDA;border-color:#BA7517;color:#633806}
+.sdot.red{background:#FCEBEB;border-color:#A32D2D;color:#791F1F}
+.scard.done{border-color:#86EFAC;background:#F5FBF8}
+.scard.warn{border-color:#FAC775;background:#FFFBF3}
+.scard.red{border-color:#F7C1C1;background:#FFF7F7}
+
+.journey{margin-bottom:20px;border-radius:12px;overflow:hidden;border:1.5px solid var(--color-border-tertiary)}
+.jtitle{padding:9px 15px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+.jtrack{display:flex;align-items:flex-start;overflow-x:auto;padding:14px 12px;gap:0}
+.jstep{flex:1;min-width:74px;text-align:center;position:relative;padding:0 3px}
+.jstep:not(:last-child)::after{content:'';position:absolute;top:13px;right:-2px;width:100%;height:2px;background:var(--color-border-tertiary)}
+.jdot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;margin-bottom:5px;position:relative;z-index:1;border:2px solid}
+.jlbl{font-size:11px;color:var(--color-text-secondary);line-height:1.4}
+.jrole{font-size:10px;margin-top:3px;padding:2px 5px;border-radius:9px;font-weight:500;display:inline-block}
+.jdot.new-step{border-style:dashed}
+
+.stat-grid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.stat-pill{padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500}
+
+.alert{border-radius:10px;padding:11px 13px;margin-bottom:14px;display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.6}
+.alert.warn{background:#FAEEDA;color:#633806}
+.alert.info{background:#E1F5EE;color:#085041}
+.alert.red{background:#FCEBEB;color:#791F1F}
+</style>
+
+<div class="w">
+<div class="rtabs">
+  <button class="rtab on" onclick="sw('user',this)">👤 ผู้ยืม</button>
+  <button class="rtab" onclick="sw('admin',this)">🔑 Admin</button>
+  <button class="rtab" onclick="sw('central',this)">🏥 จ่ายกลาง</button>
+  <button class="rtab" onclick="sw('journey',this)">🗺️ ภาพรวม</button>
+</div>
+
+<div class="view user on" id="vuser">
+<div class="banner" style="background:#E1F5EE">
+  <div class="bi">👤</div>
+  <div><div class="bt">ผู้ยืมอุปกรณ์</div><div class="bs">ขั้นตอนตั้งแต่ตรวจสอบสถานะจนถึงคืนอุปกรณ์ รวมถึงการขยายเวลาเมื่อจำเป็น</div></div>
+</div>
+<div class="steps">
+
+  <div class="srow"><div class="slcol"><div class="sdot">1</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 1</div><div class="stitle">ตรวจสอบสถานะอุปกรณ์</div>
+  <div class="sbody">ดูว่าอุปกรณ์ที่ต้องการมีชิ้นว่างหรือไม่ก่อนส่งคำร้อง</div>
+  <div class="show"><div class="showlbl">ทำอย่างไร</div>กดปุ่ม <strong>ยืม/คืน/จอง</strong> ใน LINE OA หรือเปิด <strong>Dashboard</strong> เพื่อดูสถานะ real-time</div>
+  <div class="tip">✅ มีชิ้นว่าง → ไปขั้นตอนที่ 2 &nbsp;|&nbsp; ⏳ ไม่ว่าง → กดจองคิว รอระบบแจ้งเตือน DM</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">2</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 2</div><div class="stitle">ส่งคำร้องขอยืม</div>
+  <div class="sbody">กรอกแบบฟอร์มออนไลน์พร้อมระบุข้อมูลที่จำเป็น</div>
+  <div class="show"><div class="showlbl">ข้อมูลที่ต้องกรอก</div>ชื่อ · วอร์ด · เบอร์โทร · วัตถุประสงค์ · วันที่คาดว่าจะคืน · สภาพอุปกรณ์ก่อนยืม</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot warn">⏳</div><div class="sline"></div></div>
+  <div class="scard warn"><div class="sn">ขั้นตอนที่ 3</div><div class="stitle">รอการอนุมัติจาก Admin</div>
+  <div class="sbody">Admin มีเวลา 2 ชั่วโมงในการอนุมัติ จะได้รับแจ้งผลใน LINE group</div>
+  <div class="tip">❌ ต้องการยกเลิก? กดปุ่ม "ยกเลิกคำร้อง" ใน Flex message เพื่อเปิดฟอร์มยกเลิก</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">4</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 4</div><div class="stitle">รับอุปกรณ์และตรวจสภาพ</div>
+  <div class="sbody">ไปรับอุปกรณ์ที่วอร์ดที่ดูแล พร้อมตรวจสภาพก่อนนำไปใช้</div>
+  <div class="show"><div class="showlbl">วอร์ดที่ดูแลอุปกรณ์</div>ECMO, MoVent → MICU3 · CRRT, MoBron, HemoPerf → MICU2 · ACEkit → MICU1 · PleuNeed → พิเศษอายุรกรรมชั้น 2</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">5</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 5</div><div class="stitle">ใช้งานอุปกรณ์</div>
+  <div class="sbody">ใช้งานตามวัตถุประสงค์ที่ระบุ ดูแลอุปกรณ์อย่างระมัดระวัง</div>
+  <div class="dm-box">
+    <div class="dm-box-title">📱 ระบบจะส่ง LINE DM ให้คุณโดยตรง <span class="new-badge">ใหม่</span></div>
+    <strong>เมื่อเกินกำหนดคืน</strong> — ระบบแจ้งเตือนทุกเช้า 08:00 พร้อม 2 ปุ่ม:<br>
+    <span class="dm-btn" style="background:#E1F5EE;color:#085041">↩️ คืนทันที</span>
+    <span class="dm-btn" style="background:#FAEEDA;color:#633806">📅 ขยายกำหนด</span>
+  </div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot warn">📅</div><div class="sline"></div></div>
+  <div class="scard warn"><div class="sn">ขั้นตอนที่ 5b — เฉพาะกรณียังใช้ไม่เสร็จ <span class="new-badge">ใหม่</span></div>
+  <div class="stitle">ขยายกำหนดคืน</div>
+  <div class="sbody">กดปุ่ม "📅 ขยายกำหนด" ใน DM → เปิดฟอร์มขยายเวลา → เลือกวันที่คืนใหม่</div>
+  <div class="show"><div class="showlbl">ในฟอร์มขยายเวลา</div>เลือกวันที่จากปุ่ม +3 / +5 / +7 / +14 วัน หรือกรอกเองได้ · ระบุเหตุผลที่ยังไม่คืน · กดยืนยัน → ระบบแจ้ง LINE group อัตโนมัติ</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot done">↩</div><div class="sline" style="background:transparent"></div></div>
+  <div class="scard done"><div class="sn">ขั้นตอนที่ 6</div><div class="stitle">คืนอุปกรณ์เมื่อใช้งานเสร็จ</div>
+  <div class="sbody">คืนอุปกรณ์ก่อนหรือตรงกำหนด พร้อมรายงานสภาพ</div>
+  <div class="show"><div class="showlbl">ทำอย่างไร</div>กด <strong>↩️ คืนอุปกรณ์</strong> ใน LINE OA หรือ Dashboard → กรอกสภาพอุปกรณ์ → นำไปส่งที่วอร์ดที่ดูแล</div>
+  </div></div>
+
+</div>
+</div>
+
+<div class="view admin" id="vadmin">
+<div class="banner" style="background:#E6F1FB">
+  <div class="bi">🔑</div>
+  <div><div class="bt">Admin (เจ้าของอุปกรณ์)</div><div class="bs">อนุมัติการยืม รับคืน และประสานงานกับจ่ายกลาง</div></div>
+</div>
+<div class="alert warn">⚠️ Admin มีเวลา <strong>2 ชั่วโมง</strong> ในการอนุมัติแต่ละคำร้อง หากเกินเวลาระบบจะ Auto-reject อัตโนมัติ</div>
+<div class="steps">
+
+  <div class="srow"><div class="slcol"><div class="sdot warn">🔔</div><div class="sline"></div></div>
+  <div class="scard warn"><div class="sn">ขั้นตอนที่ 1</div><div class="stitle">รับแจ้งเตือนคำร้องยืม</div>
+  <div class="sbody">Flex Message แสดงใน LINE group พร้อมรายละเอียดและตัวนับเวลา 2 ชั่วโมง</div>
+  <div class="show"><div class="showlbl">ข้อมูลใน Flex Message</div>ชื่อผู้ขอ · วอร์ด · อุปกรณ์ · วัตถุประสงค์ · วันที่คืน</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">2</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 2</div><div class="stitle">ตรวจสอบและอนุมัติ / ปฏิเสธ</div>
+  <div class="sbody">กดปุ่ม Admin ใน LINE OA → เข้า Admin Panel → ดำเนินการ</div>
+  <div class="show"><div class="showlbl">ช่องทาง</div>Admin Panel ใน LINE OA หรือ Dashboard → แท็บ "รออนุมัติ" → กด ✅ อนุมัติ หรือ ❌ ปฏิเสธ</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">3</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 3</div><div class="stitle">ผู้ยืมนำอุปกรณ์ไปใช้งาน</div>
+  <div class="sbody">อุปกรณ์อยู่ในสถานะ "กำลังยืม" — ติดตามได้ใน Dashboard แท็บ "กำลังยืม"</div>
+  <div class="dm-box">
+    <div class="dm-box-title">📱 ระบบ DM อัตโนมัติ <span class="new-badge">ใหม่</span></div>
+    ระบบส่ง LINE DM หาผู้ยืมโดยตรงเมื่อเกินกำหนด — Admin ไม่ต้องติดตามเอง<br>LINE group จะได้รับสรุปรายการทุก 08:00 (แยกจากโควต้า MOPH Notify)
+  </div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot warn">📥</div><div class="sline"></div></div>
+  <div class="scard warn"><div class="sn">ขั้นตอนที่ 4</div><div class="stitle">รับคืนอุปกรณ์จากผู้ยืม</div>
+  <div class="sbody">เมื่อผู้ยืมแจ้งคืนผ่านระบบ รับอุปกรณ์และยืนยันใน Admin Panel</div>
+  <div class="show"><div class="showlbl">ขั้นตอน</div>ผู้ยืมแจ้งคืน → ระบบแจ้ง LINE group → Admin Panel → กด 📥 รับคืน → ประเมินสภาพ → ยืนยัน</div>
+  <div class="tip">💡 กรณีผู้ยืมขอขยายเวลา ระบบจะแจ้ง LINE group อัตโนมัติ Admin ไม่ต้องดำเนินการเพิ่มเติม</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">5</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 5</div><div class="stitle">พิจารณาส่งฆ่าเชื้อ</div>
+  <div class="sbody">อุปกรณ์ที่ต้องฆ่าเชื้อ (MoBron · ACEkit · PleuNeed) → ส่งจ่ายกลาง</div>
+  <div class="show"><div class="showlbl">วิธีดำเนินการ</div>Admin Panel → กด 📤 ส่งจ่ายกลาง → ระบบแจ้ง LINE group → นำไปส่ง</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot done">✓</div><div class="sline" style="background:transparent"></div></div>
+  <div class="scard done"><div class="sn">ขั้นตอนที่ 6</div><div class="stitle">รับอุปกรณ์กลับจากจ่ายกลาง</div>
+  <div class="sbody">รับอุปกรณ์ที่ฆ่าเชื้อแล้ว → Admin Panel → 📦 รับจากจ่ายกลาง → อุปกรณ์พร้อมใช้งานอีกครั้ง</div>
+  </div></div>
+
+</div>
+</div>
+
+<div class="view central" id="vcentral">
+<div class="banner" style="background:#EEEDFE">
+  <div class="bi">🏥</div>
+  <div><div class="bt">จ่ายกลาง</div><div class="bs">รับอุปกรณ์ที่ต้องฆ่าเชื้อ ดำเนินกระบวนการ แล้วส่งคืนหน่วยงาน</div></div>
+</div>
+<div class="alert info">ℹ️ อุปกรณ์ที่ส่งมาจ่ายกลาง: <strong>Mobile Bronchoscope · ACE Kit · Abrams Pleural Needle</strong> เท่านั้น</div>
+<div class="steps">
+
+  <div class="srow"><div class="slcol"><div class="sdot warn">🔔</div><div class="sline"></div></div>
+  <div class="scard warn"><div class="sn">ขั้นตอนที่ 1</div><div class="stitle">รับแจ้งว่ามีอุปกรณ์ส่งมา</div>
+  <div class="sbody">ระบบแจ้งใน LINE group ระบุรหัสอุปกรณ์และ Admin ที่ส่ง</div>
+  <div class="show"><div class="showlbl">ดูรายการรออยู่ที่ไหน</div>กดปุ่ม จ่ายกลาง ใน LINE OA → Central Panel หรือ Dashboard → แท็บ "รับจากวอร์ด"</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">2</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 2</div><div class="stitle">รับอุปกรณ์และยืนยันในระบบ</div>
+  <div class="sbody">Central Panel → กดที่รายการ → กด 📥 ยืนยันรับ → กรอกชื่อผู้รับ</div>
+  <div class="tip">📝 ยืนยันในระบบทันที เพื่อให้ Admin ทราบว่าอุปกรณ์อยู่ที่จ่ายกลางแล้ว</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot">3</div><div class="sline"></div></div>
+  <div class="scard"><div class="sn">ขั้นตอนที่ 3</div><div class="stitle">ดำเนินกระบวนการทำให้ปลอดเชื้อ</div>
+  <div class="sbody">ดำเนินการตามมาตรฐานการฆ่าเชื้อสำหรับอุปกรณ์แต่ละชนิด</div>
+  <div class="tip">⚙️ สถานะในระบบ = "อยู่ที่จ่ายกลาง" — Admin ติดตามได้ใน Dashboard</div>
+  </div></div>
+
+  <div class="srow"><div class="slcol"><div class="sdot done">📤</div><div class="sline" style="background:transparent"></div></div>
+  <div class="scard done"><div class="sn">ขั้นตอนที่ 4</div><div class="stitle">ส่งคืนอุปกรณ์ให้หน่วยงาน</div>
+  <div class="sbody">Central Panel → แท็บ "ส่งคืนวอร์ด" → กดที่รายการ → กด 📤 ยืนยันส่งคืน → กรอกชื่อ + หมายเหตุ</div>
+  <div class="tip">🏥 หลังจากนี้ Admin รับและตรวจสภาพ → อุปกรณ์พร้อมใช้งานอีกครั้ง</div>
+  </div></div>
+
+</div>
+</div>
+
+<div class="view" id="vjourney">
+<div class="banner" style="background:var(--color-background-secondary)">
+  <div class="bi">🗺️</div>
+  <div><div class="bt">ภาพรวมการเดินทางของอุปกรณ์</div><div class="bs">แสดง 2 เส้นทาง: อุปกรณ์ที่ไม่ต้องฆ่าเชื้อ และอุปกรณ์ที่ต้องฆ่าเชื้อ รวมถึงระบบ DM และขยายเวลาใหม่</div></div>
+</div>
+
+<div class="journey">
+  <div class="jtitle">อุปกรณ์ไม่ต้องฆ่าเชื้อ — ECMO · CRRT · Mobile Ventilator · Hemoperfusion</div>
+  <div class="jtrack">
+    <div class="jstep"><div class="jdot" style="background:#E1F5EE;border-color:#0D7377;color:#085041">📝</div><div class="jlbl">ส่งคำร้อง</div><div class="jrole" style="background:#E1F5EE;color:#085041">User</div></div>
+    <div class="jstep"><div class="jdot" style="background:#FAEEDA;border-color:#BA7517;color:#633806">⏳</div><div class="jlbl">รออนุมัติ ≤2ชม.</div><div class="jrole" style="background:#E6F1FB;color:#0C447C">Admin</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E1F5EE;border-color:#0D7377;color:#085041">📦</div><div class="jlbl">ใช้งาน</div><div class="jrole" style="background:#E1F5EE;color:#085041">User</div></div>
+    <div class="jstep"><div class="jdot new-step" style="background:#FAEEDA;border-color:#BA7517;color:#633806">📱</div><div class="jlbl">DM แจ้ง<br>ถ้าเกินเวลา</div><div class="jrole" style="background:#FAEEDA;color:#633806">ระบบ</div></div>
+    <div class="jstep"><div class="jdot new-step" style="background:#FAEEDA;border-color:#BA7517;color:#633806">📅</div><div class="jlbl">ขยาย<br>กำหนด?</div><div class="jrole" style="background:#FAEEDA;color:#633806">User</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E1F5EE;border-color:#0D7377;color:#085041">↩️</div><div class="jlbl">แจ้งคืน</div><div class="jrole" style="background:#E1F5EE;color:#085041">User</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E6F1FB;border-color:#185FA5;color:#0C447C">📥</div><div class="jlbl">รับคืน</div><div class="jrole" style="background:#E6F1FB;color:#0C447C">Admin</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E1F5EE;border-color:#0D7377;color:#085041">✅</div><div class="jlbl">พร้อมใช้</div><div class="jrole" style="background:#E1F5EE;color:#085041">ระบบ</div></div>
+  </div>
+</div>
+
+<div class="journey">
+  <div class="jtitle">อุปกรณ์ต้องฆ่าเชื้อ — Mobile Bronchoscope · ACE Kit · Abrams Pleural Needle</div>
+  <div class="jtrack">
+    <div class="jstep"><div class="jdot" style="background:#E1F5EE;border-color:#0D7377;color:#085041">📝</div><div class="jlbl">ส่งคำร้อง</div><div class="jrole" style="background:#E1F5EE;color:#085041">User</div></div>
+    <div class="jstep"><div class="jdot" style="background:#FAEEDA;border-color:#BA7517;color:#633806">⏳</div><div class="jlbl">รออนุมัติ</div><div class="jrole" style="background:#E6F1FB;color:#0C447C">Admin</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E1F5EE;border-color:#0D7377;color:#085041">📦</div><div class="jlbl">ใช้งาน</div><div class="jrole" style="background:#E1F5EE;color:#085041">User</div></div>
+    <div class="jstep"><div class="jdot new-step" style="background:#FAEEDA;border-color:#BA7517;color:#633806">📱</div><div class="jlbl">DM เกิน<br>กำหนด?</div><div class="jrole" style="background:#FAEEDA;color:#633806">ระบบ</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E6F1FB;border-color:#185FA5;color:#0C447C">📥</div><div class="jlbl">รับคืน</div><div class="jrole" style="background:#E6F1FB;color:#0C447C">Admin</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E6F1FB;border-color:#185FA5;color:#0C447C">📤</div><div class="jlbl">ส่งจ่าย<br>กลาง</div><div class="jrole" style="background:#E6F1FB;color:#0C447C">Admin</div></div>
+    <div class="jstep"><div class="jdot" style="background:#EEEDFE;border-color:#534AB7;color:#3C3489">🧪</div><div class="jlbl">ฆ่าเชื้อ</div><div class="jrole" style="background:#EEEDFE;color:#3C3489">จ่ายกลาง</div></div>
+    <div class="jstep"><div class="jdot" style="background:#EEEDFE;border-color:#534AB7;color:#3C3489">📬</div><div class="jlbl">ส่งคืน<br>วอร์ด</div><div class="jrole" style="background:#EEEDFE;color:#3C3489">จ่ายกลาง</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E6F1FB;border-color:#185FA5;color:#0C447C">📦</div><div class="jlbl">รับกลับ</div><div class="jrole" style="background:#E6F1FB;color:#0C447C">Admin</div></div>
+    <div class="jstep"><div class="jdot" style="background:#E1F5EE;border-color:#0D7377;color:#085041">✅</div><div class="jlbl">พร้อมใช้</div><div class="jrole" style="background:#E1F5EE;color:#085041">ระบบ</div></div>
+  </div>
+</div>
+
+<div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">คำอธิบายสัญลักษณ์ใหม่</div>
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:13px;color:var(--color-text-secondary)">
+  <div style="width:22px;height:22px;border-radius:50%;border:2px dashed #BA7517;background:#FAEEDA;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">📱</div>
+  <span>เส้นประ = ขั้นตอนที่ระบบดำเนินการอัตโนมัติ (DM แจ้งเตือน + ขยายเวลา)</span>
+</div>
+
+<div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">สถานะอุปกรณ์</div>
+<div class="stat-grid">
+  <span class="stat-pill" style="background:#D1FAE5;color:#065F46">✅ พร้อมใช้งาน</span>
+  <span class="stat-pill" style="background:#FEF3C7;color:#92400E">⏳ รออนุมัติ</span>
+  <span class="stat-pill" style="background:#DBEAFE;color:#1E3A8A">📦 กำลังยืม</span>
+  <span class="stat-pill" style="background:#EDE9FE;color:#5B21B6">↩️ รอรับคืน</span>
+  <span class="stat-pill" style="background:#CFFAFE;color:#164E63">🧪 จ่ายกลาง</span>
+  <span class="stat-pill" style="background:#FEE2E2;color:#7F1D1D">🔴 ชำรุด/ซ่อม</span>
+</div>
+
+</div>
+</div>
+
+<script>
+function sw(role, btn) {
+  document.querySelectorAll('.rtab').forEach(function(b){ b.classList.remove('on'); });
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('on'); });
+  btn.classList.add('on');
+  document.getElementById('v'+role).classList.add('on');
+}
+</script>
