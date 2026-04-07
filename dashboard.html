@@ -384,7 +384,7 @@ function selectRole(role) {
 // ═══════════════════════════════════════════════════
 const TABS = {
   public : [['pub','📦 สถานะอุปกรณ์']],
-  admin  : [['pending','⏳ รออนุมัติ'],['return','↩️ รอรับคืน'],['steril','🧪 รอส่งจ่ายกลาง'],['rcv','📦 รอรับจากจ่ายกลาง'],['status','🔧 สถานะอุปกรณ์'],['report','📊 รายงาน']],
+  admin  : [['pending','⏳ รออนุมัติ'],['return','↩️ รอรับคืน'],['steril','🧪 รอส่งจ่ายกลาง'],['rcv','📦 รอรับกลับ'],['status','🔧 สถานะอุปกรณ์'],['report','📊 รายงาน']],
   central: [['receive','📥 รับจากวอร์ด'],['return','📤 ส่งคืนวอร์ด'],['report','📊 รายงาน']],
   super  : [['sup','📈 ภาพรวม']],
 };
@@ -637,17 +637,17 @@ function renderAdmTab(tab, el, d) {
   if (tab==='rcv') {
     el.innerHTML = spinHTML();
     post({ source:'admin', action:'getEquipmentByStatus', userId, status:'at_central' }).then(r=>{
-      let h = kpiHtml + '<div class="sec">รอรับจากจ่ายกลาง</div>';
-      if (!(r.data||[]).length) { h += emptyHTML('📦','ไม่มีอุปกรณ์รอรับจากจ่ายกลาง'); }
+      let h = kpiHtml + '<div class="sec">รอรับกลับหลังฆ่าเชื้อ</div>';
+      if (!(r.data||[]).length) { h += emptyHTML('📦','ไม่มีอุปกรณ์รอรับกลับจากจ่ายกลาง'); }
       else r.data.forEach(eq=>{
         h += `<div class="card" style="cursor:pointer" onclick="openReceiveCentralPanel('${eq.equipmentSubId}','${eq.equipmentName}','${eq.homeWard}')">
           <div class="card-hd">
             <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
-            <span class="badge at_central">อยู่จ่ายกลาง</span>
+            <span class="badge at_central">จ่ายกลางฆ่าเชื้อแล้ว</span>
           </div>
           <div class="card-body">
             <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${eq.homeWard}</span></div>
-            <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">แตะเพื่อรับคืนจากจ่ายกลาง →</div>
+            <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">แตะเพื่อยืนยันรับกลับ (หลังจ่ายกลางส่งคืนแล้ว) →</div>
           </div>
         </div>`;
       });
@@ -928,21 +928,21 @@ function renderCenTab(tab) {
   }
 
   if (tab==='return') {
-    const items = cenData.toReturn||[];
-    let h = '<div class="sec">รอส่งคืนวอร์ด ('+items.length+')</div>';
-    if (!items.length) { h += emptyHTML('📤','ไม่มีอุปกรณ์รอส่งคืน'); }
-    else items.forEach(eq=>{
+    const acItems = cenData.atCentral||[];
+    let h = '<div class="sec">กำลังฆ่าเชื้อ ('+acItems.length+')</div>';
+    if (!acItems.length) { h += emptyHTML('🧪','ไม่มีอุปกรณ์กำลังฆ่าเชื้อ'); }
+    else acItems.forEach(eq=>{
       const s = eq.steril||{};
-      h += `<div class="card" style="cursor:pointer" onclick="openCenReturnPanel('${eq.equipmentSubId}','${eq.equipmentName}','${eq.homeWard}')">
+      h += `<div class="card">
         <div class="card-hd">
-          <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
-          <span class="badge at_central">รับแล้ว รอส่งคืน</span>
+          <div class="card-title">🧪 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+          <span class="badge at_central">กำลังฆ่าเชื้อ</span>
         </div>
         <div class="card-body">
           <div class="ir"><span class="ir-l">🏥 ส่งคืนที่</span><span class="ir-v">${eq.homeWard}</span></div>
-          <div class="ir"><span class="ir-l">👤 รับโดย</span><span class="ir-v">${s.centralReceivedBy||'-'}</span></div>
-          <div class="ir"><span class="ir-l">⏰ เวลารับ</span><span class="ir-v">${s.centralReceivedTime||'-'}</span></div>
-          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:8px">แตะเพื่อส่งคืน →</div>
+          <div class="ir"><span class="ir-l">👤 ลงชื่อรับโดย</span><span class="ir-v">${s.centralReceivedBy||'-'}</span></div>
+          <div class="ir"><span class="ir-l">⏰ เวลารับมอบ</span><span class="ir-v">${s.centralReceivedTime||'-'}</span></div>
+          <div style="font-size:12px;color:#64748B;margin-top:6px">⏳ รอ Admin กด "รับกลับ" เมื่อจ่ายกลางส่งคืนแล้ว</div>
         </div>
       </div>`;
     });
@@ -1012,7 +1012,7 @@ async function loadCenReport() {
   const history = cenData.history||[];
   let h = `<div class="kpi-row">
     <div class="kpi"><div class="kpi-icon">📥</div><div class="kpi-val" style="color:#1A6DC8">${(cenData.toReceive||[]).length}</div><div class="kpi-lbl">รอรับ</div></div>
-    <div class="kpi"><div class="kpi-icon">📤</div><div class="kpi-val" style="color:#0D7377">${(cenData.toReturn||[]).length}</div><div class="kpi-lbl">รอส่งคืน</div></div>
+    <div class="kpi"><div class="kpi-icon">🧪</div><div class="kpi-val" style="color:#3C3489">${(cenData.atCentral||[]).length}</div><div class="kpi-lbl">กำลังฆ่าเชื้อ</div></div>
     <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${history.length}</div><div class="kpi-lbl">เสร็จสิ้น</div></div>
   </div>
   <div class="sec">ประวัติล่าสุด</div>`;

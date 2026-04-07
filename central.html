@@ -2,433 +2,301 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>จ่ายกลาง — Chest MSKH</title>
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>จ่ายกลาง — Chest Equipment MSKH</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
-body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-height:1.6;min-height:100vh}
-
-.header{background:linear-gradient(135deg,#155AAA,#1A6DC8);padding:16px 16px 0;box-shadow:0 2px 10px rgba(0,0,0,.15)}
-.header-top{display:flex;align-items:center;gap:10px;padding-bottom:14px}
-.header-icon{font-size:26px}
-.header-title{font-size:18px;font-weight:800;color:#fff}
-.header-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:1px}
-
-.tabs{display:flex;gap:2px;padding-bottom:0}
-.tab{flex:1;padding:10px 0;font-size:14px;font-weight:700;font-family:'Sarabun',sans-serif;
-     color:rgba(255,255,255,.65);background:transparent;border:none;border-bottom:3px solid transparent;
-     cursor:pointer;text-align:center;transition:all .15s}
-.tab.active{color:#fff;border-bottom-color:#fff}
-
-.auth-loading,.auth-error{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:60vh;text-align:center;padding:40px 20px;gap:12px;color:#64748B}
-.auth-error{color:#B91C1C}
-.spinner{width:36px;height:36px;border:3px solid #D4DCE8;border-top-color:#1A6DC8;
-  border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.page{display:none;padding:16px 16px 60px}
-.page.active{display:block}
-@media(min-width:540px){.page{max-width:540px;margin:0 auto}}
-
-.card{background:#fff;border-radius:14px;border:1px solid #D4DCE8;
-  box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden}
-.card-header{padding:12px 16px;background:#F8FAFC;border-bottom:1px solid #E5E7EB;
-  display:flex;align-items:center;justify-content:space-between}
-.card-title{font-size:15px;font-weight:800;color:#1A2B45}
-.card-body{padding:16px}
-.info-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid #F1F5F9;font-size:14px}
-.info-row:last-child{border-bottom:none}
-.info-lbl{color:#94A3B8;font-weight:600;min-width:90px;flex-shrink:0}
-.info-val{color:#1A2B45;font-weight:500;flex:1}
-
-.badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:10px}
-.badge.at_central{background:#E0F2FE;color:#075985}
-.badge.sent_to_central{background:#FEF3C7;color:#92400E}
-.badge.pending_sterilization{background:#FEE2E2;color:#9B1C1C}
-
+body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;min-height:100vh;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#534AB7,#7F77DD);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.hicon{font-size:22px}.htitle{font-size:17px;font-weight:800;color:#fff}.hsub{font-size:12px;color:rgba(255,255,255,.75);flex:1}
+.menu-screen{flex:1;padding:24px 16px 40px;max-width:480px;margin:0 auto;width:100%;display:flex;flex-direction:column}
+.menu-lbl{font-size:13px;font-weight:800;color:#64748B;text-align:center;margin-bottom:20px;text-transform:uppercase;letter-spacing:.06em}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.menu-card{background:#fff;border:2px solid #D4DCE8;border-radius:16px;padding:24px 14px;text-align:center;cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:8px}
+.menu-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.menu-card.confirm{border-color:#534AB7}.menu-card.confirm:hover{background:#F5F4FF}
+.menu-card.dash{border-color:#0D7377}.menu-card.dash:hover{background:#F0F9F9}
+.menu-icon{font-size:40px}.menu-name{font-size:15px;font-weight:800;color:#1A2B45}.menu-desc{font-size:12px;color:#64748B;line-height:1.5}
+.sub-screen{flex:1;padding:16px 16px 40px;max-width:480px;margin:0 auto;width:100%;display:none;flex-direction:column}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:#534AB7;background:none;border:none;cursor:pointer;padding:0;margin-bottom:16px;font-family:'Sarabun',sans-serif}
+.card{background:#fff;border-radius:14px;border:1.5px solid #D4DCE8;box-shadow:0 1px 6px rgba(0,0,0,.06);padding:16px;margin-bottom:14px}
+.sec{font-size:12px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.equip-item{background:#F8FAFC;border:2px solid #E0E7EF;border-radius:10px;padding:12px 14px;cursor:pointer;transition:.15s;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.equip-item:hover{border-color:#534AB7;background:#F5F4FF}
+.equip-item.sel{border-color:#534AB7;background:#EEEDFE}
+.en{font-size:14px;font-weight:700;color:#1A2B45}.es{font-size:12px;color:#64748B;margin-top:2px}
+.ebadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:10px;flex-shrink:0;background:#FEF3C7;color:#92400E}
+.sig-form{display:none}.sig-form.show{display:block}
 .field{margin-bottom:14px}
-.field-label{display:block;font-size:14px;font-weight:700;color:#374151;margin-bottom:6px}
-.field-control{width:100%;padding:12px 14px;border:2px solid #D4DCE8;border-radius:10px;
-  font-size:15px;font-family:'Sarabun',sans-serif;color:#1A2B45;background:#fff;
-  transition:border-color .15s;-webkit-appearance:none;appearance:none}
-.field-control:focus{border-color:#1A6DC8;outline:none;box-shadow:0 0 0 3px rgba(26,109,200,.12)}
-textarea.field-control{resize:vertical;min-height:80px}
-
-.btn{width:100%;padding:14px;border:none;border-radius:11px;font-size:16px;font-weight:800;
-     font-family:'Sarabun',sans-serif;cursor:pointer;transition:opacity .15s,transform .1s;margin-top:6px}
-.btn:active{transform:scale(.98);opacity:.85}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn-primary{background:#1A6DC8;color:#fff;box-shadow:0 3px 10px rgba(26,109,200,.3)}
-.btn-back{background:#F1F5F9;color:#374151}
-
-.error-box{background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;
-  padding:12px 14px;color:#B91C1C;font-size:14px;font-weight:600;
-  margin-bottom:14px;display:none}
-.error-box.show{display:block}
-.empty-state{text-align:center;padding:40px 20px;color:#94A3B8;font-size:15px}
-.empty-state .icon{font-size:40px;margin-bottom:10px}
-.loading-row{display:none;align-items:center;gap:8px;padding:12px 0;color:#64748B;font-size:14px}
-.loading-row.show{display:flex}
-.spinner-sm{width:18px;height:18px;border:2.5px solid #D4DCE8;border-top-color:#1A6DC8;
-  border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;
-  min-height:60vh;text-align:center;padding:40px 20px}
-.success-screen.show{display:flex}
-.success-icon{font-size:64px;margin-bottom:16px}
-.success-title{font-size:22px;font-weight:800;color:#1A6DC8;margin-bottom:8px}
-.success-sub{font-size:15px;color:#64748B;margin-bottom:24px}
-.refresh-btn{background:none;border:none;color:rgba(255,255,255,.75);font-size:18px;cursor:pointer;padding:4px;flex-shrink:0}
+.flbl{display:block;font-size:14px;font-weight:700;color:#374151;margin-bottom:7px}
+.flbl span{color:#B91C1C}
+.fld{width:100%;padding:12px 14px;border:2px solid #D4DCE8;border-radius:10px;font-size:15px;font-family:'Sarabun',sans-serif;color:#1A2B45;background:#fff;-webkit-appearance:none;appearance:none;transition:border-color .15s}
+.fld:focus{border-color:#534AB7;outline:none}
+textarea.fld{resize:vertical;min-height:70px}
+.cond-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.cbtn{padding:8px 14px;border:2px solid #D4DCE8;border-radius:8px;font-size:13px;font-weight:700;font-family:'Sarabun',sans-serif;background:#fff;color:#374151;cursor:pointer;transition:.15s}
+.cbtn.sel{border-color:#534AB7;background:#534AB7;color:#fff}
+.divider{height:1px;background:#E5E7EB;margin:14px 0}
+.btn-sub{width:100%;padding:15px;background:#534AB7;color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:800;font-family:'Sarabun',sans-serif;cursor:pointer;transition:.1s}
+.btn-sub:disabled{opacity:.45;cursor:not-allowed}
+.err{background:#FEE2E2;border-radius:10px;padding:11px 14px;color:#B91C1C;font-size:14px;font-weight:600;margin-bottom:12px;display:none}
+.err.show{display:block}
+.spin{width:26px;height:26px;border:3px solid #D4DCE8;border-top-color:#534AB7;border-radius:50%;animation:sp .7s linear infinite;margin:24px auto;display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.kpi{background:#fff;border-radius:12px;border:1px solid #E0E7EF;padding:14px 12px;text-align:center}
+.kpi-i{font-size:22px;margin-bottom:2px}.kpi-v{font-size:26px;font-weight:800}.kpi-l{font-size:12px;color:#64748B;margin-top:2px}
+.eq-card{background:#fff;border-radius:12px;border:1px solid #D4DCE8;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:10px;overflow:hidden}
+.eq-hd{padding:11px 14px;background:#F8FAFC;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between}
+.eq-title{font-size:14px;font-weight:800}
+.eq-body{padding:12px 14px}
+.ir{display:flex;gap:6px;padding:3px 0;font-size:13px}
+.ir-l{color:#94A3B8;min-width:80px;flex-shrink:0;font-weight:600}.ir-v{color:#1A2B45;font-weight:500;flex:1}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:9px}
+.badge.w{background:#FEF3C7;color:#92400E}.badge.h{background:#EEEDFE;color:#3C3489}
+.empty{text-align:center;padding:24px;color:#94A3B8;font-size:14px}
+.success-screen{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
+.sicon{font-size:68px;margin-bottom:16px}
+.stitle{font-size:22px;font-weight:800;color:#534AB7;margin-bottom:8px}
+.ssub{font-size:14px;color:#64748B;line-height:1.7;margin-bottom:24px}
+.btn-bk{padding:13px 28px;background:#534AB7;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Sarabun',sans-serif;cursor:pointer}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-top">
-    <div class="header-icon">🏥</div>
-    <div style="flex:1">
-      <div class="header-title">จ่ายกลาง Panel</div>
-      <div class="header-sub" id="centralName">กำลังตรวจสิทธิ์...</div>
-    </div>
-    <button class="refresh-btn" onclick="refreshCurrentTab()">🔄</button>
-  </div>
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('receive')" id="tab-receive">📥 รับอุปกรณ์จากหน่วย</button>
-    <button class="tab" onclick="switchTab('return')" id="tab-return">📤 ส่งคืนอุปกรณ์</button>
+  <div class="hicon">🏥</div>
+  <div class="hsub">
+    <div class="htitle">จ่ายกลาง — Chest Equipment MSKH</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.75)">หน่วยโรคระบบการหายใจ · MSKH</div>
   </div>
 </div>
 
-<div id="authLoading" class="auth-loading">
-  <div class="spinner"></div>
-  <div>กำลังตรวจสิทธิ์...</div>
-</div>
-<div id="authError" class="auth-error" style="display:none">
-  <div style="font-size:48px">🔒</div>
-  <div style="font-size:18px;font-weight:800;margin-bottom:4px">ไม่มีสิทธิ์เข้าถึง</div>
-  <div style="font-size:14px" id="authErrorMsg">กรุณาติดต่อผู้ดูแลระบบ</div>
-</div>
-
-<!-- ═══ PAGE 1: RECEIVE FROM UNIT ════════════════════════════ -->
-<div class="page active" id="page-receive">
-  <div class="loading-row show" id="load-receive" style="justify-content:center">
-    <div class="spinner-sm"></div><span>กำลังโหลด...</span>
-  </div>
-  <div id="receive-list"></div>
-  <div id="receive-form" style="display:none">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">📥 รับอุปกรณ์จากหน่วย</div>
-      </div>
-      <div class="card-body">
-        <div class="error-box" id="receive-error"></div>
-        <div id="receive-info"></div>
-        <div class="field" style="margin-top:14px">
-          <label class="field-label">ชื่อผู้รับ</label>
-          <input type="text" class="field-control" id="receive-by" placeholder="ชื่อเจ้าหน้าที่จ่ายกลางที่รับ">
-        </div>
-        <div class="field">
-          <label class="field-label">หมายเหตุ</label>
-          <textarea class="field-control" id="receive-notes" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
-        </div>
-        <button class="btn btn-primary" id="receive-submit-btn" onclick="submitReceive()">
-          <span id="receive-submit-label">📥 ยืนยันรับอุปกรณ์</span>
-        </button>
-        <button class="btn btn-back" onclick="backToReceiveList()">← กลับรายการ</button>
-      </div>
+<div class="menu-screen" id="menuScreen">
+  <div class="menu-lbl">เลือกการดำเนินการ</div>
+  <div class="menu-grid">
+    <div class="menu-card confirm" onclick="showConfirm()">
+      <div class="menu-icon">📥</div>
+      <div class="menu-name">ยืนยันรับอุปกรณ์</div>
+      <div class="menu-desc">ลงนามยืนยันการส่งมอบจากวอร์ด</div>
     </div>
-  </div>
-  <div id="receive-success" class="success-screen">
-    <div class="success-icon">📥</div>
-    <div class="success-title">รับอุปกรณ์แล้ว</div>
-    <div class="success-sub" id="receive-success-sub"></div>
-    <button class="btn btn-primary" style="max-width:280px" onclick="reloadReceive()">← ดูรายการอื่น</button>
+    <div class="menu-card dash" onclick="showDash()">
+      <div class="menu-icon">📊</div>
+      <div class="menu-name">สถานะอุปกรณ์</div>
+      <div class="menu-desc">ดูอุปกรณ์ที่อยู่กับจ่ายกลางขณะนี้</div>
+    </div>
   </div>
 </div>
 
-<!-- ═══ PAGE 2: RETURN TO UNIT ═══════════════════════════════ -->
-<div class="page" id="page-return">
-  <div class="loading-row show" id="load-return" style="justify-content:center">
-    <div class="spinner-sm"></div><span>กำลังโหลด...</span>
+<div class="sub-screen" id="confirmScreen">
+  <button class="back-btn" onclick="back()">← กลับเมนูหลัก</button>
+  <div class="card">
+    <div class="sec">เลือกอุปกรณ์ที่รับมอบ</div>
+    <div id="eqLoading"><div class="spin"></div></div>
+    <div id="eqList" style="display:none"></div>
+    <div id="eqEmpty" class="empty" style="display:none">ไม่มีอุปกรณ์รอรับมอบ</div>
   </div>
-  <div id="return-list"></div>
-  <div id="return-form" style="display:none">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">📤 ส่งคืนอุปกรณ์ไปหน่วย</div>
-      </div>
-      <div class="card-body">
-        <div class="error-box" id="return-error"></div>
-        <div id="return-info"></div>
-        <div class="field" style="margin-top:14px">
-          <label class="field-label">ชื่อผู้ส่งคืน</label>
-          <input type="text" class="field-control" id="return-by" placeholder="ชื่อเจ้าหน้าที่จ่ายกลางที่ส่งคืน">
-        </div>
-        <div class="field">
-          <label class="field-label">หมายเหตุ</label>
-          <textarea class="field-control" id="return-notes" placeholder="รายละเอียดการฆ่าเชื้อหรือข้อสังเกต (ถ้ามี)"></textarea>
-        </div>
-        <div style="background:#E0F2FE;border:1px solid #BAE6FD;border-radius:10px;padding:12px 14px;font-size:13px;color:#075985;font-weight:600;margin-bottom:12px">
-          ℹ️ กรุณาแจ้ง Ward ที่ดูแลอุปกรณ์มารับกลับด้วยนะครับ
-        </div>
-        <button class="btn btn-primary" id="return-submit-btn" onclick="submitReturn()">
-          <span id="return-submit-label">📤 ยืนยันส่งคืนอุปกรณ์</span>
-        </button>
-        <button class="btn btn-back" onclick="backToReturnList()">← กลับรายการ</button>
+  <div class="card sig-form" id="sigForm">
+    <div class="err" id="formErr"></div>
+    <div class="sec">ผู้ส่งมอบจากวอร์ด</div>
+    <div class="field">
+      <label class="flbl">Ward Worker / Patient Care Aide <span>*</span></label>
+      <select class="fld" id="senderSel"><option value="">— เลือกชื่อผู้ส่ง —</option></select>
+    </div>
+    <div id="senderOtherBox" style="display:none;margin-top:8px">
+      <input type="text" class="fld" id="senderOther" placeholder="กรอกชื่อผู้ส่ง">
+    </div>
+    <div class="divider"></div>
+    <div class="sec">ผู้รับมอบจากจ่ายกลาง</div>
+    <div class="field">
+      <label class="flbl">เจ้าหน้าที่จ่ายกลาง <span>*</span></label>
+      <select class="fld" id="receiverSel"><option value="">— เลือกชื่อผู้รับ —</option></select>
+    </div>
+    <div id="receiverOtherBox" style="display:none;margin-top:8px">
+      <input type="text" class="fld" id="receiverOther" placeholder="กรอกชื่อผู้รับ">
+    </div>
+    <div class="divider"></div>
+    <div class="field">
+      <label class="flbl">สภาพอุปกรณ์ขณะส่งมอบ <span>*</span></label>
+      <div class="cond-row">
+        <button class="cbtn" onclick="setCond(this,'สภาพพร้อมใช้งาน (Ready for use)')">สมบูรณ์ดี</button>
+        <button class="cbtn" onclick="setCond(this,'ชำรุดเล็กน้อย (Minor damage)')">ชำรุดเล็กน้อย</button>
+        <button class="cbtn" onclick="setCond(this,'ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)')">ชำรุดมาก</button>
       </div>
     </div>
+    <div class="field">
+      <label class="flbl">หมายเหตุ</label>
+      <textarea class="fld" id="formNotes" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
+    </div>
+    <button class="btn-sub" id="submitBtn" onclick="doSubmit()">📥 ยืนยันการรับมอบอุปกรณ์</button>
   </div>
-  <div id="return-success" class="success-screen">
-    <div class="success-icon">📤</div>
-    <div class="success-title">ส่งคืนอุปกรณ์แล้ว</div>
-    <div class="success-sub" id="return-success-sub"></div>
-    <button class="btn btn-primary" style="max-width:280px" onclick="reloadReturn()">← ดูรายการอื่น</button>
+</div>
+
+<div class="sub-screen" id="dashScreen">
+  <button class="back-btn" onclick="back()">← กลับเมนูหลัก</button>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-i">📥</div><div class="kpi-v" id="kWait" style="color:#92400E">—</div><div class="kpi-l">รอรับ</div></div>
+    <div class="kpi"><div class="kpi-i">🧪</div><div class="kpi-v" id="kHere" style="color:#3C3489">—</div><div class="kpi-l">กำลังฆ่าเชื้อ</div></div>
   </div>
+  <div class="sec" style="margin-top:0">รอรับจากวอร์ด</div><div id="dWait"><div class="spin"></div></div>
+  <div class="sec">อยู่กับจ่ายกลาง</div><div id="dHere"><div class="spin"></div></div>
+  <div class="sec">ประวัติล่าสุด</div><div id="dHist"><div class="spin"></div></div>
+</div>
+
+<div class="success-screen" id="successScreen">
+  <div class="sicon">✅</div>
+  <div class="stitle">ยืนยันรับมอบสำเร็จ</div>
+  <div class="ssub" id="successSub">บันทึกเรียบร้อยแล้ว<br>ระบบแจ้ง LINE group แล้ว</div>
+  <button class="btn-bk" onclick="back()">กลับเมนูหลัก</button>
 </div>
 
 <script>
-const LIFF_ID    = '2009365358-5r9CLFmY';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrnODe6na-5NNGzIt9ae7-qu8X-wLxnp71vOtTihMY5s-Qxg-XvVEKU5w/exec';
+let selEquip = null;
+let selCond  = '';
+let pipe     = null;
 
-let currentUserId = '';
-let currentAuth   = null;
-let currentTab    = 'receive';
-let selectedItem  = null;
+function showConfirm() {
+  hide('menuScreen'); showFlex('confirmScreen');
+  loadEquips(); loadDropdowns();
+}
+function showDash() {
+  hide('menuScreen'); showFlex('dashScreen');
+  loadDash();
+}
+function back() {
+  ['menuScreen','confirmScreen','dashScreen','successScreen'].forEach(hide);
+  showFlex('menuScreen');
+  selEquip=null; selCond='';
+  const sf=document.getElementById('sigForm'); if(sf) sf.classList.remove('show');
+  document.querySelectorAll('.equip-item').forEach(function(e){e.classList.remove('sel');});
+  document.querySelectorAll('.cbtn').forEach(function(b){b.classList.remove('sel');});
+  document.getElementById('formNotes').value='';
+}
 
-document.addEventListener('DOMContentLoaded', async function() {
+async function getPipe(force) {
+  if (!force && pipe) return pipe;
+  const r = await fetch(SCRIPT_URL+'?action=getCentralStatus',{redirect:'follow'});
+  const d = await r.json();
+  if (d.success) { pipe=d.data; return pipe; }
+  throw new Error(d.error||'โหลดข้อมูลไม่ได้');
+}
+
+async function loadEquips() {
+  show('eqLoading'); hide('eqList'); hide('eqEmpty');
   try {
-    await liff.init({ liffId: LIFF_ID });
-    if (!liff.isLoggedIn()) { liff.login(); return; }
-    const profile  = await liff.getProfile();
-    currentUserId  = profile.userId;
-    const resp = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      redirect: 'follow',
-      body: JSON.stringify({ source: 'central', action: 'checkAuth', userId: currentUserId }),
-    });
-    const auth = await resp.json();
-    const allowedRoles = ['central', 'superadmin'];
-    if (!auth.success || !allowedRoles.includes(auth.role)) {
-      document.getElementById('authLoading').style.display = 'none';
-      document.getElementById('authError').style.display   = 'flex';
-      document.getElementById('authErrorMsg').textContent  = auth.success ? 'บัญชีนี้ไม่มีสิทธิ์เข้า Central' : (auth.error || 'ไม่มีสิทธิ์');
-      return;
-    }
-    currentAuth = auth;
-    document.getElementById('authLoading').style.display = 'none';
-    document.getElementById('centralName').textContent   = auth.name + ' · จ่ายกลาง';
-    // โหลดข้อมูลทันทีหลัง auth สำเร็จ (ไม่ต้องปิด-เปิดใหม่)
-    setTimeout(function(){ loadReceive(); }, 300);
-  } catch(err) {
-    document.getElementById('authLoading').style.display = 'none';
-    document.getElementById('authError').style.display   = 'flex';
-    document.getElementById('authErrorMsg').textContent  = 'เกิดข้อผิดพลาด: ' + err.message;
-  }
-});
-
-function switchTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  document.getElementById('tab-' + tab).classList.add('active');
-  document.getElementById('page-' + tab).classList.add('active');
-  if (tab === 'receive') loadReceive();
-  else loadReturn();
-}
-
-function refreshCurrentTab() {
-  if (currentTab === 'receive') loadReceive();
-  else loadReturn();
-}
-
-async function apiFetch(action, params) {
-  // POST แทน GET เพื่อหลีกเลี่ยง CORS redirect ของ Apps Script
-  const payload = Object.assign({ source: 'central', action, userId: currentUserId }, params || {});
-  const r = await fetch(SCRIPT_URL, {
-    method  : 'POST',
-    headers : { 'Content-Type': 'text/plain' },
-    redirect: 'follow',
-    body    : JSON.stringify(payload),
-  });
-  return r.json();
-}
-
-async function apiPost(payload) {
-  const r = await fetch(SCRIPT_URL, {
-    method:'POST', headers:{'Content-Type':'text/plain'},
-    redirect:'follow', body: JSON.stringify(payload),
-  });
-  return r.json();
-}
-
-function infoRow(label, value) {
-  if (!value) return '';
-  return '<div class="info-row"><span class="info-lbl">'+label+'</span><span class="info-val">'+value+'</span></div>';
-}
-
-function setBtn(id, disabled, label) {
-  const btn = document.getElementById(id);
-  if (btn) btn.disabled = disabled;
-  const lbl = document.getElementById(id.replace('-btn','-label'));
-  if (lbl && label) lbl.textContent = label;
-}
-
-// ═══ RECEIVE FROM UNIT ═══════════════════════════════════════
-async function loadReceive() {
-  document.getElementById('receive-list').innerHTML = '';
-  document.getElementById('receive-form').style.display = 'none';
-  document.getElementById('receive-success').classList.remove('show');
-  document.getElementById('load-receive').classList.add('show');
-  try {
-    const data = await apiFetch('getCentralPipeline', {});
-    document.getElementById('load-receive').classList.remove('show');
-    if (!data.success) {
-      document.getElementById('receive-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>';
-      return;
-    }
-    const pending = data.data.toReceive || [];
-    if (pending.length === 0) {
-      document.getElementById('receive-list').innerHTML = '<div class="empty-state"><div class="icon">📭</div><div>ไม่มีอุปกรณ์รอรับจากหน่วย</div></div>';
-      return;
-    }
-    document.getElementById('receive-list').innerHTML = pending.map(function(eq) {
-      const sentBy   = (eq.steril && eq.steril.sentBy)   ? eq.steril.sentBy   : '-';
-      const sentTime = (eq.steril && eq.steril.sentTime)  ? eq.steril.sentTime : '-';
-      return `<div class="card" onclick="openReceiveForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
-        <div class="card-header">
-          <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
-          <span class="badge at_central">รอรับ</span>
-        </div>
-        <div class="card-body">
-          ${infoRow('🏥 หน่วยที่ส่ง', eq.homeWard)}
-          ${infoRow('👤 ส่งโดย', sentBy)}
-          ${infoRow('⏰ เวลาส่ง', sentTime)}
-          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">แตะเพื่อยืนยันรับ →</div>
-        </div>
-      </div>`;
+    pipe=null;
+    const d = await getPipe(true);
+    const list = d.toReceive||[];
+    hide('eqLoading');
+    if (!list.length) { show('eqEmpty'); return; }
+    const el=document.getElementById('eqList');
+    el.style.display='block';
+    el.innerHTML=list.map(function(eq){
+      const s=eq.steril||{};
+      const eid=eq.equipmentSubId.replace(/'/g,''),enm=eq.equipmentName.replace(/'/g,''),
+            sb=(s.sentBy||'').replace(/'/g,''),st=(s.sentTime||'').replace(/'/g,''),hw=(eq.homeWard||'').replace(/'/g,'');
+      return '<div class="equip-item" onclick="selEq(this,\''+eid+'\',\''+enm+'\',\''+sb+'\',\''+st+'\')">' +
+        '<div><div class="en">'+eq.equipmentSubId+' — '+eq.equipmentName+'</div>' +
+        '<div class="es">วอร์ด '+hw+' · ส่งโดย '+(s.sentBy||'-')+' · '+(s.sentTime||'-')+'</div></div>' +
+        '<span class="ebadge">รอรับ</span></div>';
     }).join('');
-  } catch(err) {
-    document.getElementById('load-receive').classList.remove('show');
-    document.getElementById('receive-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + err.message + '</div>';
-  }
+  } catch(e) { hide('eqLoading'); const el=document.getElementById('eqEmpty'); el.textContent='⚠️ '+e.message; show('eqEmpty'); }
 }
 
-function openReceiveForm(eq) {
-  selectedItem = eq;
-  document.getElementById('receive-list').innerHTML = '';
-  document.getElementById('receive-form').style.display = 'block';
-  document.getElementById('receive-by').value    = currentAuth.name;
-  document.getElementById('receive-notes').value = '';
-  document.getElementById('receive-error').classList.remove('show');
-  document.getElementById('receive-info').innerHTML =
-    infoRow('📦 อุปกรณ์', eq.equipmentSubId + ' — ' + eq.equipmentName) +
-    infoRow('🏥 หน่วยที่ส่ง', eq.homeWard);
+function selEq(el,subId,name,sentBy,sentTime) {
+  document.querySelectorAll('.equip-item').forEach(function(x){x.classList.remove('sel');});
+  el.classList.add('sel');
+  selEquip={subId,name,sentBy,sentTime};
+  document.getElementById('sigForm').classList.add('show');
+  document.getElementById('formErr').classList.remove('show');
 }
 
-async function submitReceive() {
-  const receivedBy = document.getElementById('receive-by').value.trim();
-  const notes      = document.getElementById('receive-notes').value.trim();
-  const errEl      = document.getElementById('receive-error');
-  setBtn('receive-submit-btn', true, '⏳ กำลังบันทึก...');
+async function loadDropdowns() {
+  const [wr,cr]=await Promise.all([
+    fetch(SCRIPT_URL+'?action=getUsersByRole&role=worker',{redirect:'follow'}),
+    fetch(SCRIPT_URL+'?action=getUsersByRole&role=central',{redirect:'follow'}),
+  ]);
+  const [wd,cd]=await Promise.all([wr.json(),cr.json()]);
+  const ss=document.getElementById('senderSel');
+  const rs=document.getElementById('receiverSel');
+  (wd.data||[]).forEach(function(u){
+    const o=document.createElement('option'); o.value=u.name+(u.ward?' ('+u.ward+')':''); o.textContent=u.name+(u.ward?' — '+u.ward:''); ss.appendChild(o);
+  });
+  const ow=document.createElement('option'); ow.value='__other__'; ow.textContent='— อื่นๆ (กรอกเอง) —'; ss.appendChild(ow);
+  ss.onchange=function(){ document.getElementById('senderOtherBox').style.display=this.value==='__other__'?'block':'none'; };
+  (cd.data||[]).forEach(function(u){
+    const o=document.createElement('option'); o.value=u.name; o.textContent=u.name; rs.appendChild(o);
+  });
+  const oc=document.createElement('option'); oc.value='__other__'; oc.textContent='— อื่นๆ (กรอกเอง) —'; rs.appendChild(oc);
+  rs.onchange=function(){ document.getElementById('receiverOtherBox').style.display=this.value==='__other__'?'block':'none'; };
+}
+
+function setCond(btn,val) {
+  document.querySelectorAll('.cbtn').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel'); selCond=val;
+}
+
+async function doSubmit() {
+  const errEl=document.getElementById('formErr');
+  errEl.classList.remove('show');
+  if (!selEquip) { showErr('กรุณาเลือกอุปกรณ์'); return; }
+  const ss=document.getElementById('senderSel');
+  const senderVal=ss.value==='__other__'?document.getElementById('senderOther').value.trim():ss.value;
+  const rs=document.getElementById('receiverSel');
+  const rcvrVal=rs.value==='__other__'?document.getElementById('receiverOther').value.trim():rs.value;
+  if (!senderVal||senderVal==='__other__') { showErr('กรุณาระบุชื่อผู้ส่ง'); return; }
+  if (!rcvrVal||rcvrVal==='__other__') { showErr('กรุณาระบุชื่อผู้รับ'); return; }
+  if (!selCond) { showErr('กรุณาระบุสภาพอุปกรณ์'); return; }
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
   try {
-    const result = await apiPost({ source:'central', action:'receive', userId:currentUserId,
-      equipmentSubId: selectedItem.equipmentSubId, receivedBy, notes });
+    const resp=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({source:'central',action:'receive',equipmentSubId:selEquip.subId,
+        receivedBy:rcvrVal,sentBy:senderVal,condition:selCond,notes:document.getElementById('formNotes').value.trim()})});
+    const result=await resp.json();
     if (result.success) {
-      document.getElementById('receive-form').style.display = 'none';
-      document.getElementById('receive-success-sub').textContent = selectedItem.equipmentSubId + ' — ' + selectedItem.equipmentName;
-      document.getElementById('receive-success').classList.add('show');
-    } else {
-      errEl.textContent = '⚠️ ' + result.error; errEl.classList.add('show');
-      setBtn('receive-submit-btn', false, '📥 ยืนยันรับอุปกรณ์');
-    }
-  } catch(err) {
-    errEl.textContent = '⚠️ ' + err.message; errEl.classList.add('show');
-    setBtn('receive-submit-btn', false, '📥 ยืนยันรับอุปกรณ์');
-  }
+      pipe=null; hide('confirmScreen');
+      document.getElementById('successSub').innerHTML='📦 '+selEquip.subId+' — '+selEquip.name+'<br>รับโดย: '+rcvrVal+'<br>ส่งโดย: '+senderVal+'<br><br>ระบบแจ้ง LINE group แล้วครับ';
+      showFlex('successScreen');
+    } else { showErr(result.error||'เกิดข้อผิดพลาด'); btn.disabled=false; btn.textContent='📥 ยืนยันการรับมอบอุปกรณ์'; }
+  } catch(e) { showErr('เกิดข้อผิดพลาด: '+e.message); btn.disabled=false; btn.textContent='📥 ยืนยันการรับมอบอุปกรณ์'; }
 }
 
-function backToReceiveList() { document.getElementById('receive-form').style.display='none'; loadReceive(); }
-function reloadReceive()     { document.getElementById('receive-success').classList.remove('show'); loadReceive(); }
-
-// ═══ RETURN TO UNIT ══════════════════════════════════════════
-async function loadReturn() {
-  document.getElementById('return-list').innerHTML = '';
-  document.getElementById('return-form').style.display = 'none';
-  document.getElementById('return-success').classList.remove('show');
-  document.getElementById('load-return').classList.add('show');
+async function loadDash() {
   try {
-    const data = await apiFetch('getCentralPipeline', {});
-    document.getElementById('load-return').classList.remove('show');
-    if (!data.success) {
-      document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>';
-      return;
-    }
-    const pending = data.data.toReturn || [];
-    if (pending.length === 0) {
-      document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">📤</div><div>ไม่มีอุปกรณ์ที่ต้องส่งคืน</div></div>';
-      return;
-    }
-    document.getElementById('return-list').innerHTML = pending.map(function(eq) {
-      const recBy   = (eq.steril && eq.steril.centralReceivedBy)   ? eq.steril.centralReceivedBy   : '-';
-      const recTime = (eq.steril && eq.steril.centralReceivedTime) ? eq.steril.centralReceivedTime : '-';
-      return `<div class="card" onclick="openReturnForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
-        <div class="card-header">
-          <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
-          <span class="badge at_central">รับแล้ว รอส่งคืน</span>
-        </div>
-        <div class="card-body">
-          ${infoRow('🏥 ส่งคืนไปที่', eq.homeWard)}
-          ${infoRow('👤 รับโดย', recBy)}
-          ${infoRow('⏰ เวลารับ', recTime)}
-          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">แตะเพื่อส่งคืน →</div>
-        </div>
-      </div>`;
+    const d=await getPipe(true);
+    const tr=d.toReceive||[], th=d.toReturn||[], hi=d.history||[];
+    document.getElementById('kWait').textContent=tr.length;
+    document.getElementById('kHere').textContent=(d.atCentral||[]).length;
+    document.getElementById('dWait').innerHTML=!tr.length?'<div class="empty">ไม่มีอุปกรณ์รอรับมอบ</div>':tr.map(function(e){return mkCard(e,'w','รอรับมอบ');}).join('');
+    const ac=d.atCentral||[];
+    document.getElementById('dHere').innerHTML=!ac.length?'<div class="empty">ไม่มีอุปกรณ์ขณะนี้</div>':ac.map(function(e){return mkCard(e,'h','กำลังฆ่าเชื้อ');}).join('');
+    document.getElementById('dHist').innerHTML=!hi.length?'<div class="empty">ยังไม่มีประวัติ</div>':hi.slice(0,10).map(function(h){
+      return '<div class="eq-card"><div class="eq-hd"><div class="eq-title">'+h.equipmentSubId+' — '+h.equipmentName+'</div></div>' +
+        '<div class="eq-body"><div class="ir"><span class="ir-l">ส่งออก</span><span class="ir-v">'+(h.sentTime||'-')+'</span></div>' +
+        '<div class="ir"><span class="ir-l">รับกลับ</span><span class="ir-v">'+(h.unitReceivedTime||'-')+'</span></div>' +
+        '<div class="ir"><span class="ir-l">สภาพ</span><span class="ir-v">'+(h.finalCondition||'-')+'</span></div></div></div>';
     }).join('');
-  } catch(err) {
-    document.getElementById('load-return').classList.remove('show');
-    document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + err.message + '</div>';
-  }
+  } catch(e) { document.getElementById('dWait').innerHTML='<div class="empty">⚠️ '+e.message+'</div>'; }
 }
 
-function openReturnForm(eq) {
-  selectedItem = eq;
-  document.getElementById('return-list').innerHTML = '';
-  document.getElementById('return-form').style.display = 'block';
-  document.getElementById('return-by').value    = currentAuth.name;
-  document.getElementById('return-notes').value = '';
-  document.getElementById('return-error').classList.remove('show');
-  document.getElementById('return-info').innerHTML =
-    infoRow('📦 อุปกรณ์', eq.equipmentSubId + ' — ' + eq.equipmentName) +
-    infoRow('🏥 ส่งคืนไปที่', eq.homeWard);
+function mkCard(eq,bcls,blbl) {
+  const s=eq.steril||{};
+  return '<div class="eq-card"><div class="eq-hd"><div class="eq-title">📦 '+eq.equipmentSubId+' — '+eq.equipmentName+'</div><span class="badge '+bcls+'">'+blbl+'</span></div>' +
+    '<div class="eq-body"><div class="ir"><span class="ir-l">จากวอร์ด</span><span class="ir-v">'+(eq.homeWard||'-')+'</span></div>' +
+    (s.sentBy?'<div class="ir"><span class="ir-l">ส่งโดย</span><span class="ir-v">'+s.sentBy+'</span></div>':'') +
+    (s.sentTime?'<div class="ir"><span class="ir-l">เวลาส่ง</span><span class="ir-v">'+s.sentTime+'</span></div>':'') +
+    (s.centralReceivedBy?'<div class="ir"><span class="ir-l">รับโดย</span><span class="ir-v">'+s.centralReceivedBy+'</span></div>':'') +
+    '</div></div>';
 }
 
-async function submitReturn() {
-  const returnedBy = document.getElementById('return-by').value.trim();
-  const notes      = document.getElementById('return-notes').value.trim();
-  const errEl      = document.getElementById('return-error');
-  setBtn('return-submit-btn', true, '⏳ กำลังบันทึก...');
-  try {
-    const result = await apiPost({ source:'central', action:'return', userId:currentUserId,
-      equipmentSubId: selectedItem.equipmentSubId, returnedBy, notes });
-    if (result.success) {
-      document.getElementById('return-form').style.display = 'none';
-      document.getElementById('return-success-sub').textContent = selectedItem.equipmentSubId + ' — กรุณาแจ้ง ' + selectedItem.homeWard + ' มารับด้วยครับ';
-      document.getElementById('return-success').classList.add('show');
-    } else {
-      errEl.textContent = '⚠️ ' + result.error; errEl.classList.add('show');
-      setBtn('return-submit-btn', false, '📤 ยืนยันส่งคืนอุปกรณ์');
-    }
-  } catch(err) {
-    errEl.textContent = '⚠️ ' + err.message; errEl.classList.add('show');
-    setBtn('return-submit-btn', false, '📤 ยืนยันส่งคืนอุปกรณ์');
-  }
-}
-
-function backToReturnList() { document.getElementById('return-form').style.display='none'; loadReturn(); }
-function reloadReturn()     { document.getElementById('return-success').classList.remove('show'); loadReturn(); }
+function show(id){const e=document.getElementById(id);if(e)e.style.display='block';}
+function showFlex(id){const e=document.getElementById(id);if(e)e.style.display='flex';}
+function hide(id){const e=document.getElementById(id);if(e)e.style.display='none';}
+function showErr(msg){const el=document.getElementById('formErr');el.textContent='⚠️ '+msg;el.classList.add('show');}
 </script>
 </body>
 </html>
