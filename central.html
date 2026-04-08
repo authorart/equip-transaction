@@ -160,7 +160,7 @@ let pipe     = null;
 
 function showConfirm() {
   hide('menuScreen'); showFlex('confirmScreen');
-  loadEquips(); loadDropdowns();
+  loadEquips(); // loadDropdowns จะถูกเรียกอัตโนมัติเมื่อเลือกอุปกรณ์
 }
 function showDash() {
   hide('menuScreen'); showFlex('dashScreen');
@@ -199,7 +199,7 @@ async function loadEquips() {
       const s=eq.steril||{};
       const eid=eq.equipmentSubId.replace(/'/g,''),enm=eq.equipmentName.replace(/'/g,''),
             sb=(s.sentBy||'').replace(/'/g,''),st=(s.sentTime||'').replace(/'/g,''),hw=(eq.homeWard||'').replace(/'/g,'');
-      return '<div class="equip-item" onclick="selEq(this,\''+eid+'\',\''+enm+'\',\''+sb+'\',\''+st+'\')">' +
+      return '<div class="equip-item" onclick="selEq(this,\''+eid+'\',\''+enm+'\',\''+sb+'\',\''+st+'\',\''+hw+'\')">' +
         '<div><div class="en">'+eq.equipmentSubId+' — '+eq.equipmentName+'</div>' +
         '<div class="es">วอร์ด '+hw+' · ส่งโดย '+(s.sentBy||'-')+' · '+(s.sentTime||'-')+'</div></div>' +
         '<span class="ebadge">รอรับ</span></div>';
@@ -207,29 +207,44 @@ async function loadEquips() {
   } catch(e) { hide('eqLoading'); const el=document.getElementById('eqEmpty'); el.textContent='⚠️ '+e.message; show('eqEmpty'); }
 }
 
-function selEq(el,subId,name,sentBy,sentTime) {
+function selEq(el,subId,name,sentBy,sentTime,homeWard) {
   document.querySelectorAll('.equip-item').forEach(function(x){x.classList.remove('sel');});
   el.classList.add('sel');
-  selEquip={subId,name,sentBy,sentTime};
+  selEquip={subId,name,sentBy,sentTime,homeWard};
   document.getElementById('sigForm').classList.add('show');
   document.getElementById('formErr').classList.remove('show');
+  // โหลด dropdown ใหม่โดยกรอง ward ตามอุปกรณ์ที่เลือก
+  loadDropdowns(homeWard);
 }
 
-async function loadDropdowns() {
+async function loadDropdowns(homeWard) {
+  // โหลด workers (กรอง ward) และ central staff (จาก sheet Central) แบบ parallel
   const [wr,cr]=await Promise.all([
-    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:JSON.stringify({source:'central',action:'getUsersByRole',role:'worker'})}),
-    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:JSON.stringify({source:'central',action:'getUsersByRole',role:'central'})}),
+    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({source:'central',action:'getUsersByRole',role:'worker',ward:homeWard||''})}),
+    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({source:'central',action:'getCentralStaff'})}),
   ]);
   const [wd,cd]=await Promise.all([wr.json(),cr.json()]);
   const ss=document.getElementById('senderSel');
   const rs=document.getElementById('receiverSel');
+
+  // ล้างก่อน (กรณีเรียกซ้ำเมื่อเปลี่ยนอุปกรณ์)
+  ss.innerHTML='<option value="">— เลือกชื่อผู้ส่ง —</option>';
+  rs.innerHTML='<option value="">— เลือกชื่อผู้รับ —</option>';
+
+  // Ward Workers — ใช้ชื่อจริง (NAME col G)
   (wd.data||[]).forEach(function(u){
-    const o=document.createElement('option'); o.value=u.name+(u.ward?' ('+u.ward+')':''); o.textContent=u.name+(u.ward?' — '+u.ward:''); ss.appendChild(o);
+    const o=document.createElement('option');
+    o.value=u.name; o.textContent=u.name+(u.ward?' ('+u.ward+')':'');
+    ss.appendChild(o);
   });
   const ow=document.createElement('option'); ow.value='__other__'; ow.textContent='— อื่นๆ (กรอกเอง) —'; ss.appendChild(ow);
   ss.onchange=function(){ document.getElementById('senderOtherBox').style.display=this.value==='__other__'?'block':'none'; };
-  (cd.data||[]).forEach(function(u){
-    const o=document.createElement('option'); o.value=u.name; o.textContent=u.name; rs.appendChild(o);
+
+  // Central Staff — จาก sheet 'Central'
+  (cd.data||[]).forEach(function(name){
+    const o=document.createElement('option'); o.value=name; o.textContent=name; rs.appendChild(o);
   });
   const oc=document.createElement('option'); oc.value='__other__'; oc.textContent='— อื่นๆ (กรอกเอง) —'; rs.appendChild(oc);
   rs.onchange=function(){ document.getElementById('receiverOtherBox').style.display=this.value==='__other__'?'block':'none'; };
