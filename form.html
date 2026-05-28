@@ -574,14 +574,14 @@ async function fetchSubIds() {
         return;
       }
       // พบ subId ที่สแกนมาในรายการ → auto-select ทันที
-      select.value = scannedSubId;
+      cddSet('subIdSelect', scannedSubId, scannedSubId);
       onSubIdChange();
       return;
     }
 
     // ── ไม่ได้มาจาก QR: auto-select ถ้ามีแค่ชิ้นเดียว ────────
     if (data.subIds.length === 1) {
-      select.value = data.subIds[0].subId;
+      cddSet('subIdSelect', data.subIds[0].subId, data.subIds[0].subId);
       onSubIdChange();
     }
 
