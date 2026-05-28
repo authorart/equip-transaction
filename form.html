@@ -190,6 +190,93 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   border: 1.5px solid #D4DCE8;
 }
 </style>
+
+<style id="cdd-style">
+.cdd-wrap{position:relative;width:100%;display:block}
+.cdd-btn{width:100%;min-height:46px;padding:11px 36px 11px 14px;
+  border:2px solid #D4DCE8;border-radius:10px;font-size:15px;font-family:inherit;
+  color:#1A2B45;background:#fff;text-align:left;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  transition:border-color .15s;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+.cdd-btn.placeholder .cdd-txt{color:#9CA3AF}
+.cdd-arr{font-size:11px;color:#9CA3AF;flex-shrink:0;transition:transform .2s;margin-left:auto}
+.cdd-wrap.open .cdd-arr{transform:rotate(180deg)}
+.cdd-list{position:fixed;background:#fff;border:2px solid #0D7377;border-radius:10px;
+  box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:99999;
+  max-height:250px;overflow-y:auto;display:none}
+.cdd-wrap.open .cdd-list{display:block}
+.cdd-opt{padding:13px 16px;font-size:15px;font-family:inherit;color:#1A2B45;
+  cursor:pointer;border-bottom:.5px solid #F3F4F6;-webkit-tap-highlight-color:transparent;user-select:none}
+.cdd-opt:last-child{border-bottom:none}
+.cdd-opt.cdd-ph{color:#9CA3AF}
+.cdd-opt.sel{background:#E1F5EE;color:#085041;font-weight:600}
+</style>
+
+<script id="cdd-lib">
+(function(){
+var _ow=null;
+document.addEventListener('click',function(e){
+  if(_ow&&!_ow.contains(e.target)){_ow.classList.remove('open');_ow=null;}
+},true);
+function pos(wrap){
+  var btn=wrap.querySelector('.cdd-btn'),list=wrap.querySelector('.cdd-list');
+  var r=btn.getBoundingClientRect();
+  list.style.width=Math.max(r.width,180)+'px';
+  list.style.left=r.left+'px';
+  if(window.innerHeight-r.bottom>160){list.style.top=(r.bottom+2)+'px';list.style.bottom='';}
+  else{list.style.bottom=(window.innerHeight-r.top+2)+'px';list.style.top='';}
+}
+window.makeCDD=function(id,opts,ph,cb){
+  var wrap=document.createElement('div');wrap.className='cdd-wrap';wrap.id='cdd_'+id;
+  var btn=document.createElement('button');btn.type='button';btn.className='cdd-btn placeholder';
+  btn.innerHTML='<span class="cdd-txt">'+ph+'</span><span class="cdd-arr">&#9660;</span>';
+  var list=document.createElement('div');list.className='cdd-list';
+  var inp=document.createElement('input');inp.type='hidden';inp.id=id;inp.name=id;inp.value='';
+  function ao(v,l,p){
+    var o=document.createElement('div');o.className='cdd-opt'+(p?' cdd-ph':'');
+    o.textContent=l;o.dataset.value=v||'';list.appendChild(o);
+  }
+  ao('',ph,true);
+  (opts||[]).forEach(function(o){ao(typeof o==='string'?o:o.value,typeof o==='string'?o:o.label,false);});
+  btn.addEventListener('click',function(e){
+    e.preventDefault();e.stopPropagation();
+    var op=wrap.classList.contains('open');
+    if(_ow&&_ow!==wrap){_ow.classList.remove('open');}
+    if(op){wrap.classList.remove('open');_ow=null;}
+    else{wrap.classList.add('open');_ow=wrap;pos(wrap);}
+  });
+  list.addEventListener('click',function(e){
+    var o=e.target.closest('.cdd-opt');if(!o)return;
+    var v=o.dataset.value||'';inp.value=v;
+    btn.querySelector('.cdd-txt').textContent=v?o.textContent:ph;
+    btn.classList.toggle('placeholder',!v);
+    list.querySelectorAll('.cdd-opt').forEach(function(x){x.classList.remove('sel');});
+    o.classList.add('sel');
+    wrap.classList.remove('open');_ow=null;
+    if(cb)cb(v);
+  });
+  wrap.appendChild(btn);wrap.appendChild(list);wrap.appendChild(inp);
+  return wrap;
+};
+window.cddUpdate=function(id,opts,ph){
+  var wrap=document.getElementById('cdd_'+id);if(!wrap)return;
+  var list=wrap.querySelector('.cdd-list'),inp=document.getElementById(id),btn=wrap.querySelector('.cdd-btn');
+  list.innerHTML='';
+  function ao(v,l,p){var o=document.createElement('div');o.className='cdd-opt'+(p?' cdd-ph':'');o.textContent=l;o.dataset.value=v||'';list.appendChild(o);}
+  ao('',ph||'— กรุณาเลือก —',true);
+  (opts||[]).forEach(function(o){ao(typeof o==='string'?o:o.value,typeof o==='string'?o:o.label,false);});
+  inp.value='';btn.querySelector('.cdd-txt').textContent=ph||'— กรุณาเลือก —';btn.classList.add('placeholder');
+};
+window.cddSet=function(id,v,l){
+  var wrap=document.getElementById('cdd_'+id);if(!wrap)return;
+  var inp=document.getElementById(id),btn=wrap.querySelector('.cdd-btn'),list=wrap.querySelector('.cdd-list');
+  inp.value=v||'';btn.querySelector('.cdd-txt').textContent=(v&&l)?l:(v||btn.querySelector('.cdd-txt').textContent);
+  btn.classList.toggle('placeholder',!v);
+  list.querySelectorAll('.cdd-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.value===v);});
+};
+window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:'';};
+})();
+</script>
 </head>
 <body>
 
@@ -256,9 +343,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
       <div class="section-title">ข้อมูลอุปกรณ์</div>
       <div class="field">
         <label class="field-label required" id="subIdLabel">เลือกชิ้นอุปกรณ์</label>
-        <select class="field-control" id="subIdSelect" onchange="onSubIdChange()">
-          <option value="">— กรุณาเลือก —</option>
-        </select>
+        <div id="cdd_subId_wrap"></div>
         <div class="loading-row" id="borrowerLoadingRow">
           <div class="spinner-sm"></div><span>กำลังดึงข้อมูล...</span>
         </div>
@@ -267,12 +352,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
       <!-- ── สภาพอุปกรณ์ (ทั้งยืมและคืน) ── -->
       <div class="field">
         <label class="field-label required" id="conditionLabel">ประเมินสภาพอุปกรณ์ก่อนยืม</label>
-        <select class="field-control" id="condition" onchange="onConditionChange()">
-          <option value="">— กรุณาเลือก —</option>
-          <option value="สภาพพร้อมใช้งาน (Ready for use)">สภาพพร้อมใช้งาน (Ready for use)</option>
-          <option value="ชำรุดเล็กน้อย (Minor damage)">ชำรุดเล็กน้อย (Minor damage)</option>
-          <option value="ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)">ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)</option>
-        </select>
+        <div id="cdd_cond_wrap"></div>
         <!-- แจ้งเตือนกรณีชำรุดมาก -->
         <div id="conditionWarning" style="display:none;margin-top:8px;padding:10px 14px;background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;font-size:13px;color:#92400E;font-weight:600;">
           ⚠️ อุปกรณ์ชำรุด — กรุณาแจ้งรายละเอียดในช่องหมายเหตุ และแจ้งผู้รับผิดชอบทราบด้วย
@@ -291,24 +371,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
       <!-- Ward dropdown + อื่นๆ -->
       <div class="field">
         <label class="field-label required">Ward / หน่วยงาน</label>
-        <select class="field-control" id="wardSelect" onchange="onWardChange()">
-          <option value="">— กรุณาเลือก —</option>
-          <option value="MICU1">MICU1</option>
-          <option value="MICU2">MICU2</option>
-          <option value="MICU3">MICU3</option>
-          <option value="CCU">CCU</option>
-          <option value="เฉพาะโรค">เฉพาะโรค</option>
-          <option value="อายุรกรรมชาย1">อายุรกรรมชาย1</option>
-          <option value="อายุรกรรมชาย2">อายุรกรรมชาย2</option>
-          <option value="อายุรกรรมหญิง1">อายุรกรรมหญิง1</option>
-          <option value="อายุรกรรมหญิง2">อายุรกรรมหญิง2</option>
-          <option value="stroke">Stroke</option>
-          <option value="พิเศษอายุรกรรมชั้น2">พิเศษอายุรกรรมชั้น 2</option>
-          <option value="พิเศษอายุรกรรมชั้น3">พิเศษอายุรกรรมชั้น 3</option>
-          <option value="พิเศษรวมอายุรกรรมชั้น9">พิเศษรวมอายุรกรรมชั้น 9</option>
-          <option value="สงฆ์อาพาธ">สงฆ์อาพาธ</option>
-          <option value="other">อื่นๆ ระบุ...</option>
-        </select>
+        <div id="cdd_ward_wrap"></div>
         <input type="text" class="field-control" id="wardOther"
                placeholder="ระบุ Ward / หน่วยงาน"
                style="display:none;margin-top:8px">
@@ -327,12 +390,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
         <!-- วัตถุประสงค์ dropdown + อื่นๆ -->
         <div class="field">
           <label class="field-label required">วัตถุประสงค์การยืม</label>
-          <select class="field-control" id="purposeSelect" onchange="onPurposeChange()">
-            <option value="">— กรุณาเลือก —</option>
-            <option value="ใช้ในกรณีฉุกเฉิน/เร่งด่วน">ใช้ในกรณีฉุกเฉิน/เร่งด่วน</option>
-            <option value="ใช้ในกรณีไม่เร่งด่วน เพื่อการวินิจฉัยหรือการรักษาโรค">ใช้ในกรณีไม่เร่งด่วน เพื่อการวินิจฉัยหรือการรักษาโรค</option>
-            <option value="other">อื่นๆ ระบุ...</option>
-          </select>
+          <div id="cdd_purpose_wrap"></div>
           <input type="text" class="field-control" id="purposeOther"
                  placeholder="ระบุวัตถุประสงค์"
                  style="display:none;margin-top:8px">
@@ -398,6 +456,38 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initForm() {
+  // ── Custom Dropdowns (LINE LIFF compatible) ─────────────────
+  document.getElementById('cdd_subId_wrap').appendChild(
+    makeCDD('subIdSelect',[],'— กรุณาเลือก —',function(v){onSubIdChange();})
+  );
+  document.getElementById('cdd_cond_wrap').appendChild(
+    makeCDD('condition',[
+    {value:'สภาพพร้อมใช้งาน (Ready for use)',label:'สภาพพร้อมใช้งาน (Ready for use)'},
+    {value:'ชำรุดเล็กน้อย (Minor damage)',label:'ชำรุดเล็กน้อย (Minor damage)'},
+    {value:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)',label:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)'}
+  ],'— กรุณาเลือก —',function(v){onConditionChange();})
+  );
+  document.getElementById('cdd_ward_wrap').appendChild(
+    makeCDD('wardSelect',[
+    {value:'MICU1',label:'MICU1'},{value:'MICU2',label:'MICU2'},{value:'MICU3',label:'MICU3'},
+    {value:'CCU',label:'CCU'},{value:'เฉพาะโรค',label:'เฉพาะโรค'},
+    {value:'อายุรกรรมชาย1',label:'อายุรกรรมชาย1'},{value:'อายุรกรรมชาย2',label:'อายุรกรรมชาย2'},
+    {value:'อายุรกรรมหญิง1',label:'อายุรกรรมหญิง1'},{value:'อายุรกรรมหญิง2',label:'อายุรกรรมหญิง2'},
+    {value:'stroke',label:'Stroke'},{value:'พิเศษอายุรกรรมชั้น2',label:'พิเศษอายุรกรรมชั้น 2'},
+    {value:'พิเศษอายุรกรรมชั้น3',label:'พิเศษอายุรกรรมชั้น 3'},
+    {value:'พิเศษรวมอายุรกรรมชั้น9',label:'พิเศษรวมอายุรกรรมชั้น 9'},
+    {value:'สงฆ์อาพาธ',label:'สงฆ์อาพาธ'},{value:'other',label:'อื่นๆ ระบุ...'}
+  ],'— กรุณาเลือก —',function(v){onWardChange();})
+  );
+  document.getElementById('cdd_purpose_wrap').appendChild(
+    makeCDD('purposeSelect',[
+    {value:'ใช้ในกรณีฉุกเฉิน/เร่งด่วน',label:'ใช้ในกรณีฉุกเฉิน/เร่งด่วน'},
+    {value:'ใช้ในกรณีไม่เร่งด่วน เพื่อการวินิจฉัยหรือการรักษาโรค',label:'ใช้ในกรณีไม่เร่งด่วน เพื่อการวินิจฉัยหรือการรักษาโรค'},
+    {value:'other',label:'อื่นๆ ระบุ...'}
+  ],'— กรุณาเลือก —',function(v){onPurposeChange();})
+  );
+  // ───────────────────────────────────────────────────────────
+
   // ── Cancel mode ─────────────────────────────────────────────
   if (formType === 'cancel') {
     initCancelForm();
@@ -464,14 +554,11 @@ async function fetchSubIds() {
       return;
     }
 
-    // ── Populate dropdown ─────────────────────────────────────
-    const select = document.getElementById('subIdSelect');
-    data.subIds.forEach(function(item) {
-      const opt   = document.createElement('option');
-      opt.value   = item.subId;
-      opt.textContent = item.subId;
-      select.appendChild(opt);
+    // ── Populate custom dropdown ─────────────────────────────
+    const cddOpts = data.subIds.map(function(item){
+      return {value:item.subId, label:item.subId};
     });
+    cddUpdate('subIdSelect', cddOpts, '— กรุณาเลือก —');
 
     document.getElementById('formBody').style.display = 'block';
 
@@ -529,19 +616,17 @@ async function onSubIdChange() {
       }
       if (data.ward) {
         // พยายาม match กับ option ใน wardSelect ก่อน ถ้าไม่เจอให้ใส่ใน wardOther
-        const wardSel = document.getElementById('wardSelect');
-        let matched = false;
-        for (let i = 0; i < wardSel.options.length; i++) {
-          if (wardSel.options[i].value === data.ward) {
-            wardSel.value = data.ward;
-            matched = true;
-            break;
-          }
-        }
-        if (!matched) {
-          wardSel.value = 'other';
-          document.getElementById('wardOther').style.display = 'block';
-          document.getElementById('wardOther').value = data.ward;
+        // autofill ward via CDD
+        const _kw=['MICU1','MICU2','MICU3','CCU','เฉพาะโรค','อายุรกรรมชาย1','อายุรกรรมชาย2',
+          'อายุรกรรมหญิง1','อายุรกรรมหญิง2','stroke','พิเศษอายุรกรรมชั้น2','พิเศษอายุรกรรมชั้น3',
+          'พิเศษรวมอายุรกรรมชั้น9','สงฆ์อาพาธ'];
+        if(_kw.includes(data.ward)){
+          cddSet('wardSelect',data.ward,data.ward);
+          document.getElementById('wardOther').style.display='none';
+        } else {
+          cddSet('wardSelect','other','อื่นๆ ระบุ...');
+          document.getElementById('wardOther').value=data.ward||'';
+          document.getElementById('wardOther').style.display=data.ward?'':'none';
         }
         document.getElementById('noteWardAutofill').classList.add('show');
       }
