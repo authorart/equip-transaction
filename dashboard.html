@@ -10,10 +10,10 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
-body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-height:1.6;min-height:100vh}
+body{font-family:'Sarabun',sans-serif;background:#F1F5F9;color:#334155;line-height:1.6;min-height:100vh}
 
 /* ── Header ── */
-.header{background:linear-gradient(135deg,#095E61,#0D7377);padding:14px 16px;
+.header{background:linear-gradient(135deg,#0C4A6E,#0C4A6E);padding:14px 16px;
   display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.2);
   position:sticky;top:0;z-index:200}
 .header-logo{font-size:22px}
@@ -32,7 +32,7 @@ body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-heig
 .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .role-card{background:#fff;border:2px solid #D4DCE8;border-radius:16px;padding:20px 14px;
   text-align:center;cursor:pointer;transition:.15s}
-.role-card:hover{border-color:#0D7377;transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,115,119,.15)}
+.role-card:hover{border-color:#0C4A6E;transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,115,119,.15)}
 .role-card.full{grid-column:1/-1}
 .role-icon{font-size:34px;margin-bottom:8px}
 .role-name{font-size:15px;font-weight:800}
@@ -45,7 +45,7 @@ body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-heig
 .tab-btn{flex-shrink:0;padding:11px 14px;font-size:13px;font-weight:700;
   font-family:'Sarabun',sans-serif;color:#64748B;background:none;
   border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
-.tab-btn.active{color:#0D7377;border-bottom-color:#0D7377}
+.tab-btn.active{color:#0C4A6E;border-bottom-color:#0C4A6E}
 
 /* ── Views ── */
 .view{display:none;padding:16px 16px 70px;max-width:860px;margin:0 auto}
@@ -53,7 +53,7 @@ body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-heig
 
 /* ── Spinner ── */
 .spin-box{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:#64748B}
-.spinner{width:28px;height:28px;border:3px solid #D4DCE8;border-top-color:#0D7377;
+.spinner{width:28px;height:28px;border:3px solid #D4DCE8;border-top-color:#0C4A6E;
   border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -94,15 +94,15 @@ body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-heig
   display:flex;align-items:center;justify-content:center;font-size:32px}
 .eq-img img{width:100%;height:100%;object-fit:cover}
 .eq-body{padding:10px 10px 0}
-.eq-name{font-size:13px;font-weight:800;color:#1A2B45;margin-bottom:4px}
+.eq-name{font-size:13px;font-weight:800;color:#334155;margin-bottom:4px}
 .eq-stat{font-size:12px;color:#64748B;margin-bottom:8px}
-.eq-stat strong{color:#1A2B45}
+.eq-stat strong{color:#334155}
 .eq-footer{display:flex;flex-direction:column;gap:5px;padding:8px 10px}
 .btn-eq{width:100%;padding:9px 8px;border:none;border-radius:9px;font-size:13px;
   font-weight:800;font-family:'Sarabun',sans-serif;cursor:pointer}
-.btn-eq.borrow{background:#0D7377;color:#fff}
-.btn-eq.ret{background:#E8F4F4;color:#0D7377;border:1.5px solid #0D7377}
-.btn-eq.queue{background:#1A6DC8;color:#fff}
+.btn-eq.borrow{background:#0C4A6E;color:#fff}
+.btn-eq.ret{background:#E0F2FE;color:#0C4A6E;border:1.5px solid #0C4A6E}
+.btn-eq.queue{background:#0369A1;color:#fff}
 
 /* ── Badge ── */
 .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:9px}
@@ -123,17 +123,17 @@ body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-heig
 .ir{display:flex;gap:6px;padding:4px 0;border-bottom:1px solid #F1F5F9;font-size:13px}
 .ir:last-child{border:none}
 .ir-l{color:#94A3B8;min-width:85px;flex-shrink:0;font-weight:600}
-.ir-v{color:#1A2B45;font-weight:500;flex:1;word-break:break-all}
+.ir-v{color:#334155;font-weight:500;flex:1;word-break:break-all}
 
 /* ── Action buttons (admin) ── */
 .btn{padding:10px 16px;border:none;border-radius:10px;font-size:14px;font-weight:800;
   font-family:'Sarabun',sans-serif;cursor:pointer;transition:.15s}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn:active{transform:scale(.97)}
-.btn.primary{background:#0D7377;color:#fff}
+.btn.primary{background:#0C4A6E;color:#fff}
 .btn.danger{background:#B91C1C;color:#fff}
 .btn.secondary{background:#F1F5F9;color:#374151}
-.btn.blue{background:#1A6DC8;color:#fff}
+.btn.blue{background:#0369A1;color:#fff}
 .btn-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .btn-full{width:100%;padding:13px;border-radius:11px;font-size:15px}
 
@@ -146,7 +146,7 @@ body{font-family:'Sarabun',sans-serif;background:#F0F4F8;color:#1A2B45;line-heig
 /* ── Table ── */
 .tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid #E0E7EF}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px}
-th{background:#0D7377;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:700}
+th{background:#0C4A6E;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:700}
 td{padding:9px 12px;border-bottom:1px solid #F1F5F9;vertical-align:top}
 tr:last-child td{border:none}
 tr:nth-child(even) td{background:#F8FAFC}
@@ -155,7 +155,7 @@ tr:nth-child(even) td{background:#F8FAFC}
 .date-filter{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .date-filter input{flex:1;min-width:110px;padding:8px 10px;border:2px solid #D4DCE8;
   border-radius:8px;font-size:13px;font-family:'Sarabun',sans-serif}
-.date-filter input:focus{border-color:#0D7377;outline:none}
+.date-filter input:focus{border-color:#0C4A6E;outline:none}
 .date-filter .btn{padding:8px 14px}
 
 /* ── Empty state ── */
@@ -170,7 +170,7 @@ tr:nth-child(even) td{background:#F8FAFC}
 .step-dot.s2{background:#CFFAFE}
 .step-dot.s3{background:#DBEAFE}
 .step-body{flex:1}
-.step-title{font-size:14px;font-weight:800;color:#1A2B45}
+.step-title{font-size:14px;font-weight:800;color:#334155}
 .step-sub{font-size:12px;color:#64748B;line-height:1.7}
 
 /* ── Chart ── */
@@ -202,9 +202,9 @@ tr:nth-child(even) td{background:#F8FAFC}
 .close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#64748B}
 
 select.fld,textarea.fld,input.fld{width:100%;padding:11px 13px;border:2px solid #D4DCE8;
-  border-radius:10px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1A2B45;background:#fff;
+  border-radius:10px;font-size:14px;font-family:'Sarabun',sans-serif;color:#334155;background:#fff;
   margin-top:4px;-webkit-appearance:none}
-select.fld:focus,textarea.fld:focus,input.fld:focus{border-color:#0D7377;outline:none}
+select.fld:focus,textarea.fld:focus,input.fld:focus{border-color:#0C4A6E;outline:none}
 textarea.fld{resize:vertical;min-height:70px}
 label.lbl{font-size:14px;font-weight:700;color:#374151;display:block;margin-top:12px}
 
@@ -221,21 +221,21 @@ label.lbl{font-size:14px;font-weight:700;color:#374151;display:block;margin-top:
 .cdd-wrap{position:relative;width:100%;display:block}
 .cdd-btn{width:100%;min-height:46px;padding:11px 36px 11px 14px;
   border:2px solid #D4DCE8;border-radius:10px;font-size:15px;font-family:inherit;
-  color:#1A2B45;background:#fff;text-align:left;cursor:pointer;
+  color:#334155;background:#fff;text-align:left;cursor:pointer;
   display:flex;align-items:center;justify-content:space-between;gap:8px;
   transition:border-color .15s;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
 .cdd-btn.placeholder .cdd-txt{color:#9CA3AF}
 .cdd-arr{font-size:11px;color:#9CA3AF;flex-shrink:0;transition:transform .2s;margin-left:auto}
 .cdd-wrap.open .cdd-arr{transform:rotate(180deg)}
-.cdd-list{position:fixed;background:#fff;border:2px solid #0D7377;border-radius:10px;
+.cdd-list{position:fixed;background:#fff;border:2px solid #0C4A6E;border-radius:10px;
   box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:99999;
   max-height:250px;overflow-y:auto;display:none}
 .cdd-wrap.open .cdd-list{display:block}
-.cdd-opt{padding:13px 16px;font-size:15px;font-family:inherit;color:#1A2B45;
+.cdd-opt{padding:13px 16px;font-size:15px;font-family:inherit;color:#334155;
   cursor:pointer;border-bottom:.5px solid #F3F4F6;-webkit-tap-highlight-color:transparent;user-select:none}
 .cdd-opt:last-child{border-bottom:none}
 .cdd-opt.cdd-ph{color:#9CA3AF}
-.cdd-opt.sel{background:#E1F5EE;color:#085041;font-weight:600}
+.cdd-opt.sel{background:#E0F2FE;color:#0C4A6E;font-weight:600}
 </style>
 
 <script id="cdd-lib">
@@ -303,31 +303,106 @@ window.cddSet=function(id,v,l){
 window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:'';};
 })();
 </script>
+<style id="v7-style">
+/* ═══ v7 — Visual Brand Direction: "Sustaining Life, Syncing Assets" ═══
+   Deep Ocean #0C4A6E · Air Blue #0EA5E9 · Fresh Air Green #F0FDF4 · Clinical Teal #3F6C5E
+   Caution Amber #F59E0B · Crisis Red #EF4444 · Clinical Slate #F1F5F9 · Deep Slate #334155 */
+:root{--ocean:#0C4A6E;--air:#0EA5E9;--fresh:#F0FDF4;--teal:#3F6C5E;--amber:#F59E0B;--red:#EF4444;
+  --mist:#F1F5F9;--slate:#334155;--line:#E2E8F0;--muted:#64748B}
+html{font-size:14px}
+body{font-size:14px;background:linear-gradient(180deg,#EAF4FA 0,#F1F5F9 260px);background-attachment:fixed;color:var(--slate)}
+.header{background:var(--ocean);box-shadow:0 2px 12px rgba(12,74,110,.25);height:60px;padding:0 16px}
+.header-logo{font-size:26px}
+.header-title{font-size:16px;font-weight:700}
+.header-sub{font-size:12px;color:#BAE6FD}
+.tab-bar{top:60px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 6px rgba(12,74,110,.06);padding:0 8px}
+.tab-bar.sub{position:static;background:var(--mist);box-shadow:none}
+.tab-btn{font-size:14px;padding:13px 14px;color:var(--muted)}
+.tab-btn.active{color:var(--ocean);border-bottom-color:var(--air)}
+.tab-btn .cnt{display:inline-block;min-width:20px;padding:0 6px;margin-left:6px;border-radius:10px;background:var(--red);color:#fff;font-size:12px;line-height:20px;text-align:center}
+.view{max-width:980px}
+.page-title{font-size:24px;font-weight:800;color:var(--ocean);line-height:1.3;margin:4px 0 2px}
+.page-sub{font-size:14px;color:var(--muted);margin-bottom:14px}
+.sec{font-size:18px;font-weight:800;color:var(--ocean);text-transform:none;letter-spacing:0;margin:22px 0 10px}
+.sec::after{background:var(--line)}
+.kpi{border-radius:16px;border:1px solid var(--line);box-shadow:0 1px 4px rgba(12,74,110,.06);padding:14px 12px;text-align:left}
+.kpi-ic{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);font-weight:600}
+.kpi-val{font-size:40px;font-weight:800;line-height:1.1;margin-top:4px}
+.kpi-lbl{font-size:13px;color:var(--muted);margin-top:2px}
+.kpi-row{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.cc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 14px 10px;box-shadow:0 1px 4px rgba(12,74,110,.05)}
+.cc-t{font-size:14px;font-weight:800;color:var(--ocean)}
+.cc-s{font-size:12px;color:var(--muted);margin-bottom:6px}
+.cbox{position:relative;width:100%}
+.grid2{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:12px}
+@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+th{background:var(--ocean)}
+.tbl-wrap{border-color:var(--line);background:#fff}
+tr:nth-child(even) td{background:var(--mist)}
+.card,.chart-wrap{border-color:var(--line)}
+.btn.primary,.btn-eq.borrow{background:var(--ocean)}
+.btn-eq.ret{background:#E0F2FE;color:var(--ocean);border-color:var(--ocean)}
+.eq-card{border-radius:16px}
+.eq-card.avail{border-color:var(--teal)}
+.eq-card.busy{border-color:var(--amber)}
+.eq-card.other{border-color:var(--red)}
+.eq-name{font-size:14px}
+/* status badges follow the brand status icons */
+.badge{font-size:12px}
+.badge.available{background:var(--fresh);color:var(--teal);box-shadow:inset 0 0 0 1px #BBD5C8}
+.badge.in_use{background:#FEF3C7;color:#92400E}
+.badge.damaged,.badge.repair{background:#FEE2E2;color:#B91C1C}
+.badge.lost{background:#E2E8F0;color:var(--slate)}
+.badge.disposed{background:#E2E8F0;color:var(--slate)}
+.badge.pending_approval,.badge.pending_admin_return,.badge.pending_sterilization,.badge.at_central{background:#E0F2FE;color:var(--ocean)}
+/* filters */
+.fbar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;background:#fff;border:1px solid var(--line);
+  border-radius:16px;padding:12px 14px;margin-bottom:14px}
+.fgrp{display:flex;flex-direction:column;gap:4px;min-width:130px}
+.fgrp>label{font-size:12px;font-weight:700;color:var(--muted)}
+.fbar select,.fbar input{padding:9px 10px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:14px;
+  font-family:inherit;color:var(--slate);background:#fff;min-height:40px}
+.fbar select:focus,.fbar input:focus{border-color:var(--air);outline:none}
+.seg{display:inline-flex;border:1.5px solid #CBD5E1;border-radius:10px;overflow:hidden}
+.seg button{border:none;background:#fff;padding:9px 14px;font-size:14px;font-family:inherit;font-weight:700;
+  color:var(--muted);cursor:pointer;min-height:40px}
+.seg button+button{border-left:1.5px solid #CBD5E1}
+.seg button.on{background:var(--ocean);color:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{border:1.5px solid #CBD5E1;background:#fff;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;
+  font-family:inherit;color:var(--slate);cursor:pointer}
+.chip.on{background:var(--ocean);border-color:var(--ocean);color:#fff}
+.legend-note{font-size:12px;color:var(--muted);margin-top:6px}
+.alert-strip{display:flex;gap:10px;align-items:center;background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;
+  padding:10px 14px;margin-bottom:14px;cursor:pointer;font-weight:700;color:#B91C1C}
+.ok-strip{display:flex;gap:10px;align-items:center;background:var(--fresh);border:1px solid #BBD5C8;border-radius:14px;
+  padding:10px 14px;margin-bottom:14px;font-weight:700;color:var(--teal)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tfoot td{font-weight:800;background:#E0F2FE!important;border-top:2px solid var(--ocean)}
+@media print{.tab-bar,.fbar,.header{display:none!important}}
+</style>
 </head>
 <body>
 
 <div class="header" id="mainHeader" style="display:none">
-  <div class="header-logo">📊</div>
+  <div class="header-logo">🫁</div>
   <div class="header-info">
-    <div class="header-title">Chest Equipment MSKH</div>
-    <div class="header-sub" id="headerSub">หน่วยโรคระบบการหายใจ</div>
+    <div class="header-title">ระบบจัดการอุปกรณ์หน่วยโรคระบบหายใจ</div>
+    <div class="header-sub" id="headerSub">Sustaining Life, Syncing Assets · MSKH</div>
   </div>
-  <button class="btn-hdr" onclick="refreshData()" style="margin-right:4px">🔄</button>
-  <button class="btn-hdr" onclick="showLanding()">🔀</button>
+  <button class="btn-hdr" id="btnLogin" onclick="doLogin()" style="display:none;margin-right:4px">🔑 เจ้าหน้าที่</button>
+  <button class="btn-hdr" onclick="refreshData()" title="รีเฟรชข้อมูล">🔄</button>
 </div>
 
 <div id="authBox"><div class="spinner"></div><div>กำลังเชื่อมต่อ...</div></div>
-<div id="landing" style="display:none">
-  <div class="land-hero">📊</div>
-  <div class="land-title">Chest Equipment MSKH</div>
-  <div class="land-sub">เลือกบทบาทที่ต้องการดู Dashboard</div>
-  <div class="role-grid" id="roleGrid"></div>
-</div>
 <div class="tab-bar" id="tabBar" style="display:none"></div>
+<div class="tab-bar sub" id="subTabBar" style="display:none"></div>
 
-<!-- ═══ PUBLIC VIEW ══════════════════════════════════ -->
+<!-- ═══ PUBLIC VIEW (ทุกคนดูได้ ไม่ต้อง login) ═══════════ -->
 <div class="view" id="view-public">
-  <div id="pub-content"><div class="spin-box"><div class="spinner"></div>กำลังโหลด...</div></div>
+  <div id="pane-status" class="pane"></div>
+  <div id="pane-problem" class="pane" style="display:none"></div>
+  <div id="pane-usage" class="pane" style="display:none"></div>
 </div>
 
 <!-- ═══ ADMIN VIEW ═══════════════════════════════════ -->
@@ -383,7 +458,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
 <div class="success-ov" id="successOv">
   <div class="success-box">
     <div style="font-size:56px;margin-bottom:12px" id="successIcon">✅</div>
-    <div style="font-size:20px;font-weight:800;color:#0D7377;margin-bottom:8px" id="successTitle">สำเร็จ</div>
+    <div style="font-size:20px;font-weight:800;color:#0C4A6E;margin-bottom:8px" id="successTitle">สำเร็จ</div>
     <div style="font-size:14px;color:#64748B;margin-bottom:20px" id="successSub"></div>
     <button class="btn primary btn-full" onclick="hideSuccess()">เรียบร้อย</button>
   </div>
@@ -395,22 +470,55 @@ const LIFF_ID    = '2009365358-XIHw2A0N';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrnODe6na-5NNGzIt9ae7-qu8X-wLxnp71vOtTihMY5s-Qxg-XvVEKU5w/exec';
 const FORM_URL   = 'https://authorart.github.io/equip-transaction/form.html';
 
-let userId    = '';
-let userAuth  = null;
-let curView   = '';
-let curAdmTab = 'pending';
-let curCenTab = 'receive';
-let admData   = null; // cached admin data
-let pubData   = null; // cached public data
-let cenData   = null; // cached central pipeline
+let userId     = '';
+let userAuth   = null;
+let curView    = 'public';   // public | admin | central | super
+let curSection = 'status';   // status | problem | usage | admin | central | super
+let curAdmTab  = 'pending';
+let curCenTab  = 'receive';
+let admData    = null; // cached admin data
+let pubData    = null; // cached public data
+let cenData    = null; // cached central pipeline
+let usageData  = null; // cached usage events
+
+// ── Brand tokens (chest-equip-vbd.jpeg) ─────────────
+const C = { ocean:'#0C4A6E', air:'#0EA5E9', fresh:'#F0FDF4', teal:'#3F6C5E', amber:'#F59E0B',
+            red:'#EF4444', mist:'#F1F5F9', slate:'#334155', muted:'#64748B', line:'#E2E8F0' };
+const MONTH_TH = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+// กลุ่มสถานะ → สี (ใช้ซ้ำทุกกราฟ สีผูกกับกลุ่มเสมอ ไม่เปลี่ยนตามลำดับ)
+const GROUPS = [
+  { key:'available', label:'พร้อมใช้งาน',          color:C.teal,  sts:['available'] },
+  { key:'in_use',    label:'กำลังใช้งาน',           color:C.amber, sts:['in_use'] },
+  { key:'process',   label:'อยู่ระหว่างดำเนินการ',  color:C.air,   sts:['pending_approval','pending_admin_return','pending_sterilization','at_central'] },
+  { key:'problem',   label:'ชำรุด/ซ่อม/สูญหาย',     color:C.red,   sts:['damaged','repair','lost'] },
+  { key:'disposed',  label:'จำหน่าย',               color:C.slate, sts:['disposed'] },
+];
+function groupOf(st) { return GROUPS.find(g => g.sts.includes(st)) || GROUPS[2]; }
+
+const STATUS_TH = {
+  available:'พร้อมใช้งาน', pending_approval:'รออนุมัติ', in_use:'กำลังถูกยืม',
+  pending_admin_return:'รอรับคืน', pending_sterilization:'รอฆ่าเชื้อ', at_central:'จ่ายกลาง',
+  damaged:'ชำรุด', repair:'ส่งซ่อม', disposed:'จำหน่าย', lost:'สูญหาย'
+};
+const PROBLEM_ST = ['damaged','repair','lost'];
+const PROBLEM_COLOR = { damaged:'#EF4444', repair:'#991B1B', lost:'#334155' };
 
 // ═══════════════════════════════════════════════════
-//  INIT
+//  INIT — ไม่มีหน้าเลือกบทบาท เข้า dashboard ได้ทันที
 // ═══════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async function() {
   const today = new Date(), d30 = new Date(Date.now()-30*86400000);
-  ['rptFrom'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=isoDate(d30); });
-  ['rptTo']  .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=isoDate(today); });
+  const f = document.getElementById('rptFrom'), t = document.getElementById('rptTo');
+  if (f) f.value = isoDate(d30);
+  if (t) t.value = isoDate(today);
+
+  if (window.Chart) {
+    Chart.defaults.font.family = "'Sarabun',sans-serif";
+    Chart.defaults.font.size   = 13;
+    Chart.defaults.color       = C.slate;
+    Chart.defaults.borderColor = C.line;
+  }
 
   try {
     await liff.init({ liffId: LIFF_ID });
@@ -420,84 +528,94 @@ document.addEventListener('DOMContentLoaded', async function() {
       const r  = await post({ source:'dashboard', action:'checkAuth', userId });
       userAuth = r.success ? r : null;
     }
-  } catch(e) { /* visitor mode */ }
+  } catch(e) { /* visitor mode — ดูข้อมูลสาธารณะได้ตามปกติ */ }
 
-  document.getElementById('authBox').style.display  = 'none';
+  document.getElementById('authBox').style.display    = 'none';
   document.getElementById('mainHeader').style.display = 'flex';
-  showLanding();
+  document.getElementById('btnLogin').style.display   = (!userAuth && window.liff && !liff.isLoggedIn()) ? '' : 'none';
+  if (userAuth) document.getElementById('headerSub').textContent =
+    userAuth.name + ' · ' + (userAuth.role==='superadmin'?'Superadmin':userAuth.role==='admin'?'Admin '+userAuth.ward:'จ่ายกลาง');
+  buildMainTabs();
+  goSection('status');
+  ensurePub().then(updateProblemBadge).catch(function(){});
 });
 
+function doLogin() { try { liff.login({ redirectUri: location.href }); } catch(e) {} }
+
 // ═══════════════════════════════════════════════════
-//  LANDING
+//  NAVIGATION
 // ═══════════════════════════════════════════════════
-function showLanding() {
-  hide('tabBar'); hide('view-public'); hide('view-admin'); hide('view-central'); hide('view-super');
-  show('landing');
-  const grid = document.getElementById('roleGrid');
-  grid.innerHTML = '';
-  grid.innerHTML += roleCardHTML('👤','สถานะอุปกรณ์','ทุกคนดูได้','public',false);
+const PUBLIC_SECTIONS = ['status','problem','usage'];
+
+function mainTabs() {
+  const t = [['status','สถานะอุปกรณ์'],['problem','ชำรุด / ซ่อม / สูญหาย'],['usage','การใช้งานอุปกรณ์']];
   if (userAuth) {
-    if (userAuth.role==='admin'||userAuth.role==='superadmin')
-      grid.innerHTML += roleCardHTML('🔑','Admin Panel','จัดการอุปกรณ์','admin',false);
-    if (userAuth.role==='central'||userAuth.role==='superadmin')
-      grid.innerHTML += roleCardHTML('🏥','จ่ายกลาง','Sterilization pipeline','central',false);
-    if (userAuth.role==='superadmin')
-      grid.innerHTML += roleCardHTML('🛡️','Superadmin','ภาพรวมทั้งหมด','super',true);
+    if (userAuth.role==='admin'||userAuth.role==='superadmin') t.push(['admin','🔑 จัดการ (Admin)']);
+    if (userAuth.role==='central'||userAuth.role==='superadmin') t.push(['central','🏥 จ่ายกลาง']);
+    if (userAuth.role==='superadmin') t.push(['super','🛡️ ภาพรวม']);
   }
-  document.getElementById('headerSub').textContent = userAuth
-    ? userAuth.name + ' · ' + (userAuth.role==='superadmin'?'Superadmin':userAuth.role==='admin'?'Admin '+userAuth.ward:'จ่ายกลาง')
-    : 'หน่วยโรคระบบการหายใจ · MSKH';
+  return t;
 }
 
-function roleCardHTML(icon,name,desc,role,full) {
-  return `<div class="role-card${full?' full':''}" onclick="selectRole('${role}')">
-    <div class="role-icon">${icon}</div><div class="role-name">${name}</div><div class="role-desc">${desc}</div>
-  </div>`;
+function buildMainTabs() {
+  const bar = document.getElementById('tabBar');
+  bar.innerHTML = mainTabs().map(([id,lbl]) =>
+    `<button class="tab-btn" id="tab-${id}" onclick="goSection('${id}')">${lbl}${id==='problem'?'<span class="cnt" id="problemCnt" style="display:none"></span>':''}</button>`
+  ).join('');
+  show('tabBar');
 }
 
-function selectRole(role) {
-  curView = role;
-  hide('landing'); show('tabBar'); show('view-'+role);
-  buildTabs(role);
-  if (role==='public')  loadPublicView();
-  else if (role==='admin')   { curAdmTab='pending'; switchAdmTab('pending'); }
-  else if (role==='central') { curCenTab='receive'; switchCenTab('receive'); }
-  else if (role==='super')   loadSuperView();
+function updateProblemBadge() {
+  const el = document.getElementById('problemCnt');
+  if (!el || !pubData) return;
+  const n = allUnits(pubData).filter(u => PROBLEM_ST.includes(u.status)).length;
+  el.textContent = n; el.style.display = n ? '' : 'none';
 }
 
-// ═══════════════════════════════════════════════════
-//  TAB BARS
-// ═══════════════════════════════════════════════════
+function goSection(sec) {
+  curSection = sec;
+  ['public','admin','central','super'].forEach(v => hide('view-'+v));
+  document.querySelectorAll('#tabBar .tab-btn').forEach(b => b.classList.toggle('active', b.id === 'tab-'+sec));
+
+  if (PUBLIC_SECTIONS.includes(sec)) {
+    curView = 'public';
+    hide('subTabBar'); show('view-public');
+    PUBLIC_SECTIONS.forEach(p => { document.getElementById('pane-'+p).style.display = (p===sec) ? 'block' : 'none'; });
+    loadPane(sec);
+    return;
+  }
+  curView = sec;
+  show('view-'+sec);
+  if (sec==='admin')        { buildSubTabs('admin');   curAdmTab='pending'; switchAdmTab('pending'); }
+  else if (sec==='central') { buildSubTabs('central'); curCenTab='receive'; switchCenTab('receive'); }
+  else if (sec==='super')   { hide('subTabBar'); loadSuperView(); }
+}
+
 const TABS = {
-  public : [['pub','📦 สถานะอุปกรณ์']],
   admin  : [['pending','⏳ รออนุมัติ'],['return','↩️ รอรับคืน'],['steril','🧪 รอส่งจ่ายกลาง'],['rcv','📦 รอรับกลับ'],['status','🔧 สถานะอุปกรณ์'],['report','📊 รายงาน']],
   central: [['receive','📥 รับจากวอร์ด'],['return','📤 ส่งคืนวอร์ด'],['report','📊 รายงาน']],
-  super  : [['sup','📈 ภาพรวม']],
 };
 
-function buildTabs(role) {
-  const bar = document.getElementById('tabBar');
-  bar.innerHTML = (TABS[role]||[]).map(([id,lbl])=>
-    `<button class="tab-btn" id="tab-${id}" onclick="onTab('${id}','${role}')">${lbl}</button>`
+function buildSubTabs(role) {
+  const bar = document.getElementById('subTabBar');
+  bar.innerHTML = (TABS[role]||[]).map(([id,lbl],i) =>
+    `<button class="tab-btn${i?'':' active'}" id="stab-${id}" onclick="onTab('${id}','${role}')">${lbl}</button>`
   ).join('');
-  // set first active
-  const first = (TABS[role]||[])[0];
-  if (first) document.getElementById('tab-'+first[0]).classList.add('active');
+  show('subTabBar');
 }
 
 function onTab(id, role) {
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  if (role==='admin')   switchAdmTab(id);
+  document.querySelectorAll('#subTabBar .tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('stab-'+id).classList.add('active');
+  if (role==='admin')        switchAdmTab(id);
   else if (role==='central') switchCenTab(id);
 }
 
 function refreshData() {
-  admData=null; pubData=null; cenData=null;
-  if (curView==='public')  loadPublicView();
-  else if (curView==='admin')   switchAdmTab(curAdmTab);
-  else if (curView==='central') switchCenTab(curCenTab);
-  else if (curView==='super')   loadSuperView();
+  admData=null; pubData=null; cenData=null; usageData=null;
+  goSection(curSection);
+  if (curView !== 'public') return;
+  ensurePub().then(updateProblemBadge).catch(function(){});
 }
 
 // ═══════════════════════════════════════════════════
@@ -515,106 +633,92 @@ async function get(action, params) {
   return post(Object.assign({ source:'dashboard', action, userId }, params||{}));
 }
 
-// ═══════════════════════════════════════════════════
-//  PUBLIC VIEW — equipment cards with actions
-// ═══════════════════════════════════════════════════
-async function loadPublicView() {
-  if (pubData) { renderPublicView(pubData); return; }
-  setContent('pub-content', spinHTML());
-  try {
-    const r = await get('getDashboardPublic');
-    if (!r.success) throw new Error(r.error);
-    pubData = r.data;
-    renderPublicView(pubData);
-  } catch(e) { setContent('pub-content', errHTML(e.message)); }
+async function ensurePub() {
+  if (pubData) return pubData;
+  const r = await get('getDashboardPublic');
+  if (!r.success) throw new Error(r.error);
+  pubData = r.data; return pubData;
 }
 
-function renderPublicView(d) {
+async function ensureUsage() {
+  if (usageData) return usageData;
+  const r = await get('getUsageData');
+  if (!r.success) throw new Error(r.error || 'ยังไม่รองรับ getUsageData — ต้อง deploy Apps Script v7 ก่อน');
+  usageData = r.data; return usageData;
+}
+
+async function loadPane(sec) {
+  const id = 'pane-' + sec;
   try {
-  const sc = d.statusCount || {};
-  const total = Object.values(sc).reduce((a,b)=>a+b,0);
-  let html = `<div class="kpi-row">
-    <div class="kpi"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:#0D7377">${total}</div><div class="kpi-lbl">ชิ้นทั้งหมด</div></div>
-    <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${sc.available||0}</div><div class="kpi-lbl">ว่างพร้อมใช้</div></div>
-    <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${sc.in_use||0}</div><div class="kpi-lbl">กำลังถูกยืม</div></div>
-    <div class="kpi"><div class="kpi-icon">⏳</div><div class="kpi-val" style="color:#EAB308">${(d.queueData||[]).length}</div><div class="kpi-lbl">คิวรออยู่</div></div>
-    <div class="kpi"><div class="kpi-icon">🔴</div><div class="kpi-val" style="color:#DC2626">${(sc.damaged||0)+(sc.repair||0)+(sc.lost||0)}</div><div class="kpi-lbl">ชำรุด/ซ่อม/หาย</div></div>
-  </div>`;
-
-  html += renderProblemBox(d);
-  html += '<div class="sec">สถานะอุปกรณ์</div><div class="eq-grid">';
-  (d.equipment||[]).forEach(function(eq) {
-    const avail  = eq.units.filter(u=>u.status==='available').length;
-    const inUse  = eq.units.filter(u=>u.status==='in_use');
-    const hasAvail = avail>0;
-    const cardCls = hasAvail?'avail':inUse.length>0?'busy':'other';
-    const driveThumb = eq.imageId
-      ? 'https://drive.google.com/thumbnail?id=' + eq.imageId + '&sz=w400'
-      : '';
-    const imgHtml = driveThumb
-      ? '<img src="' + driveThumb + '" alt="" style="width:100%;height:100%;object-fit:cover">'
-      : '<span style="font-size:32px">📦</span>';
-
-    // buttons
-    let btns = '';
-    if (hasAvail) {
-      btns += `<button class="btn-eq borrow" onclick="window.open('${FORM_URL}?type=borrow&equipmentId=${encodeURIComponent(eq.equipmentId)}','_blank')">📋 ยืม</button>`;
+    if (sec === 'usage') {
+      if (!pubData || !usageData) setContent(id, spinHTML());
+      await Promise.all([ensurePub(), ensureUsage()]);
+      initUsage(); renderUsage();
+    } else {
+      if (!pubData) setContent(id, spinHTML());
+      await ensurePub();
+      if (sec === 'status') renderStatus(pubData); else renderProblem(pubData);
+      updateProblemBadge();
     }
-    if (inUse.length > 0) {
-      const retUri = inUse.length===1
-        ? `${FORM_URL}?type=return&equipmentId=${encodeURIComponent(eq.equipmentId)}&subId=${encodeURIComponent(inUse[0].subId)}`
-        : `${FORM_URL}?type=return&equipmentId=${encodeURIComponent(eq.equipmentId)}`;
-      btns += `<button class="btn-eq ret" onclick="window.open('${retUri}','_blank')">↩️ คืน</button>`;
-    }
-    if (!hasAvail) {
-      btns += `<button class="btn-eq queue" onclick="alert('กรุณาจองคิวผ่าน LINE OA ครับ')">⏳ จองคิว</button>`;
-    }
+  } catch(e) { setContent(id, errHTML(esc(e.message))); }
+}
 
-    const statParts = [];
-    if (avail>0) statParts.push(`ว่าง ${avail}`);
-    if (inUse.length>0) statParts.push(`ยืม ${inUse.length}`);
-    const other = eq.units.length - avail - inUse.length;
-    if (other>0) statParts.push(`อื่นๆ ${other}`);
+// ═══════════════════════════════════════════════════
+//  CHART HELPERS
+// ═══════════════════════════════════════════════════
+const charts = {};
+function mkChart(id, cfg) {
+  const el = document.getElementById(id);
+  if (!el || !window.Chart) return;
+  if (charts[id]) charts[id].destroy();
+  cfg.options = cfg.options || {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+  charts[id] = new Chart(el, cfg);
+}
+function chartBox(id, h, label) {
+  return `<div class="cbox" style="height:${h}px"><canvas id="${id}" role="img" aria-label="${esc(label)}"></canvas></div>`;
+}
+function barH(n) { return Math.max(170, n * 40 + 70); }
 
-    html += `<div class="eq-card ${cardCls}">
-      <div class="eq-img">${imgHtml}</div>
-      <div class="eq-body">
-        <div class="eq-name">${eq.equipmentName}</div>
-        <div class="eq-stat">${statParts.join(' · ')} · <strong>${eq.homeWard||''}</strong></div>
-      </div>
-      <div class="eq-footer">${btns}</div>
-    </div>`;
+// ตัวเลขกลางโดนัท
+const centerText = { id:'centerText', afterDraw(ch, _a, o) {
+  if (!o || o.text == null) return;
+  const a = ch.chartArea, ctx = ch.ctx, cx = (a.left+a.right)/2, cy = (a.top+a.bottom)/2;
+  ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle = C.ocean; ctx.font = "800 34px Sarabun"; ctx.fillText(o.text, cx, cy-8);
+  ctx.fillStyle = C.muted; ctx.font = "500 13px Sarabun"; ctx.fillText(o.sub||'', cx, cy+16);
+  ctx.restore();
+}};
+// ค่าที่ปลายแท่งแนวนอน (label ตรง ๆ ใช้สีตัวอักษร ไม่ใช้สีซีรีส์)
+const barValueLabels = { id:'barValueLabels', afterDatasetsDraw(ch, _a, o) {
+  const suffix = (o && o.suffix) || '', ctx = ch.ctx;
+  ctx.save(); ctx.fillStyle = C.slate; ctx.font = '700 13px Sarabun';
+  ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  ch.getDatasetMeta(0).data.forEach(function(b, i) {
+    ctx.fillText(ch.data.datasets[0].data[i] + suffix, b.x + 6, b.y);
   });
-  html += '</div>';
-  html += renderUnitTable(d);
+  ctx.restore();
+}};
 
-  if ((d.queueData||[]).length>0) {
-    html += '<div class="sec">คิวรออยู่</div><div class="tbl-wrap"><table><tr><th>#</th><th>อุปกรณ์</th><th>ชื่อ</th><th>สถานะ</th></tr>';
-    d.queueData.forEach(q=>{
-      html += `<tr><td>${q.queuePos}</td><td>${q.equipmentId}</td><td>${q.name}</td>
-        <td><span class="badge ${q.status==='notified'?'in_use':'pending'}">${q.status==='notified'?'แจ้งแล้ว':'รออยู่'}</span></td></tr>`;
-    });
-    html += '</table></div>';
-  }
-
-  html += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(d.lastUpdated)}</div>`;
-  setContent('pub-content', html);
-  } catch(renderErr) {
-    console.error('renderPublicView error:', renderErr);
-    setContent('pub-content', errHTML('Render error: ' + renderErr.message));
-  }
+// ไอคอนสถานะตาม VBD: พร้อมใช้งาน ✓ / กำลังใช้งาน 🔒 / ส่งซ่อม ✕
+function statusIcon(kind, size) {
+  const s = size || 22, col = kind==='available'?C.teal:kind==='in_use'?C.amber:kind==='problem'?C.red:kind==='process'?C.air:C.ocean;
+  const inner = kind==='available' ? '<path d="M7 12.5l3.2 3.2L17 9" />'
+    : kind==='in_use' ? '<rect x="8" y="11" width="8" height="6" rx="1.2"/><path d="M9.5 11V9.5a2.5 2.5 0 015 0V11"/>'
+    : kind==='problem' ? '<path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>'
+    : kind==='process' ? '<path d="M12 7.5V12l3 2"/>'
+    : '<path d="M8 15V12m4 3V9m4 6v-4"/>';
+  return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/>${inner}</svg>`;
+}
+function kpiCard(kind, label, val, color, extra) {
+  return `<div class="kpi"><div class="kpi-ic">${statusIcon(kind,20)}${esc(label)}</div>
+    <div class="kpi-val" style="color:${color}">${val}</div>${extra?`<div class="kpi-lbl">${extra}</div>`:''}</div>`;
 }
 
 // ═══════════════════════════════════════════════════
-//  v6 — ติดตามรายเครื่อง: ชำรุดค้าง / ที่อยู่ / ประวัติ
+//  COMMON FORMATTERS
 // ═══════════════════════════════════════════════════
-const STATUS_TH = {
-  available:'พร้อมใช้งาน', pending_approval:'รออนุมัติ', in_use:'กำลังถูกยืม',
-  pending_admin_return:'รอรับคืน', pending_sterilization:'รอฆ่าเชื้อ', at_central:'จ่ายกลาง',
-  damaged:'ชำรุด', repair:'ส่งซ่อม', disposed:'จำหน่าย', lost:'สูญหาย'
-};
-const PROBLEM_ST = ['damaged','repair','lost'];
-
 function esc(v) {
   return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
@@ -634,47 +738,133 @@ function daysTxt(n) { return (n == null) ? '-' : (n === 0 ? 'วันนี้'
 function allUnits(d) {
   const out = [];
   (d.equipment||[]).forEach(eq => eq.units.forEach(u =>
-    out.push(Object.assign({ name: eq.equipmentName, homeWard: eq.homeWard }, u))));
+    out.push(Object.assign({ name: eq.equipmentName, equipmentId: eq.equipmentId, homeWard: eq.homeWard }, u))));
   return out;
 }
+function whereOf(u) {
+  return (u.status === 'in_use' || u.status === 'pending_admin_return')
+    ? (u.ward || u.location) + (u.expectedReturn ? ' (คืน ' + u.expectedReturn + ')' : '')
+    : (u.location || u.homeWard);
+}
 
-// กล่องเตือน: เครื่องที่ชำรุด/ซ่อม/สูญหาย พร้อมวันที่เริ่มเสียและจำนวนวัน
-function renderProblemBox(d) {
-  const bad = allUnits(d).filter(u => PROBLEM_ST.includes(u.status))
-    .sort((a,b) => (b.daysInStatus||0) - (a.daysInStatus||0));
-  if (!bad.length) return '';
-  let h = '<div class="sec">🔴 ต้องดำเนินการ — ชำรุด / ส่งซ่อม / สูญหาย</div><div class="tbl-wrap"><table>' +
-    '<tr><th>เครื่อง</th><th>สถานะ</th><th>ตั้งแต่</th><th>นาน</th><th>อาการ</th></tr>';
-  bad.forEach(u => {
-    h += `<tr style="cursor:pointer" onclick="openUnitPanel('${esc(u.subId)}')">
-      <td><strong>${esc(u.subId)}</strong><br><span style="font-size:11px;color:#64748B">${esc(u.name)} · ${esc(u.homeWard)}</span></td>
-      <td>${stBadge(u.status)}</td><td>${fmtDay(u.since)}</td>
-      <td style="font-weight:700;color:${(u.daysInStatus||0)>=7?'#DC2626':'#92400E'}">${daysTxt(u.daysInStatus)}</td>
-      <td style="font-size:12px">${esc(u.note)||'<span style="color:#94A3B8">ไม่ระบุ</span>'}</td></tr>`;
-  });
-  return h + '</table></div>';
+// ═══════════════════════════════════════════════════
+//  เมนู 1 — สถานะอุปกรณ์
+// ═══════════════════════════════════════════════════
+function renderStatus(d) {
+  try {
+    const units = allUnits(d), total = units.length;
+    const gc = {}; GROUPS.forEach(g => gc[g.key] = 0);
+    units.forEach(u => gc[groupOf(u.status).key]++);
+    const queueN = (d.queueData||[]).length;
+
+    let h = `<h1 class="page-title">สถานะอุปกรณ์</h1>
+      <div class="page-sub">ภาพรวมอุปกรณ์ทั้งหมดของหน่วยโรคระบบหายใจ ณ ปัจจุบัน</div>
+      <div class="kpi-row">
+        ${kpiCard('all','อุปกรณ์ทั้งหมด',total,C.ocean,'ชิ้น')}
+        ${kpiCard('available','พร้อมใช้งาน',gc.available,C.teal,'ชิ้น')}
+        ${kpiCard('in_use','กำลังใช้งาน',gc.in_use,'#B45309','ชิ้น')}
+        ${kpiCard('process','รอดำเนินการ',gc.process,C.ocean,'อนุมัติ/รับคืน/จ่ายกลาง')}
+        ${kpiCard('problem','ชำรุด/ซ่อม/สูญหาย',gc.problem,C.red,'ชิ้น')}
+      </div>`;
+
+    h += gc.problem > 0
+      ? `<div class="alert-strip" onclick="goSection('problem')">${statusIcon('problem',22)}มีอุปกรณ์ชำรุด/ส่งซ่อม/สูญหาย ${gc.problem} ชิ้น — กดเพื่อดูรายละเอียด →</div>`
+      : `<div class="ok-strip">${statusIcon('available',22)}ไม่มีอุปกรณ์ชำรุด/ส่งซ่อม/สูญหาย</div>`;
+
+    h += `<div class="grid2">
+      <div class="cc"><div class="cc-t">สัดส่วนสถานะอุปกรณ์</div><div class="cc-s">จำนวนชิ้นแยกตามสถานะ</div>
+        ${chartBox('chStatusDonut',260,'กราฟโดนัทสัดส่วนสถานะอุปกรณ์')}</div>
+      <div class="cc"><div class="cc-t">สถานะแยกตามชนิดอุปกรณ์</div><div class="cc-s">จำนวนชิ้นของแต่ละชนิด</div>
+        ${chartBox('chStatusByType',barH((d.equipment||[]).length),'กราฟแท่งสถานะแยกตามชนิดอุปกรณ์')}</div>
+    </div>`;
+
+    h += '<div class="sec">อุปกรณ์แต่ละชนิด</div><div class="eq-grid">';
+    (d.equipment||[]).forEach(function(eq) {
+      const avail  = eq.units.filter(u=>u.status==='available').length;
+      const inUse  = eq.units.filter(u=>u.status==='in_use');
+      const hasAvail = avail>0;
+      const cardCls = hasAvail?'avail':inUse.length>0?'busy':'other';
+      const imgHtml = eq.imageId
+        ? '<img src="https://drive.google.com/thumbnail?id=' + encodeURIComponent(eq.imageId) + '&sz=w400" alt="" style="width:100%;height:100%;object-fit:cover">'
+        : '<span style="font-size:32px">📦</span>';
+      let btns = '';
+      if (hasAvail) btns += `<button class="btn-eq borrow" onclick="window.open('${FORM_URL}?type=borrow&equipmentId=${encodeURIComponent(eq.equipmentId)}','_blank')">📋 ยืม</button>`;
+      if (inUse.length > 0) {
+        const retUri = inUse.length===1
+          ? `${FORM_URL}?type=return&equipmentId=${encodeURIComponent(eq.equipmentId)}&subId=${encodeURIComponent(inUse[0].subId)}`
+          : `${FORM_URL}?type=return&equipmentId=${encodeURIComponent(eq.equipmentId)}`;
+        btns += `<button class="btn-eq ret" onclick="window.open('${retUri}','_blank')">↩️ คืน</button>`;
+      }
+      if (!hasAvail) btns += `<button class="btn-eq queue" onclick="alert('กรุณาจองคิวผ่าน LINE OA ครับ')">⏳ จองคิว</button>`;
+      const parts = [];
+      if (avail>0) parts.push(`ว่าง ${avail}`);
+      if (inUse.length>0) parts.push(`ยืม ${inUse.length}`);
+      const other = eq.units.length - avail - inUse.length;
+      if (other>0) parts.push(`อื่นๆ ${other}`);
+      h += `<div class="eq-card ${cardCls}">
+        <div class="eq-img">${imgHtml}</div>
+        <div class="eq-body"><div class="eq-name">${esc(eq.equipmentName)}</div>
+          <div class="eq-stat">${parts.join(' · ')} · <strong>${esc(eq.homeWard)}</strong></div></div>
+        <div class="eq-footer">${btns}</div></div>`;
+    });
+    h += '</div>' + renderUnitTable(d);
+
+    if (queueN > 0) {
+      h += '<div class="sec">คิวรออยู่</div><div class="tbl-wrap"><table><tr><th>#</th><th>อุปกรณ์</th><th>ชื่อ</th><th>สถานะ</th></tr>';
+      d.queueData.forEach(q => {
+        h += `<tr><td>${esc(q.queuePos)}</td><td>${esc(q.equipmentId)}</td><td>${esc(q.name)}</td>
+          <td><span class="badge ${q.status==='notified'?'in_use':'pending_approval'}">${q.status==='notified'?'แจ้งแล้ว':'รออยู่'}</span></td></tr>`;
+      });
+      h += '</table></div>';
+    }
+    h += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(d.lastUpdated)}</div>`;
+    setContent('pane-status', h);
+
+    // โดนัท
+    const act = GROUPS.filter(g => gc[g.key] > 0);
+    mkChart('chStatusDonut', {
+      type:'doughnut', plugins:[centerText],
+      data:{ labels: act.map(g => g.label + ' (' + gc[g.key] + ')'),
+             datasets:[{ data: act.map(g => gc[g.key]), backgroundColor: act.map(g => g.color), borderColor:'#fff', borderWidth:2 }] },
+      options:{ cutout:'64%', plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12, padding:12 } },
+        centerText:{ text: total, sub:'ชิ้น' },
+        tooltip:{ callbacks:{ label: c => ` ${c.label.replace(/ \(\d+\)$/,'')}: ${c.parsed} ชิ้น (${total?Math.round(c.parsed/total*100):0}%)` } } } }
+    });
+    // แท่งซ้อนตามชนิด
+    const eqs = d.equipment||[];
+    const sg = GROUPS.filter(g => eqs.some(eq => eq.units.some(u => groupOf(u.status).key === g.key)));
+    mkChart('chStatusByType', {
+      type:'bar',
+      data:{ labels: eqs.map(e => e.equipmentName),
+        datasets: sg.map(g => ({ label:g.label, backgroundColor:g.color, borderColor:'#fff', borderWidth:2,
+          data: eqs.map(e => e.units.filter(u => groupOf(u.status).key === g.key).length) })) },
+      options:{ indexAxis:'y',
+        scales:{ x:{ stacked:true, ticks:{ precision:0, stepSize:1 }, grid:{ color:C.line } }, y:{ stacked:true, grid:{ display:false } } },
+        plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12, padding:12 } } } }
+    });
+  } catch(err) {
+    console.error('renderStatus error:', err);
+    setContent('pane-status', errHTML('Render error: ' + esc(err.message)));
+  }
 }
 
 // ตารางรายเครื่อง ค้นหา/กรองสถานะได้ กดดูประวัติ
 function renderUnitTable(d) {
   const units = allUnits(d);
-  let h = '<div class="sec">รายเครื่อง (กดเพื่อดูประวัติ)</div>' +
-    '<div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">' +
-    '<input id="unitSearch" oninput="filterUnits()" placeholder="🔍 ค้นหา รหัส / ชื่อ / ที่อยู่" ' +
-      'style="flex:1;min-width:160px;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:14px">' +
-    '<select id="unitStatus" onchange="filterUnits()" style="padding:9px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:14px">' +
+  let h = '<div class="sec">รายเครื่อง <span style="font-size:13px;font-weight:600;color:var(--muted)">(กดที่แถวเพื่อดูประวัติ)</span></div>' +
+    '<div class="fbar" style="padding:10px 12px"><div class="fgrp" style="flex:1;min-width:180px">' +
+    '<input id="unitSearch" oninput="filterUnits()" placeholder="🔍 ค้นหา รหัส / ชื่อ / ที่อยู่"></div>' +
+    '<div class="fgrp"><select id="unitStatus" onchange="filterUnits()">' +
     '<option value="">ทุกสถานะ</option>' +
     Object.keys(STATUS_TH).map(k => `<option value="${k}">${STATUS_TH[k]}</option>`).join('') +
-    '</select></div>' +
+    '</select></div></div>' +
     '<div class="tbl-wrap"><table id="unitTable"><tr><th>เครื่อง</th><th>สถานะ</th><th>ที่อยู่</th><th>นาน</th></tr>';
   units.forEach(u => {
-    const where = u.status === 'in_use' || u.status === 'pending_admin_return'
-      ? (u.ward || u.location) + (u.expectedReturn ? ' (คืน ' + u.expectedReturn + ')' : '')
-      : (u.location || u.homeWard);
+    const where = whereOf(u);
     const hay = (u.subId + ' ' + u.name + ' ' + where + ' ' + (STATUS_TH[u.status]||'')).toLowerCase();
     h += `<tr data-st="${esc(u.status)}" data-hay="${esc(hay)}" style="cursor:pointer" onclick="openUnitPanel('${esc(u.subId)}')">
-      <td><strong>${esc(u.subId)}</strong><br><span style="font-size:11px;color:#64748B">${esc(u.name)}</span></td>
-      <td>${stBadge(u.status)}</td><td style="font-size:12px">${esc(where)}</td><td>${daysTxt(u.daysInStatus)}</td></tr>`;
+      <td><strong>${esc(u.subId)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(u.name)}</span></td>
+      <td>${stBadge(u.status)}</td><td style="font-size:13px">${esc(where)}</td><td>${daysTxt(u.daysInStatus)}</td></tr>`;
   });
   return h + '</table></div>';
 }
@@ -688,43 +878,336 @@ function filterUnits() {
   });
 }
 
-// แผงรายละเอียด: สถานะปัจจุบัน + ที่อยู่ + timeline (timeline ต้อง login ผ่าน LINE)
+// ═══════════════════════════════════════════════════
+//  เมนู 2 — ชำรุด / ส่งซ่อม / สูญหาย
+// ═══════════════════════════════════════════════════
+let probFilter = '';
+
+function renderProblem(d) {
+  try {
+    const bad = allUnits(d).filter(u => PROBLEM_ST.includes(u.status))
+      .sort((a,b) => (b.daysInStatus||0) - (a.daysInStatus||0));
+    const cnt = { damaged:0, repair:0, lost:0 };
+    bad.forEach(u => cnt[u.status]++);
+    const longest = bad.length ? Math.max.apply(null, bad.map(u => u.daysInStatus||0)) : 0;
+
+    let h = `<h1 class="page-title">อุปกรณ์ชำรุด / ส่งซ่อม / สูญหาย</h1>
+      <div class="page-sub">ติดตามอุปกรณ์ที่ใช้งานไม่ได้ — ตั้งแต่เมื่อไหร่ นานกี่วัน และอาการ/เหตุผล</div>
+      <div class="kpi-row">
+        ${kpiCard('problem','ชำรุด',cnt.damaged,C.red,'ชิ้น')}
+        ${kpiCard('problem','ส่งซ่อม',cnt.repair,'#991B1B','ชิ้น')}
+        ${kpiCard('problem','สูญหาย',cnt.lost,C.slate,'ชิ้น')}
+        ${kpiCard('process','ค้างนานที่สุด',longest,longest>=7?C.red:C.ocean,'วัน')}
+      </div>`;
+
+    if (!bad.length) {
+      h += `<div class="ok-strip">${statusIcon('available',22)}ไม่มีอุปกรณ์ชำรุด/ส่งซ่อม/สูญหายในขณะนี้</div>`;
+      setContent('pane-problem', h); return;
+    }
+
+    const eqs = (d.equipment||[]).filter(eq => eq.units.some(u => PROBLEM_ST.includes(u.status)));
+    const top = bad.slice(0, 10);
+    h += `<div class="grid2">
+      <div class="cc"><div class="cc-t">จำนวนแยกตามชนิดอุปกรณ์</div><div class="cc-s">ชิ้นที่ชำรุด/ส่งซ่อม/สูญหาย</div>
+        ${chartBox('chProbByType',barH(eqs.length),'กราฟแท่งจำนวนอุปกรณ์ชำรุดแยกตามชนิด')}</div>
+      <div class="cc"><div class="cc-t">ระยะเวลาที่ค้างสถานะ (วัน)</div><div class="cc-s">${bad.length>10?'10 อันดับแรก':'ทุกเครื่อง'} เรียงจากนานที่สุด</div>
+        ${chartBox('chProbDays',barH(top.length),'กราฟแท่งจำนวนวันที่อุปกรณ์ค้างสถานะ')}</div>
+    </div>`;
+
+    h += '<div class="sec">รายการที่ต้องดำเนินการ</div><div class="chips" id="probChips">' +
+      [['','ทั้งหมด ('+bad.length+')'],['damaged','ชำรุด ('+cnt.damaged+')'],['repair','ส่งซ่อม ('+cnt.repair+')'],['lost','สูญหาย ('+cnt.lost+')']]
+        .map(([k,l]) => `<button class="chip${probFilter===k?' on':''}" onclick="setProbFilter('${k}')">${l}</button>`).join('') + '</div>';
+    h += '<div class="tbl-wrap"><table id="probTable"><tr><th>เครื่อง</th><th>สถานะ</th><th>ตั้งแต่</th><th class="num">นาน</th><th>อาการ / เหตุผล</th><th>ที่อยู่</th></tr>';
+    bad.forEach(u => {
+      const long = (u.daysInStatus||0) >= 7;
+      h += `<tr data-st="${esc(u.status)}" style="cursor:pointer" onclick="openUnitPanel('${esc(u.subId)}')">
+        <td><strong>${esc(u.subId)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(u.name)}</span></td>
+        <td>${stBadge(u.status)}</td><td>${fmtDay(u.since)}</td>
+        <td class="num" style="font-weight:800;color:${long?'#B91C1C':'#92400E'}">${daysTxt(u.daysInStatus)}${long?' ⚠':''}</td>
+        <td style="font-size:13px">${esc(u.note)||'<span style="color:#94A3B8">ไม่ระบุ</span>'}</td>
+        <td style="font-size:13px">${esc(u.location||u.homeWard)}</td></tr>`;
+    });
+    h += '</table></div><div class="legend-note">⚠ = ค้างตั้งแต่ 7 วันขึ้นไป</div>';
+    setContent('pane-problem', h);
+    applyProbFilter();
+
+    mkChart('chProbByType', {
+      type:'bar',
+      data:{ labels: eqs.map(e => e.equipmentName),
+        datasets: PROBLEM_ST.filter(s => cnt[s] > 0).map(s => ({
+          label: STATUS_TH[s], backgroundColor: PROBLEM_COLOR[s], borderColor:'#fff', borderWidth:2,
+          data: eqs.map(e => e.units.filter(u => u.status === s).length) })) },
+      options:{ indexAxis:'y',
+        scales:{ x:{ stacked:true, ticks:{ precision:0, stepSize:1 }, grid:{ color:C.line } }, y:{ stacked:true, grid:{ display:false } } },
+        plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12, padding:12 } } } }
+    });
+    mkChart('chProbDays', {
+      type:'bar', plugins:[barValueLabels],
+      data:{ labels: top.map(u => u.subId),
+        datasets:[{ label:'วันที่ค้าง', data: top.map(u => u.daysInStatus||0),
+          backgroundColor: top.map(u => PROBLEM_COLOR[u.status]), borderRadius:4, borderSkipped:'start', maxBarThickness:22 }] },
+      options:{ indexAxis:'y', layout:{ padding:{ right:44 } },
+        scales:{ x:{ beginAtZero:true, ticks:{ precision:0 }, grid:{ color:C.line } }, y:{ grid:{ display:false } } },
+        plugins:{ legend:{ display:false }, barValueLabels:{ suffix:' วัน' },
+          tooltip:{ callbacks:{ title: i => top[i[0].dataIndex].subId + ' — ' + top[i[0].dataIndex].name,
+                                label: c => ` ${STATUS_TH[top[c.dataIndex].status]} · ${c.parsed.x} วัน` } } } }
+    });
+  } catch(err) {
+    console.error('renderProblem error:', err);
+    setContent('pane-problem', errHTML('Render error: ' + esc(err.message)));
+  }
+}
+
+function setProbFilter(k) {
+  probFilter = k;
+  document.querySelectorAll('#probChips .chip').forEach((b,i) => b.classList.toggle('on', ['','damaged','repair','lost'][i] === k));
+  applyProbFilter();
+}
+function applyProbFilter() {
+  document.querySelectorAll('#probTable tr[data-st]').forEach(tr => {
+    tr.style.display = (!probFilter || tr.dataset.st === probFilter) ? '' : 'none';
+  });
+}
+
+// แผงรายละเอียด: สถานะปัจจุบัน + ที่อยู่ + timeline (v7: ดูได้ทุกคน ไม่ต้อง login)
 async function openUnitPanel(subId) {
   const u = pubData ? allUnits(pubData).find(x => x.subId === subId) : null;
   let head = '';
   if (u) {
     head = `<div style="margin-bottom:10px">${stBadge(u.status)}
-      <div style="font-size:13px;margin-top:6px;line-height:1.7">
+      <div style="font-size:14px;margin-top:6px;line-height:1.8">
       📍 ที่อยู่: <strong>${esc(u.location || u.homeWard || '-')}</strong><br>
       🕒 สถานะนี้ตั้งแต่: ${fmtDT(u.since)} (${daysTxt(u.daysInStatus)})<br>
-      ${u.borrowerName ? '👤 ผู้ยืม: ' + esc(u.borrowerName) + ' · ' + esc(u.ward) + '<br>' : ''}
+      ${u.ward && u.status==='in_use' ? '🏢 หน่วยงานที่ยืม: ' + esc(u.ward) + '<br>' : ''}
       ${u.note ? '📝 อาการ/เหตุผล: ' + esc(u.note) + '<br>' : ''}</div></div>`;
   }
   showPanel(subId + (u ? ' — ' + u.name : ''), head + '<div id="unitHist">' + spinHTML() + '</div>');
-  if (!userAuth) {
-    document.getElementById('unitHist').innerHTML =
-      '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:12px">เข้าสู่ระบบผ่าน LINE (ผู้ที่ได้รับสิทธิ์) เพื่อดูประวัติการใช้งานย้อนหลัง</div>';
-    return;
-  }
   try {
     const r = await get('getEquipmentHistory', { subId });
     if (!r.success) throw new Error(r.error);
     const d = r.data, st = d.stats;
     let h = `<div class="kpi-row" style="margin-bottom:10px">
-      <div class="kpi"><div class="kpi-val">${st.borrowCount}</div><div class="kpi-lbl">ครั้งที่ถูกยืม</div></div>
-      <div class="kpi"><div class="kpi-val" style="color:#DC2626">${st.damageCount}</div><div class="kpi-lbl">ครั้งที่ชำรุด</div></div>
-      <div class="kpi"><div class="kpi-val">${st.downDays}</div><div class="kpi-lbl">วันที่หยุดใช้งาน</div></div></div>
-      <div class="sec" style="margin-top:4px">ประวัติสถานะ (ใหม่ → เก่า)</div>`;
+      <div class="kpi"><div class="kpi-val" style="font-size:32px;color:${C.ocean}">${st.borrowCount}</div><div class="kpi-lbl">ครั้งที่ถูกยืม</div></div>
+      <div class="kpi"><div class="kpi-val" style="font-size:32px;color:${C.red}">${st.damageCount}</div><div class="kpi-lbl">ครั้งที่ชำรุด</div></div>
+      <div class="kpi"><div class="kpi-val" style="font-size:32px;color:${C.slate}">${st.downDays}</div><div class="kpi-lbl">วันที่หยุดใช้งาน</div></div></div>
+      <div class="sec" style="margin-top:4px;font-size:16px">ประวัติสถานะ (ใหม่ → เก่า)</div>`;
     if (!d.events.length) h += emptyHTML('📋', 'ยังไม่มีประวัติ');
     d.events.forEach(ev => {
-      h += `<div style="border-left:3px solid ${PROBLEM_ST.includes(ev.to)?'#DC2626':'#0D7377'};padding:4px 0 8px 10px;margin-left:4px">
+      h += `<div style="border-left:3px solid ${PROBLEM_ST.includes(ev.to)?C.red:C.ocean};padding:4px 0 8px 10px;margin-left:4px">
         <div style="font-size:12px;color:#64748B">${fmtDT(ev.time)}</div>
         <div>${ev.from ? stBadge(ev.from) + ' → ' : ''}${stBadge(ev.to)}</div>
         <div style="font-size:12px;color:#475569">${ev.by ? '👤 ' + esc(ev.by) : ''}${ev.location ? ' · 📍 ' + esc(ev.location) : ''}</div>
-        ${ev.reason ? `<div style="font-size:12px">📝 ${esc(ev.reason)}</div>` : ''}</div>`;
+        ${ev.reason ? `<div style="font-size:13px">📝 ${esc(ev.reason)}</div>` : ''}</div>`;
     });
+    if (!userAuth) h += '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:10px">ชื่อผู้ดำเนินการแสดงเฉพาะเจ้าหน้าที่ที่เข้าสู่ระบบ</div>';
     document.getElementById('unitHist').innerHTML = h;
   } catch(e) { document.getElementById('unitHist').innerHTML = errHTML(esc(e.message)); }
+}
+
+// ═══════════════════════════════════════════════════
+//  เมนู 3 — การใช้งานอุปกรณ์ (ตัวกรอง เดือน/ปี/ช่วงเวลา · ชนิด · หน่วยงาน)
+// ═══════════════════════════════════════════════════
+const U = { mode:'month', month:'', year:0, from:'', to:'', type:'', ward:'', ready:false };
+
+function initUsage() {
+  if (U.ready) return;
+  const ev  = usageData.events || [];
+  const last = ev.length ? new Date(ev[ev.length-1].t) : new Date();   // เริ่มที่เดือนล่าสุดที่มีข้อมูล
+  U.month = last.getFullYear() + '-' + String(last.getMonth()+1).padStart(2,'0');
+  U.year  = last.getFullYear();
+  U.to    = isoDate(last);
+  U.from  = isoDate(new Date(last.getTime() - 29*86400000));
+  U.ready = true;
+}
+
+function usageYears() {
+  const ev = usageData.events || [], ys = {};
+  ev.forEach(e => ys[new Date(e.t).getFullYear()] = 1);
+  ys[U.year] = 1; ys[new Date().getFullYear()] = 1;
+  return Object.keys(ys).map(Number).sort((a,b) => b-a);
+}
+
+function renderUsage() {
+  const ev = usageData.events || [];
+  const types = (pubData.equipment||[]).map(e => ({ id:e.equipmentId, name:e.equipmentName }));
+  const wards = Array.from(new Set(ev.map(e => e.ward))).sort((a,b) => a.localeCompare(b,'th'));
+  const opt = (v,l,sel) => `<option value="${esc(v)}"${sel?' selected':''}>${esc(l)}</option>`;
+
+  let h = `<h1 class="page-title">การใช้งานอุปกรณ์</h1>
+    <div class="page-sub">ติดตามอัตราการใช้งาน ดูว่าหน่วยงานใดใช้อุปกรณ์ชนิดใด และจำนวนเท่าไร</div>
+    <div class="fbar">
+      <div class="fgrp"><label>ช่วงเวลา</label>
+        <div class="seg" id="uSeg">
+          <button class="${U.mode==='month'?'on':''}" onclick="setUsageMode('month')">รายเดือน</button>
+          <button class="${U.mode==='year'?'on':''}"  onclick="setUsageMode('year')">รายปี</button>
+          <button class="${U.mode==='range'?'on':''}" onclick="setUsageMode('range')">กำหนดเอง</button>
+        </div></div>
+      <div class="fgrp" id="uMonthG" ${U.mode==='month'?'':'style="display:none"'}><label>เดือน</label>
+        <input type="month" id="uMonth" value="${U.month}" onchange="U.month=this.value;updateUsage()"></div>
+      <div class="fgrp" id="uYearG" ${U.mode==='year'?'':'style="display:none"'}><label>ปี (พ.ศ.)</label>
+        <select id="uYear" onchange="U.year=+this.value;updateUsage()">${usageYears().map(y => opt(y, y+543, y===U.year)).join('')}</select></div>
+      <div class="fgrp" id="uFromG" ${U.mode==='range'?'':'style="display:none"'}><label>ตั้งแต่</label>
+        <input type="date" id="uFrom" value="${U.from}" onchange="U.from=this.value;updateUsage()"></div>
+      <div class="fgrp" id="uToG" ${U.mode==='range'?'':'style="display:none"'}><label>ถึง</label>
+        <input type="date" id="uTo" value="${U.to}" onchange="U.to=this.value;updateUsage()"></div>
+      <div class="fgrp" style="flex:1"><label>ชนิดอุปกรณ์</label>
+        <select id="uType" onchange="U.type=this.value;updateUsage()">${opt('','ทุกชนิด',!U.type)}${types.map(t => opt(t.id,t.name,t.id===U.type)).join('')}</select></div>
+      <div class="fgrp" style="flex:1"><label>หน่วยงาน</label>
+        <select id="uWard" onchange="U.ward=this.value;updateUsage()">${opt('','ทุกหน่วยงาน',!U.ward)}${wards.map(w => opt(w,w,w===U.ward)).join('')}</select></div>
+    </div>
+    <div id="uResult"></div>
+    <div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(usageData.lastUpdated)} · ไม่แสดงชื่อ/เบอร์ผู้ยืม</div>`;
+  setContent('pane-usage', h);
+  updateUsage();
+}
+
+function setUsageMode(m) {
+  U.mode = m;
+  document.querySelectorAll('#uSeg button').forEach((b,i) => b.classList.toggle('on', ['month','year','range'][i] === m));
+  const vis = { uMonthG:m==='month', uYearG:m==='year', uFromG:m==='range', uToG:m==='range' };
+  Object.keys(vis).forEach(id => document.getElementById(id).style.display = vis[id] ? '' : 'none');
+  updateUsage();
+}
+
+function usageRange() {
+  if (U.mode === 'month') { const p = U.month.split('-').map(Number); return [new Date(p[0],p[1]-1,1), new Date(p[0],p[1],0,23,59,59,999)]; }
+  if (U.mode === 'year')  return [new Date(U.year,0,1), new Date(U.year,11,31,23,59,59,999)];
+  return [new Date(U.from+'T00:00:00'), new Date(U.to+'T23:59:59.999')];
+}
+
+function computeUsage() {
+  const range = usageRange(), from = range[0], to = range[1], now = new Date();
+  const ev = usageData.events || [];
+  const typeOk = e => !U.type || e.equipmentId === U.type;
+  const wardOk = e => !U.ward || e.ward === U.ward;
+
+  // นับจำนวนครั้งที่ยืมในช่วงเวลา
+  const byWard = {}, byType = {}, matrix = {}, typeName = {};
+  let borrows = 0;
+  const monthly = U.mode === 'year' || (U.mode === 'range' && (to - from) / 86400000 > 62);
+  const buckets = [], bIndex = {};
+  const cur = new Date(from.getFullYear(), from.getMonth(), monthly ? 1 : from.getDate());
+  while (cur <= to && buckets.length < 400) {
+    const key = monthly ? cur.getFullYear()*100 + cur.getMonth() : isoDate(cur);
+    bIndex[key] = buckets.length;
+    buckets.push({ label: monthly ? MONTH_TH[cur.getMonth()] : (U.mode==='month' ? String(cur.getDate()) : cur.getDate()+' '+MONTH_TH[cur.getMonth()]), n:0 });
+    if (monthly) cur.setMonth(cur.getMonth()+1); else cur.setDate(cur.getDate()+1);
+  }
+  ev.forEach(e => {
+    typeName[e.equipmentId] = e.equipmentName;
+    if (e.type !== 'borrow' || !typeOk(e) || !wardOk(e)) return;
+    const d = new Date(e.t);
+    if (d < from || d > to) return;
+    borrows++;
+    byWard[e.ward] = (byWard[e.ward]||0) + 1;
+    byType[e.equipmentId] = (byType[e.equipmentId]||0) + 1;
+    (matrix[e.ward] = matrix[e.ward] || {})[e.equipmentId] = ((matrix[e.ward]||{})[e.equipmentId]||0) + 1;
+    const k = monthly ? d.getFullYear()*100 + d.getMonth() : isoDate(d);
+    if (bIndex[k] != null) buckets[bIndex[k]].n++;
+  });
+
+  // วันใช้งาน (device-days): จับคู่ ยืม → คืน ต่อเครื่อง แล้วตัดให้อยู่ในช่วงเวลา
+  const open = {}, daysByType = {};
+  let useDays = 0;
+  const endClip = Math.min(to.getTime(), now.getTime());
+  const addInterval = (b, endMs) => {
+    if (!typeOk(b) || !wardOk(b)) return;
+    const s = Math.max(new Date(b.t).getTime(), from.getTime()), e2 = Math.min(endMs, endClip);
+    if (e2 <= s) return;
+    const dd = (e2 - s) / 86400000;
+    useDays += dd; daysByType[b.equipmentId] = (daysByType[b.equipmentId]||0) + dd;
+  };
+  ev.forEach(e => {
+    if (e.type === 'borrow') { if (open[e.subId]) addInterval(open[e.subId], new Date(e.t).getTime()); open[e.subId] = e; }
+    else if (open[e.subId]) { addInterval(open[e.subId], new Date(e.t).getTime()); delete open[e.subId]; }
+  });
+  Object.keys(open).forEach(k => addInterval(open[k], now.getTime()));
+
+  const rangeDays = Math.max(0, (endClip - from.getTime()) / 86400000);
+  const unitsByType = {};
+  allUnits(pubData).forEach(u => unitsByType[u.equipmentId] = (unitsByType[u.equipmentId]||0) + 1);
+  const selTypes = U.type ? [U.type] : Object.keys(unitsByType);
+  const unitTotal = selTypes.reduce((a,t) => a + (unitsByType[t]||0), 0);
+  const util = (days, units) => (units > 0 && rangeDays > 0) ? Math.min(100, days / (units * rangeDays) * 100) : 0;
+  const utilByType = selTypes.map(t => ({ id:t, name:(pubData.equipment.find(e => e.equipmentId===t)||{}).equipmentName || typeName[t] || t,
+    pct: Math.round(util(daysByType[t]||0, unitsByType[t]||0)*10)/10, days: Math.round((daysByType[t]||0)*10)/10, units: unitsByType[t]||0 }));
+
+  return { from, to, monthly, buckets, borrows, byWard, byType, matrix, typeName,
+    useDays: Math.round(useDays*10)/10, rangeDays, unitTotal, utilPct: Math.round(util(useDays, unitTotal)*10)/10, utilByType,
+    wardCount: Object.keys(byWard).length };
+}
+
+function updateUsage() {
+  const el = document.getElementById('uResult');
+  if (!el) return;
+  const r = computeUsage();
+  const rangeTxt = r.from.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'}) + ' – ' +
+                   r.to.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'});
+  const typeLbl = U.type ? (r.utilByType[0] ? r.utilByType[0].name : '') : 'ทุกชนิด';
+
+  let h = `<div class="kpi-row">
+    ${kpiCard('in_use','ครั้งที่ถูกยืม',r.borrows,C.ocean,esc(rangeTxt))}
+    ${kpiCard('process','หน่วยงานที่ใช้',r.wardCount,C.ocean,'หน่วยงาน')}
+    ${kpiCard('available','วันใช้งานรวม',r.useDays.toLocaleString('th-TH'),C.teal,'เครื่อง·วัน')}
+    ${kpiCard('in_use','อัตราการใช้งาน',r.utilPct+'<span style="font-size:20px">%</span>','#B45309','จาก '+r.unitTotal+' เครื่อง · '+esc(typeLbl))}
+  </div>`;
+
+  if (!r.borrows && !r.useDays) {
+    h += emptyHTML('📭','ไม่มีข้อมูลการใช้งานในช่วงที่เลือก — ลองเปลี่ยนช่วงเวลา ชนิดอุปกรณ์ หรือหน่วยงาน');
+    el.innerHTML = h; return;
+  }
+
+  const wardRows = Object.keys(r.byWard).map(w => [w, r.byWard[w]]).sort((a,b) => b[1]-a[1]);
+  const topW = wardRows.slice(0, 10);
+  if (wardRows.length > 10) topW.push(['อื่นๆ ('+(wardRows.length-10)+' หน่วยงาน)', wardRows.slice(10).reduce((a,x) => a+x[1], 0)]);
+
+  h += `<div class="cc" style="margin-bottom:12px"><div class="cc-t">จำนวนครั้งที่ยืมตามช่วงเวลา</div>
+    <div class="cc-s">${r.monthly?'รายเดือน':'รายวัน'} · ${esc(typeLbl)}${U.ward?' · '+esc(U.ward):''}</div>
+    ${chartBox('chUsageTrend',240,'กราฟแท่งจำนวนครั้งที่ยืมตามช่วงเวลา')}</div>
+  <div class="grid2">
+    <div class="cc"><div class="cc-t">หน่วยงานที่ใช้งาน</div><div class="cc-s">จำนวนครั้งที่ยืม เรียงจากมากไปน้อย</div>
+      ${chartBox('chUsageWard',barH(topW.length),'กราฟแท่งจำนวนครั้งที่ยืมแยกตามหน่วยงาน')}</div>
+    <div class="cc"><div class="cc-t">อัตราการใช้งานแยกตามชนิด</div><div class="cc-s">% ของเวลาที่อุปกรณ์ถูกใช้งาน (วันใช้งาน ÷ จำนวนเครื่อง × จำนวนวัน)</div>
+      ${chartBox('chUsageUtil',barH(r.utilByType.length),'กราฟแท่งอัตราการใช้งานแยกตามชนิดอุปกรณ์')}</div>
+  </div>`;
+
+  // ตาราง หน่วยงาน × ชนิดอุปกรณ์
+  const tIds = Object.keys(r.byType).sort((a,b) => r.byType[b]-r.byType[a]);
+  h += '<div class="sec">ตารางการใช้งาน หน่วยงาน × ชนิดอุปกรณ์</div><div class="tbl-wrap"><table><tr><th>หน่วยงาน</th>' +
+    tIds.map(t => `<th class="num">${esc(r.typeName[t]||t)}</th>`).join('') + '<th class="num">รวม</th></tr>';
+  wardRows.forEach(([w, tot]) => {
+    h += `<tr><td><strong>${esc(w)}</strong></td>` +
+      tIds.map(t => `<td class="num">${(r.matrix[w]||{})[t] || '<span style="color:#CBD5E1">–</span>'}</td>`).join('') +
+      `<td class="num"><strong>${tot}</strong></td></tr>`;
+  });
+  h += '<tfoot><tr><td>รวมทั้งหมด</td>' + tIds.map(t => `<td class="num">${r.byType[t]}</td>`).join('') +
+    `<td class="num">${r.borrows}</td></tr></tfoot></table></div>`;
+  el.innerHTML = h;
+
+  mkChart('chUsageTrend', {
+    type:'bar',
+    data:{ labels: r.buckets.map(b => b.label),
+      datasets:[{ label:'ครั้งที่ยืม', data: r.buckets.map(b => b.n), backgroundColor:C.ocean, borderRadius:4, borderSkipped:'bottom', maxBarThickness:28 }] },
+    options:{ scales:{ y:{ beginAtZero:true, ticks:{ precision:0 }, grid:{ color:C.line } }, x:{ grid:{ display:false }, ticks:{ maxRotation:0, autoSkip:true, maxTicksLimit:16 } } },
+      plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label: c => ` ${c.parsed.y} ครั้ง` } } } }
+  });
+  mkChart('chUsageWard', {
+    type:'bar', plugins:[barValueLabels],
+    data:{ labels: topW.map(x => x[0]),
+      datasets:[{ label:'ครั้งที่ยืม', data: topW.map(x => x[1]), backgroundColor:C.ocean, borderRadius:4, borderSkipped:'start', maxBarThickness:22 }] },
+    options:{ indexAxis:'y', layout:{ padding:{ right:36 } },
+      scales:{ x:{ beginAtZero:true, ticks:{ precision:0 }, grid:{ color:C.line } }, y:{ grid:{ display:false } } },
+      plugins:{ legend:{ display:false }, barValueLabels:{ suffix:'' }, tooltip:{ callbacks:{ label: c => ` ${c.parsed.x} ครั้ง` } } } }
+  });
+  mkChart('chUsageUtil', {
+    type:'bar', plugins:[barValueLabels],
+    data:{ labels: r.utilByType.map(t => t.name),
+      datasets:[{ label:'อัตราการใช้งาน', data: r.utilByType.map(t => t.pct), backgroundColor:C.air, borderRadius:4, borderSkipped:'start', maxBarThickness:22 }] },
+    options:{ indexAxis:'y', layout:{ padding:{ right:44 } },
+      scales:{ x:{ beginAtZero:true, max:100, ticks:{ callback: v => v+'%' }, grid:{ color:C.line } }, y:{ grid:{ display:false } } },
+      plugins:{ legend:{ display:false }, barValueLabels:{ suffix:'%' },
+        tooltip:{ callbacks:{ label: c => { const t = r.utilByType[c.dataIndex]; return ` ${t.pct}% · ใช้งาน ${t.days} เครื่อง·วัน จาก ${t.units} เครื่อง`; } } } } }
+  });
 }
 
 // ═══════════════════════════════════════════════════
@@ -815,7 +1298,7 @@ function renderAdmTab(tab, el, d) {
         <div class="card-body">
           <div class="ir"><span class="ir-l">👤 ผู้ยืม</span><span class="ir-v">${r.borrowerName}</span></div>
           <div class="ir"><span class="ir-l">🏢 Ward</span><span class="ir-v">${r.ward}</span></div>
-          <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">แตะเพื่อรับคืน →</div>
+          <div style="font-size:13px;color:#0C4A6E;font-weight:700;margin-top:8px">แตะเพื่อรับคืน →</div>
         </div>
       </div>`;
     });
@@ -836,7 +1319,7 @@ function renderAdmTab(tab, el, d) {
           </div>
           <div class="card-body">
             <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${eq.homeWard}</span></div>
-            <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:8px">แตะเพื่อส่งจ่ายกลาง →</div>
+            <div style="font-size:13px;color:#0369A1;font-weight:700;margin-top:8px">แตะเพื่อส่งจ่ายกลาง →</div>
           </div>
         </div>`;
       });
@@ -858,7 +1341,7 @@ function renderAdmTab(tab, el, d) {
           </div>
           <div class="card-body">
             <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${eq.homeWard}</span></div>
-            <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">แตะเพื่อยืนยันรับกลับ (หลังจ่ายกลางส่งคืนแล้ว) →</div>
+            <div style="font-size:13px;color:#0C4A6E;font-weight:700;margin-top:8px">แตะเพื่อยืนยันรับกลับ (หลังจ่ายกลางส่งคืนแล้ว) →</div>
           </div>
         </div>`;
       });
@@ -1044,7 +1527,7 @@ async function loadReport() {
     let borrow=0, ret=0;
     txns.forEach(t=>{ if(t.type==='borrow') borrow++; else ret++; });
     let h = `<div class="kpi-row">
-      <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#0D7377">${txns.length}</div><div class="kpi-lbl">รายการทั้งหมด</div></div>
+      <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#0C4A6E">${txns.length}</div><div class="kpi-lbl">รายการทั้งหมด</div></div>
       <div class="kpi"><div class="kpi-icon">📤</div><div class="kpi-val" style="color:#3B82F6">${borrow}</div><div class="kpi-lbl">ยืม</div></div>
       <div class="kpi"><div class="kpi-icon">📥</div><div class="kpi-val" style="color:#22C55E">${ret}</div><div class="kpi-lbl">คืน</div></div>
       <div class="kpi"><div class="kpi-icon">🚨</div><div class="kpi-val" style="color:#EF4444">${(d.kpi||{}).overdueCount||0}</div><div class="kpi-lbl">เกินกำหนด</div></div>
@@ -1114,7 +1597,7 @@ function renderCenTab(tab) {
           <div class="ir"><span class="ir-l">🏥 จากวอร์ด</span><span class="ir-v">${eq.homeWard}</span></div>
           <div class="ir"><span class="ir-l">👤 ส่งโดย</span><span class="ir-v">${s.sentBy||'-'}</span></div>
           <div class="ir"><span class="ir-l">⏰ เวลาส่ง</span><span class="ir-v">${s.sentTime||'-'}</span></div>
-          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:8px">แตะเพื่อยืนยันรับ →</div>
+          <div style="font-size:13px;color:#0369A1;font-weight:700;margin-top:8px">แตะเพื่อยืนยันรับ →</div>
         </div>
       </div>`;
     });
@@ -1205,7 +1688,7 @@ async function loadCenReport() {
   }
   const history = cenData.history||[];
   let h = `<div class="kpi-row">
-    <div class="kpi"><div class="kpi-icon">📥</div><div class="kpi-val" style="color:#1A6DC8">${(cenData.toReceive||[]).length}</div><div class="kpi-lbl">รอรับ</div></div>
+    <div class="kpi"><div class="kpi-icon">📥</div><div class="kpi-val" style="color:#0369A1">${(cenData.toReceive||[]).length}</div><div class="kpi-lbl">รอรับ</div></div>
     <div class="kpi"><div class="kpi-icon">🧪</div><div class="kpi-val" style="color:#3C3489">${(cenData.atCentral||[]).length}</div><div class="kpi-lbl">กำลังฆ่าเชื้อ</div></div>
     <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${history.length}</div><div class="kpi-lbl">เสร็จสิ้น</div></div>
   </div>
@@ -1233,7 +1716,7 @@ async function loadSuperView() {
     const d = r.data;
     const sc = d.statusSummary||{};
     let h = `<div class="kpi-row">
-      <div class="kpi"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:#0D7377">${d.totalUnits||0}</div><div class="kpi-lbl">ชิ้นทั้งหมด</div></div>
+      <div class="kpi"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:#0C4A6E">${d.totalUnits||0}</div><div class="kpi-lbl">ชิ้นทั้งหมด</div></div>
       <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val" style="color:#22C55E">${sc.available||0}</div><div class="kpi-lbl">ว่าง</div></div>
       <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-val" style="color:#3B82F6">${sc.in_use||0}</div><div class="kpi-lbl">กำลังยืม</div></div>
       <div class="kpi"><div class="kpi-icon">📈</div><div class="kpi-val" style="color:#8B5CF6">${d.utilRate||0}%</div><div class="kpi-lbl">Utilization</div></div>
