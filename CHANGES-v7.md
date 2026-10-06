@@ -17,3 +17,7 @@
 1. `cd apps-script && clasp push`
 2. Deploy → Manage deployments → New version (URL เดิม)
 3. `git push` (apps-script/ อยู่ใน .gitignore)
+
+## ความเสถียร
+- dashboard retry คำสั่งอ่านอัตโนมัติ + แคชใน localStorage (แสดงข้อมูลเดิมถ้าโหลดใหม่ไม่ได้)
+- Apps Script แคช getDashboardPublic 20 วินาที, getUsageData 2 นาที (CacheService)

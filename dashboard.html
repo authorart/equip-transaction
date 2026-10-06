@@ -647,38 +647,61 @@ async function get(action, params) {
 
 // รวมคำขอที่กำลังโหลดอยู่ให้เหลือครั้งเดียว (หลายส่วนเรียกพร้อมกันได้โดยไม่ยิงซ้ำ)
 let pubReq = null, usageReq = null;
+// แคชในเบราว์เซอร์: เปิดครั้งถัดไปเห็นข้อมูลล่าสุดที่เคยโหลดทันที แล้วอัปเดตเบื้องหลัง
+// (ถ้าโหลดใหม่ไม่สำเร็จ ยังใช้ข้อมูลเดิมต่อได้ + แจ้งเวลาที่ข้อมูลอัปเดตล่าสุด)
+const stale = { pub: 0, usage: 0 };   // เวลา (ms) ของข้อมูลที่มาจากแคช; 0 = สดจากเซิร์ฟเวอร์
+function cacheGet(k) { try { return JSON.parse(localStorage.getItem('ce7_' + k)); } catch(e) { return null; } }
+function cacheSet(k, data) { try { localStorage.setItem('ce7_' + k, JSON.stringify({ t: Date.now(), data })); } catch(e) {} }
+
 function ensurePub() {
-  if (pubData) return Promise.resolve(pubData);
+  if (pubData && !stale.pub) return Promise.resolve(pubData);
   if (!pubReq) pubReq = get('getDashboardPublic').then(r => {
     if (!r.success) throw new Error(r.error);
+    stale.pub = 0; cacheSet('pub', r.data);
     return (pubData = r.data);
   }).finally(() => { pubReq = null; });
   return pubReq;
 }
 
 function ensureUsage() {
-  if (usageData) return Promise.resolve(usageData);
+  if (usageData && !stale.usage) return Promise.resolve(usageData);
   if (!usageReq) usageReq = get('getUsageData').then(r => {
     if (!r.success) throw new Error(r.error || 'ยังไม่รองรับ getUsageData — ต้อง deploy Apps Script v7 ก่อน');
+    stale.usage = 0; cacheSet('usage', r.data);
     return (usageData = r.data);
   }).finally(() => { usageReq = null; });
   return usageReq;
 }
 
+function renderPane(sec) {
+  if (sec === 'usage') { initUsage(); renderUsage(); }
+  else if (sec === 'status') renderStatus(pubData);
+  else renderProblem(pubData);
+  updateProblemBadge();
+}
+
 async function loadPane(sec) {
-  const id = 'pane-' + sec;
+  const id = 'pane-' + sec, kinds = sec === 'usage' ? ['pub','usage'] : ['pub'];
+  kinds.forEach(k => {
+    if ((k === 'pub' ? pubData : usageData)) return;
+    const c = cacheGet(k);
+    if (c && c.data) { if (k === 'pub') pubData = c.data; else usageData = c.data; stale[k] = c.t || 1; }
+  });
+  const haveAll = kinds.every(k => (k === 'pub' ? pubData : usageData));
+  if (haveAll) renderPane(sec); else setContent(id, spinHTML());
   try {
-    if (sec === 'usage') {
-      if (!pubData || !usageData) setContent(id, spinHTML());
-      await Promise.all([ensurePub(), ensureUsage()]);
-      initUsage(); renderUsage();
-    } else {
-      if (!pubData) setContent(id, spinHTML());
-      await ensurePub();
-      if (sec === 'status') renderStatus(pubData); else renderProblem(pubData);
-      updateProblemBadge();
-    }
-  } catch(e) { setContent(id, errHTML(esc(e.message))); }
+    await Promise.all(kinds.map(k => k === 'pub' ? ensurePub() : ensureUsage()));
+    if (curSection === sec) renderPane(sec);   // แทนที่ด้วยข้อมูลสด
+  } catch(e) {
+    if (curSection !== sec) return;
+    if (!haveAll) { setContent(id, errHTML(esc(e.message)) + '<div style="text-align:center"><button class="btn primary" onclick="loadPane(curSection)">🔄 ลองอีกครั้ง</button></div>'); return; }
+    const t = Math.max.apply(null, kinds.map(k => stale[k] || 0));
+    const note = document.createElement('div');
+    note.className = 'alert-strip'; note.style.cursor = 'default';
+    note.innerHTML = '⚠️ โหลดข้อมูลล่าสุดไม่สำเร็จ — กำลังแสดงข้อมูลที่บันทึกไว้เมื่อ ' + fmtDT(new Date(t).toISOString()) +
+      ' <button class="chip" style="margin-left:auto" onclick="loadPane(curSection)">ลองอีกครั้ง</button>';
+    document.getElementById(id).prepend(note);
+  }
 }
 
 // ═══════════════════════════════════════════════════
