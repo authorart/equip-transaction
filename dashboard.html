@@ -621,30 +621,48 @@ function refreshData() {
 // ═══════════════════════════════════════════════════
 //  API
 // ═══════════════════════════════════════════════════
+// Apps Script บางครั้งตอบหน้า HTML (ไม่ใช่ JSON) เมื่อถูกเรียกพร้อมกัน/โหลดหนัก
+// → คำสั่งอ่านข้อมูล (get*/check*) retry อัตโนมัติ; คำสั่งเขียนยิงครั้งเดียว กันบันทึกซ้ำ
+const READ_ACTION = /^(get|check)/;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function post(payload) {
-  const r = await fetch(SCRIPT_URL, {
-    method:'POST', headers:{'Content-Type':'text/plain'},
-    redirect:'follow', body: JSON.stringify(payload),
-  });
-  return r.json();
+  const tries = READ_ACTION.test(payload.action || '') ? 4 : 1;
+  for (let i = 0; i < tries; i++) {
+    try {
+      const r = await fetch(SCRIPT_URL, {
+        method:'POST', headers:{'Content-Type':'text/plain'},
+        redirect:'follow', body: JSON.stringify(payload),
+      });
+      return JSON.parse(await r.text());
+    } catch(e) {
+      if (i < tries - 1) { await sleep(800 * (i + 1) + Math.random() * 400); continue; }
+      throw new Error('เซิร์ฟเวอร์ (Google Apps Script) ไม่ตอบสนองชั่วคราว กรุณากดรีเฟรช 🔄 อีกครั้ง');
+    }
+  }
 }
 
 async function get(action, params) {
   return post(Object.assign({ source:'dashboard', action, userId }, params||{}));
 }
 
-async function ensurePub() {
-  if (pubData) return pubData;
-  const r = await get('getDashboardPublic');
-  if (!r.success) throw new Error(r.error);
-  pubData = r.data; return pubData;
+// รวมคำขอที่กำลังโหลดอยู่ให้เหลือครั้งเดียว (หลายส่วนเรียกพร้อมกันได้โดยไม่ยิงซ้ำ)
+let pubReq = null, usageReq = null;
+function ensurePub() {
+  if (pubData) return Promise.resolve(pubData);
+  if (!pubReq) pubReq = get('getDashboardPublic').then(r => {
+    if (!r.success) throw new Error(r.error);
+    return (pubData = r.data);
+  }).finally(() => { pubReq = null; });
+  return pubReq;
 }
 
-async function ensureUsage() {
-  if (usageData) return usageData;
-  const r = await get('getUsageData');
-  if (!r.success) throw new Error(r.error || 'ยังไม่รองรับ getUsageData — ต้อง deploy Apps Script v7 ก่อน');
-  usageData = r.data; return usageData;
+function ensureUsage() {
+  if (usageData) return Promise.resolve(usageData);
+  if (!usageReq) usageReq = get('getUsageData').then(r => {
+    if (!r.success) throw new Error(r.error || 'ยังไม่รองรับ getUsageData — ต้อง deploy Apps Script v7 ก่อน');
+    return (usageData = r.data);
+  }).finally(() => { usageReq = null; });
+  return usageReq;
 }
 
 async function loadPane(sec) {
