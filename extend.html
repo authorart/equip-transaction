@@ -5,13 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ขยายกำหนดคืน — Chest MSKH</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css?v=20261020">
+<script src="ui.js?v=20261020"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
-body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;min-height:100vh;display:flex;flex-direction:column}
+body{font-family:'Sarabun',sans-serif;background:var(--mist);color:var(--slate);min-height:100vh;display:flex;flex-direction:column}
 
-.header{background:linear-gradient(135deg,#B91C1C,#DC2626);padding:18px 16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.15)}
-.header-icon{font-size:32px;margin-bottom:6px}
+.header{background:var(--ocean);padding:18px 16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-icon{margin-bottom:6px;color:#fff;line-height:0}
 .header-title{font-size:19px;font-weight:800;color:#fff}
 .header-sub{font-size:13px;color:rgba(255,255,255,.8);margin-top:3px}
 
@@ -21,27 +23,27 @@ body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;min-heigh
 .info-card-title{font-size:14px;font-weight:800;color:#B91C1C;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .info-row{display:flex;gap:8px;padding:4px 0;font-size:14px}
 .info-lbl{color:#64748B;min-width:80px;flex-shrink:0;font-weight:600}
-.info-val{color:#1A2B45;font-weight:600;flex:1}
+.info-val{color:var(--slate);font-weight:600;flex:1}
 
-.form-card{background:#fff;border-radius:14px;border:1px solid #D4DCE8;box-shadow:0 1px 6px rgba(0,0,0,.07);padding:20px}
+.form-card{background:#fff;border-radius:14px;border:1px solid var(--border);box-shadow:0 1px 6px rgba(0,0,0,.07);padding:20px}
 
 .field{margin-bottom:18px}
 .field-label{display:block;font-size:14px;font-weight:700;color:#374151;margin-bottom:8px}
 .field-label span{color:#B91C1C}
-.field-control{width:100%;padding:13px 14px;border:2px solid #D4DCE8;border-radius:11px;
-  font-size:16px;font-family:'Sarabun',sans-serif;color:#1A2B45;background:#fff;
+.field-control{width:100%;padding:13px 14px;border:2px solid var(--border);border-radius:11px;
+  font-size:16px;font-family:'Sarabun',sans-serif;color:var(--slate);background:#fff;
   -webkit-appearance:none;appearance:none;transition:border-color .15s}
-.field-control:focus{border-color:#0D7377;outline:none;box-shadow:0 0 0 3px rgba(13,115,119,.12)}
+.field-control:focus{border-color:var(--ocean);outline:none;box-shadow:0 0 0 3px rgba(12,74,110,.12)}
 textarea.field-control{resize:vertical;min-height:80px}
 
 .quick-dates{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.qd-btn{padding:7px 14px;border:2px solid #D4DCE8;border-radius:8px;font-size:13px;
+.qd-btn{padding:7px 14px;border:2px solid var(--border);border-radius:8px;font-size:13px;
   font-weight:700;font-family:'Sarabun',sans-serif;background:#fff;color:#374151;
   cursor:pointer;transition:all .15s}
-.qd-btn:hover{border-color:#0D7377;color:#0D7377;background:#F0F9F9}
-.qd-btn.active{border-color:#0D7377;background:#0D7377;color:#fff}
+.qd-btn:hover{border-color:var(--ocean);color:var(--ocean);background:var(--air-tint)}
+.qd-btn.active{border-color:var(--ocean);background:var(--ocean);color:#fff}
 
-.btn-submit{width:100%;padding:15px;background:#0D7377;color:#fff;border:none;border-radius:12px;
+.btn-submit{width:100%;padding:15px;background:var(--ocean);color:#fff;border:none;border-radius:12px;
   font-size:17px;font-weight:800;font-family:'Sarabun',sans-serif;cursor:pointer;
   transition:opacity .15s,transform .1s;margin-top:4px}
 .btn-submit:active{transform:scale(.98);opacity:.85}
@@ -57,29 +59,26 @@ textarea.field-control{resize:vertical;min-height:80px}
 /* Success screen */
 .success-screen{display:none;flex-direction:column;align-items:center;text-align:center;padding:40px 20px}
 .success-screen.show{display:flex}
-.success-icon{font-size:72px;margin-bottom:16px}
-.success-title{font-size:22px;font-weight:800;color:#0D7377;margin-bottom:8px}
+.success-icon{margin-bottom:16px;color:var(--teal);line-height:0}
+.success-title{font-size:22px;font-weight:800;color:var(--ocean);margin-bottom:8px}
 .success-sub{font-size:15px;color:#64748B;line-height:1.7}
-.success-date{font-size:19px;font-weight:800;color:#1A2B45;margin:12px 0;padding:12px 20px;
-  background:#E1F5EE;border-radius:10px;border:1.5px solid #86EFAC}
+.success-date{font-size:19px;font-weight:800;color:var(--slate);margin:12px 0;padding:12px 20px;
+  background:var(--air-tint);border-radius:10px;border:1.5px solid #86EFAC}
 
 /* Loading */
 .loading-screen{display:none;flex-direction:column;align-items:center;justify-content:center;
   padding:60px 20px;gap:12px;color:#64748B}
 .loading-screen.show{display:flex}
-.spinner{width:36px;height:36px;border:3px solid #D4DCE8;border-top-color:#0D7377;
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--ocean);
   border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── Accessibility baseline (UX phase 1) ── */
-:focus-visible{outline:3px solid #0EA5E9;outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-icon">📅</div>
+  <div class="header-icon"><i data-icon="calendar" data-size="32"></i></div>
   <div class="header-title">ขยายกำหนดคืนอุปกรณ์</div>
   <div class="header-sub">Chest Equipment MSKH</div>
 </div>
@@ -94,14 +93,14 @@ textarea.field-control{resize:vertical;min-height:80px}
   <!-- Main form -->
   <div id="mainContent" style="display:none">
     <div class="info-card">
-      <div class="info-card-title">⏰ อุปกรณ์เกินกำหนดคืน</div>
-      <div class="info-row"><span class="info-lbl">📦 อุปกรณ์</span><span class="info-val" id="infoEquip">—</span></div>
-      <div class="info-row"><span class="info-lbl">📋 SubID</span><span class="info-val" id="infoSubId">—</span></div>
-      <div class="info-row"><span class="info-lbl">📅 กำหนดเดิม</span><span class="info-val" id="infoRetDate" style="color:#B91C1C">—</span></div>
+      <div class="info-card-title"><i data-icon="clock" data-size="18"></i> อุปกรณ์เกินกำหนดคืน</div>
+      <div class="info-row"><span class="info-lbl">อุปกรณ์</span><span class="info-val" id="infoEquip">—</span></div>
+      <div class="info-row"><span class="info-lbl">SubID</span><span class="info-val" id="infoSubId">—</span></div>
+      <div class="info-row"><span class="info-lbl">กำหนดเดิม</span><span class="info-val" id="infoRetDate" style="color:#B91C1C">—</span></div>
     </div>
 
     <div class="note-box">
-      ⚠️ การขยายกำหนดคืนจะแจ้งไปยัง LINE group ของหน่วยโรคระบบการหายใจ กรุณาใช้เฉพาะกรณีที่จำเป็น
+      การขยายกำหนดคืนจะแจ้งไปยัง LINE group ของหน่วยโรคระบบการหายใจ กรุณาใช้เฉพาะกรณีที่จำเป็น
     </div>
 
     <div class="form-card">
@@ -124,14 +123,14 @@ textarea.field-control{resize:vertical;min-height:80px}
       </div>
 
       <button class="btn-submit" id="submitBtn" onclick="submitExtend()">
-        📅 ยืนยันขยายกำหนดคืน
+        ยืนยันขยายกำหนดคืน
       </button>
     </div>
   </div>
 
   <!-- Success screen -->
   <div class="success-screen" id="successScreen">
-    <div class="success-icon">✅</div>
+    <div class="success-icon"><i data-icon="check-circle" data-size="72"></i></div>
     <div class="success-title">ขยายกำหนดคืนสำเร็จ</div>
     <div class="success-sub">กำหนดคืนอุปกรณ์ใหม่คือ</div>
     <div class="success-date" id="successDate">—</div>
@@ -206,7 +205,7 @@ async function submitExtend() {
 
   const btn = document.getElementById('submitBtn');
   btn.disabled    = true;
-  btn.textContent = '⏳ กำลังบันทึก...';
+  btn.textContent = 'กำลังบันทึก...';
 
   try {
     const resp = await fetch(SCRIPT_URL, {
@@ -226,25 +225,25 @@ async function submitExtend() {
     if (result.success) {
       document.getElementById('mainContent').style.display = 'none';
       // Format display date
-      const d = new Date(newReturnDate);
+      const d = new Date(newReturnDate + 'T00:00:00');
       const display = d.toLocaleDateString('th-TH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
       document.getElementById('successDate').textContent = display;
       document.getElementById('successScreen').classList.add('show');
     } else {
       showError(result.error || 'เกิดข้อผิดพลาด');
       btn.disabled    = false;
-      btn.textContent = '📅 ยืนยันขยายกำหนดคืน';
+      btn.textContent = 'ยืนยันขยายกำหนดคืน';
     }
   } catch(e) {
     showError('เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + e.message);
     btn.disabled    = false;
-    btn.textContent = '📅 ยืนยันขยายกำหนดคืน';
+    btn.textContent = 'ยืนยันขยายกำหนดคืน';
   }
 }
 
 function showError(msg) {
   const el = document.getElementById('errorBox');
-  el.textContent = '⚠️ ' + msg;
+  el.textContent = '' + msg;
   el.classList.add('show');
 }
 

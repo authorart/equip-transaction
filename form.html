@@ -5,26 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ยืม/คืนอุปกรณ์ — Chest MSKH</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css?v=20261020">
+<script src="ui.js?v=20261020"></script>
 <style>
 /* ── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 body {
   font-family: 'Sarabun', sans-serif;
-  background: #EEF2F7;
-  color: #1A2B45;
+  background: var(--mist);
+  color: var(--slate);
   line-height: 1.65;
   min-height: 100vh;
 }
 
 /* ── Header ────────────────────────────────────────────────── */
 .header {
-  background: linear-gradient(135deg, #095E61 0%, #0D7377 100%);
+  background: var(--ocean);
   padding: 18px 20px 20px;
   text-align: center;
   box-shadow: 0 2px 10px rgba(0,0,0,.15);
 }
-.header-icon  { font-size: 32px; margin-bottom: 6px; }
+.header-icon  { margin-bottom: 6px; color: #fff; line-height: 0; }
 .header-title { font-size: 20px; font-weight: 800; color: #fff; line-height: 1.3; }
 .header-sub   { font-size: 14px; color: rgba(255,255,255,.75); margin-top: 2px; }
 
@@ -39,7 +41,7 @@ body {
 /* ── Card ──────────────────────────────────────────────────── */
 .card {
   background: #fff; border-radius: 16px;
-  border: 1px solid #D4DCE8; box-shadow: 0 1px 6px rgba(0,0,0,.08);
+  border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,.08);
   margin: 20px 16px; padding: 24px 20px;
 }
 @media(min-width:540px) { .card { margin: 24px auto; max-width: 500px; } }
@@ -54,15 +56,15 @@ body {
 
 .field-control {
   width: 100%; padding: 13px 16px;
-  border: 2px solid #D4DCE8; border-radius: 10px;
+  border: 2px solid var(--border); border-radius: 10px;
   font-size: 16px; font-family: 'Sarabun', sans-serif;
-  color: #1A2B45; background: #fff;
+  color: var(--slate); background: #fff;
   transition: border-color .18s, box-shadow .18s;
   -webkit-appearance: none; appearance: none;
 }
 .field-control:focus {
-  border-color: #0D7377; outline: none;
-  box-shadow: 0 0 0 3px rgba(13,115,119,.15);
+  border-color: var(--ocean); outline: none;
+  box-shadow: 0 0 0 3px rgba(12,74,110,.15);
 }
 .field-control:disabled {
   background: #F1F5F9; color: #64748B; cursor: not-allowed;
@@ -74,7 +76,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 
 /* ── Auto-fill indicator ────────────────────────────────────── */
 .autofill-note {
-  font-size: 12px; color: #0D7377; font-weight: 600;
+  font-size: 12px; color: var(--ocean); font-weight: 600;
   margin-top: 5px; display: none;
 }
 .autofill-note.show { display: block; }
@@ -86,8 +88,8 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 }
 .loading-row.show { display: flex; }
 .spinner-sm {
-  width: 18px; height: 18px; border: 2.5px solid #D4DCE8;
-  border-top-color: #0D7377; border-radius: 50%;
+  width: 18px; height: 18px; border: 2.5px solid var(--border);
+  border-top-color: var(--ocean); border-radius: 50%;
   animation: spin .7s linear infinite; flex-shrink: 0;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -98,48 +100,48 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   text-transform: uppercase; letter-spacing: .08em;
   margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
 }
-.section-title::after { content: ''; flex: 1; height: 1px; background: #D4DCE8; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* ── Submit button ──────────────────────────────────────────── */
 .btn-submit {
   width: 100%; padding: 16px;
-  background: #0D7377; color: #fff;
+  background: var(--ocean); color: #fff;
   border: none; border-radius: 12px;
   font-size: 17px; font-weight: 800; font-family: 'Sarabun', sans-serif;
   cursor: pointer; margin-top: 8px;
   transition: background .2s, transform .1s;
-  box-shadow: 0 3px 10px rgba(13,115,119,.3);
+  box-shadow: 0 3px 10px rgba(12,74,110,.3);
 }
-.btn-submit:hover  { background: #095E61; }
+.btn-submit:hover  { background: var(--ocean-dk); }
 .btn-submit:active { transform: scale(.98); }
 .btn-submit:disabled { background: #94A3B8; box-shadow: none; cursor: not-allowed; }
-.btn-submit.return-btn { background: #1A6DC8; box-shadow: 0 3px 10px rgba(26,109,200,.3); }
-.btn-submit.return-btn:hover { background: #155AAA; }
+.btn-submit.return-btn { background: var(--air-dk); box-shadow: 0 3px 10px rgba(3,105,161,.3); }
+.btn-submit.return-btn:hover { background: var(--air-dkr); }
 
 /* ── Success screen ─────────────────────────────────────────── */
 #successScreen {
   display: none;
   min-height: 100vh; align-items: center; justify-content: center;
   text-align: center; padding: 40px 20px;
-  background: #EEF2F7;
+  background: var(--mist);
 }
 #successScreen.show { display: flex; flex-direction: column; animation: fadeIn .4s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
-.success-icon  { font-size: 64px; margin-bottom: 16px; }
-.success-title { font-size: 24px; font-weight: 800; color: #0D7377; margin-bottom: 8px; }
+.success-icon  { margin-bottom: 16px; color: var(--teal); line-height: 0; }
+.success-title { font-size: 24px; font-weight: 800; color: var(--ocean); margin-bottom: 8px; }
 .success-sub   { font-size: 16px; color: #64748B; }
 .success-detail {
-  background: #fff; border-radius: 12px; border: 1px solid #D4DCE8;
+  background: #fff; border-radius: 12px; border: 1px solid var(--border);
   padding: 16px 20px; margin-top: 20px; text-align: left;
   max-width: 360px; width: 100%;
 }
 .detail-row { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 15px; }
 .detail-row:last-child { border-bottom: none; }
 .detail-lbl { color: #64748B; font-weight: 600; min-width: 80px; }
-.detail-val { color: #1A2B45; font-weight: 700; }
+.detail-val { color: var(--slate); font-weight: 700; }
 .btn-close {
   margin-top: 24px; padding: 14px 36px;
-  background: #0D7377; color: #fff; border: none;
+  background: var(--ocean); color: #fff; border: none;
   border-radius: 12px; font-size: 16px; font-weight: 700;
   font-family: 'Sarabun', sans-serif; cursor: pointer;
 }
@@ -159,7 +161,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   font-size: 16px; display: none;
 }
 .no-units.show { display: block; }
-.no-units .icon { font-size: 40px; margin-bottom: 12px; }
+.no-units .icon { margin-bottom: 12px; color: var(--muted); line-height: 0; }
 
 /* ── QR Mismatch banner ─────────────────────────────────────── */
 .qr-mismatch {
@@ -168,7 +170,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   margin-bottom: 4px; display: none;
 }
 .qr-mismatch.show { display: block; }
-.qr-mismatch-icon { font-size: 36px; margin-bottom: 10px; }
+.qr-mismatch-icon { margin-bottom: 10px; color: #B45309; line-height: 0; }
 .qr-mismatch-title {
   font-size: 17px; font-weight: 800; color: #92400E; margin-bottom: 6px;
 }
@@ -183,104 +185,15 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   cursor: pointer; border: none; transition: opacity .15s;
 }
 .btn-mismatch:active { opacity: .8; }
-.btn-mismatch.primary   { background: #0D7377; color: #fff; }
-.btn-mismatch.blue      { background: #1A6DC8; color: #fff; }
+.btn-mismatch.primary   { background: var(--ocean); color: #fff; }
+.btn-mismatch.blue      { background: var(--air-dk); color: #fff; }
 .btn-mismatch.secondary {
   background: transparent; color: #64748B;
-  border: 1.5px solid #D4DCE8;
+  border: 1.5px solid var(--border);
 }
 
-/* ── Accessibility baseline (UX phase 1) ── */
-:focus-visible{outline:3px solid #0EA5E9;outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 
-<style id="cdd-style">
-.cdd-wrap{position:relative;width:100%;display:block}
-.cdd-btn{width:100%;min-height:46px;padding:11px 36px 11px 14px;
-  border:2px solid #D4DCE8;border-radius:10px;font-size:15px;font-family:inherit;
-  color:#1A2B45;background:#fff;text-align:left;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  transition:border-color .15s;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
-.cdd-btn.placeholder .cdd-txt{color:#64748B}
-.cdd-arr{font-size:11px;color:#64748B;flex-shrink:0;transition:transform .2s;margin-left:auto}
-.cdd-wrap.open .cdd-arr{transform:rotate(180deg)}
-.cdd-list{position:fixed;background:#fff;border:2px solid #0D7377;border-radius:10px;
-  box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:99999;
-  max-height:250px;overflow-y:auto;display:none}
-.cdd-wrap.open .cdd-list{display:block}
-.cdd-opt{padding:13px 16px;font-size:15px;font-family:inherit;color:#1A2B45;
-  cursor:pointer;border-bottom:.5px solid #F3F4F6;-webkit-tap-highlight-color:transparent;user-select:none}
-.cdd-opt:last-child{border-bottom:none}
-.cdd-opt.cdd-ph{color:#64748B}
-.cdd-opt.sel{background:#E1F5EE;color:#085041;font-weight:600}
-</style>
-
-<script id="cdd-lib">
-(function(){
-var _ow=null;
-document.addEventListener('click',function(e){
-  if(_ow&&!_ow.contains(e.target)){_ow.classList.remove('open');_ow=null;}
-},true);
-function pos(wrap){
-  var btn=wrap.querySelector('.cdd-btn'),list=wrap.querySelector('.cdd-list');
-  var r=btn.getBoundingClientRect();
-  list.style.width=Math.max(r.width,180)+'px';
-  list.style.left=r.left+'px';
-  if(window.innerHeight-r.bottom>160){list.style.top=(r.bottom+2)+'px';list.style.bottom='';}
-  else{list.style.bottom=(window.innerHeight-r.top+2)+'px';list.style.top='';}
-}
-window.makeCDD=function(id,opts,ph,cb){
-  var wrap=document.createElement('div');wrap.className='cdd-wrap';wrap.id='cdd_'+id;
-  var btn=document.createElement('button');btn.type='button';btn.className='cdd-btn placeholder';
-  btn.innerHTML='<span class="cdd-txt">'+ph+'</span><span class="cdd-arr">&#9660;</span>';
-  var list=document.createElement('div');list.className='cdd-list';
-  var inp=document.createElement('input');inp.type='hidden';inp.id=id;inp.name=id;inp.value='';
-  function ao(v,l,p){
-    var o=document.createElement('div');o.className='cdd-opt'+(p?' cdd-ph':'');
-    o.textContent=l;o.dataset.value=v||'';list.appendChild(o);
-  }
-  ao('',ph,true);
-  (opts||[]).forEach(function(o){ao(typeof o==='string'?o:o.value,typeof o==='string'?o:o.label,false);});
-  btn.addEventListener('click',function(e){
-    e.preventDefault();e.stopPropagation();
-    var op=wrap.classList.contains('open');
-    if(_ow&&_ow!==wrap){_ow.classList.remove('open');}
-    if(op){wrap.classList.remove('open');_ow=null;}
-    else{wrap.classList.add('open');_ow=wrap;pos(wrap);}
-  });
-  list.addEventListener('click',function(e){
-    var o=e.target.closest('.cdd-opt');if(!o)return;
-    var v=o.dataset.value||'';inp.value=v;
-    btn.querySelector('.cdd-txt').textContent=v?o.textContent:ph;
-    btn.classList.toggle('placeholder',!v);
-    list.querySelectorAll('.cdd-opt').forEach(function(x){x.classList.remove('sel');});
-    o.classList.add('sel');
-    wrap.classList.remove('open');_ow=null;
-    if(cb)cb(v);
-  });
-  wrap.appendChild(btn);wrap.appendChild(list);wrap.appendChild(inp);
-  return wrap;
-};
-window.cddUpdate=function(id,opts,ph){
-  var wrap=document.getElementById('cdd_'+id);if(!wrap)return;
-  var list=wrap.querySelector('.cdd-list'),inp=document.getElementById(id),btn=wrap.querySelector('.cdd-btn');
-  list.innerHTML='';
-  function ao(v,l,p){var o=document.createElement('div');o.className='cdd-opt'+(p?' cdd-ph':'');o.textContent=l;o.dataset.value=v||'';list.appendChild(o);}
-  ao('',ph||'— กรุณาเลือก —',true);
-  (opts||[]).forEach(function(o){ao(typeof o==='string'?o:o.value,typeof o==='string'?o:o.label,false);});
-  inp.value='';btn.querySelector('.cdd-txt').textContent=ph||'— กรุณาเลือก —';btn.classList.add('placeholder');
-};
-window.cddSet=function(id,v,l){
-  var wrap=document.getElementById('cdd_'+id);if(!wrap)return;
-  var inp=document.getElementById(id),btn=wrap.querySelector('.cdd-btn'),list=wrap.querySelector('.cdd-list');
-  inp.value=v||'';btn.querySelector('.cdd-txt').textContent=(v&&l)?l:(v||btn.querySelector('.cdd-txt').textContent);
-  btn.classList.toggle('placeholder',!v);
-  list.querySelectorAll('.cdd-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.value===v);});
-};
-window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:'';};
-})();
-</script>
 </head>
 <body>
 
@@ -288,32 +201,32 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
 <!-- ── CANCEL SECTION (แสดงเมื่อ type=cancel) ── -->
 <div id="cancelSection" style="display:none;padding:20px">
   <div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:14px;padding:24px;text-align:center;margin-bottom:16px">
-    <div style="font-size:48px;margin-bottom:12px">❌</div>
+    <div style="margin-bottom:12px;line-height:0;color:#B91C1C"><i data-icon="x-circle" data-size="48"></i></div>
     <div style="font-size:18px;font-weight:800;color:#B91C1C;margin-bottom:8px">ยืนยันยกเลิกคำร้อง</div>
     <div style="font-size:14px;color:#374151;margin-bottom:6px">Request ID:</div>
-    <div id="cancelRequestId" style="font-size:15px;font-weight:800;color:#1A2B45;word-break:break-all"></div>
+    <div id="cancelRequestId" style="font-size:15px;font-weight:800;color:var(--slate);word-break:break-all"></div>
   </div>
   <div id="cancelError" role="alert" style="display:none;background:#FEE2E2;border-radius:10px;padding:12px;color:#B91C1C;font-size:14px;margin-bottom:12px"></div>
   <button id="cancelBtn" onclick="submitCancel()" style="width:100%;padding:15px;background:#B91C1C;color:#fff;border:none;border-radius:11px;font-size:16px;font-weight:800;font-family:'Sarabun',sans-serif;cursor:pointer">
-    ❌ ยืนยันยกเลิกคำร้อง
+    ยืนยันยกเลิกคำร้อง
   </button>
   <div style="margin-top:10px;font-size:13px;color:#64748B;text-align:center">หากยังต้องการยืม กรุณาส่งคำร้องใหม่อีกครั้ง</div>
 </div>
 
 <!-- ── SUCCESS SECTION ── -->
 <div id="successSection" style="display:none;padding:40px 20px;text-align:center">
-  <div style="font-size:64px;margin-bottom:16px">✅</div>
-  <div style="font-size:20px;font-weight:800;color:#0D7377;margin-bottom:8px">สำเร็จ</div>
+  <div style="margin-bottom:16px;line-height:0;color:var(--teal)"><i data-icon="check-circle" data-size="64"></i></div>
+  <div style="font-size:20px;font-weight:800;color:var(--ocean);margin-bottom:8px">สำเร็จ</div>
   <div id="successMsg" style="font-size:15px;color:#64748B"></div>
 </div>
 
 <div id="mainForm">
   <div class="header">
-    <div class="header-icon" id="headerIcon">📋</div>
+    <div class="header-icon" id="headerIcon" aria-hidden="true"></div>
     <div class="header-title" id="headerTitle">กำลังโหลด...</div>
     <div class="header-sub">หน่วยโรคระบบการหายใจ · MSKH</div>
     <div class="equip-badge" id="equipBadge" style="display:none">
-      <span>📦</span><span id="equipBadgeText">—</span>
+      <i data-icon="package" data-size="18"></i><span id="equipBadgeText">—</span>
     </div>
   </div>
 
@@ -322,7 +235,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
 
     <!-- QR Mismatch warning -->
     <div class="qr-mismatch" id="qrMismatch">
-      <div class="qr-mismatch-icon" id="qrMismatchIcon">⚠️</div>
+      <div class="qr-mismatch-icon" id="qrMismatchIcon"></div>
       <div class="qr-mismatch-title" id="qrMismatchTitle"></div>
       <div class="qr-mismatch-body"  id="qrMismatchBody"></div>
       <div class="qr-mismatch-actions" id="qrMismatchActions"></div>
@@ -336,7 +249,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
 
     <!-- No units warning -->
     <div class="no-units" id="noUnitsMsg">
-      <div class="icon" id="noUnitsIcon">📦</div>
+      <div class="icon" id="noUnitsIcon"></div>
       <div id="noUnitsText">ไม่มีอุปกรณ์ที่พร้อมดำเนินการ</div>
     </div>
 
@@ -359,7 +272,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
         <div id="cdd_cond_wrap"></div>
         <!-- แจ้งเตือนกรณีชำรุดมาก -->
         <div id="conditionWarning" style="display:none;margin-top:8px;padding:10px 14px;background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;font-size:13px;color:#92400E;font-weight:600;">
-          ⚠️ อุปกรณ์ชำรุด — กรุณาแจ้งรายละเอียดในช่องหมายเหตุ และแจ้งผู้รับผิดชอบทราบด้วย
+          อุปกรณ์ชำรุด — กรุณาแจ้งรายละเอียดในช่องหมายเหตุ และแจ้งผู้รับผิดชอบทราบด้วย
         </div>
       </div>
 
@@ -415,7 +328,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
 
       <!-- Submit -->
       <button class="btn-submit" id="submitBtn" onclick="submitForm()">
-        <span id="submitLabel">📋 ยืนยันการยืม</span>
+        <span id="submitLabel">ยืนยันการยืม</span>
       </button>
     </div><!-- /formBody -->
   </div><!-- /card -->
@@ -423,12 +336,12 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
 
 <!-- ── Success screen ──────────────────────────────────────── -->
 <div id="successScreen">
-  <div class="success-icon" id="successIcon">✅</div>
+  <div class="success-icon" id="successIcon"></div>
   <div class="success-title" id="successTitle">บันทึกสำเร็จ!</div>
   <div class="success-sub" id="successSub">ระบบได้แจ้งเตือน LINE group แล้ว</div>
   <div class="success-detail" id="successDetail"></div>
   <div style="margin-top:20px;padding:12px 16px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;font-size:14px;color:#166534;text-align:center;max-width:360px;width:100%;">
-    ✅ บันทึกเรียบร้อยแล้ว<br>
+    บันทึกเรียบร้อยแล้ว<br>
     <span style="font-size:13px;color:#4B7A5E;">กรุณากดปุ่ม <strong>← ย้อนกลับ</strong> หรือ <strong>✕</strong> ของ browser เพื่อปิดหน้านี้</span>
   </div>
   <button class="btn-close" onclick="goBack()">← กลับหน้าก่อนหน้า</button>
@@ -439,7 +352,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
 //  CONFIG — แก้ค่านี้ให้ตรงกับ Dashboard deployment URL ของคุณ
 // ============================================================
 // ============================================================
-//  ⚠️  แก้ URL ด้านล่างให้ตรงกับ Apps Script Deployment URL ของคุณ
+//  แก้ URL ด้านล่างให้ตรงกับ Apps Script Deployment URL ของคุณ
 //  วิธีหา: Apps Script → Deploy → Manage deployments → copy URL
 // ============================================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-ifmBtOFPgbrnODe6na-5NNGzIt9ae7-qu8X-wLxnp71vOtTihMY5s-Qxg-XvVEKU5w/exec'; // ← ใส่ URL ของ ChestEquipment_LineOA_v5.gs
@@ -499,11 +412,11 @@ function initForm() {
   }
 
   const isBorrow = formType === 'borrow';
-  document.getElementById('headerIcon').textContent  = isBorrow ? '📋' : '↩️';
+  document.getElementById('headerIcon').innerHTML   = uiIcon(isBorrow ? 'clipboard' : 'return', { size: 32 });
   document.getElementById('headerTitle').textContent = isBorrow ? 'แบบฟอร์มยืมอุปกรณ์' : 'แบบฟอร์มคืนอุปกรณ์';
   document.getElementById('subIdLabel').textContent  = isBorrow ? 'เลือกชิ้นที่ต้องการยืม' : 'เลือกชิ้นที่ต้องการคืน';
   document.getElementById('borrowReturnText').textContent = isBorrow ? 'ยืม' : 'คืน';
-  document.getElementById('submitLabel').textContent = isBorrow ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+  document.getElementById('submitLabel').textContent = isBorrow ? 'ยืนยันการยืม' : 'ยืนยันการคืน';
   document.getElementById('conditionLabel').textContent = isBorrow
     ? 'ประเมินสภาพอุปกรณ์ก่อนยืม'
     : 'ประเมินสภาพอุปกรณ์ก่อนคืน';
@@ -549,9 +462,9 @@ async function fetchSubIds() {
         showQRMismatch(scannedSubId);
       } else {
         const noMsg = formType === 'borrow'
-          ? '📦 ' + equipmentId + ' ไม่มีชิ้นว่างในขณะนี้\nลองจองคิวจาก LINE OA ได้ครับ'
-          : '✅ ' + equipmentId + ' ไม่มีชิ้นที่ถูกยืมอยู่ในขณะนี้';
-        document.getElementById('noUnitsIcon').textContent = formType === 'borrow' ? '📦' : '✅';
+          ? '' + equipmentId + ' ไม่มีชิ้นว่างในขณะนี้\nลองจองคิวจาก LINE OA ได้ครับ'
+          : '' + equipmentId + ' ไม่มีชิ้นที่ถูกยืมอยู่ในขณะนี้';
+        document.getElementById('noUnitsIcon').innerHTML = uiIcon(formType === 'borrow' ? 'package' : 'check-circle', { size: 40 });
         document.getElementById('noUnitsText').textContent = noMsg;
         document.getElementById('noUnitsMsg').classList.add('show');
       }
@@ -693,7 +606,7 @@ async function submitCancel() {
   const errEl = document.getElementById('cancelError');
   errEl.style.display = 'none';
   document.getElementById('cancelBtn').disabled = true;
-  document.getElementById('cancelBtn').textContent = '⏳ กำลังยกเลิก...';
+  document.getElementById('cancelBtn').textContent = 'กำลังยกเลิก...';
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST', headers: { 'Content-Type': 'text/plain' }, redirect: 'follow',
@@ -705,16 +618,16 @@ async function submitCancel() {
       document.getElementById('successSection').style.display = 'block';
       document.getElementById('successMsg').textContent = 'ยกเลิกคำร้อง ' + urlRequestId + ' เรียบร้อยแล้วครับ';
     } else {
-      errEl.textContent = '⚠️ ' + (result.error || 'เกิดข้อผิดพลาด');
+      errEl.textContent = '' + (result.error || 'เกิดข้อผิดพลาด');
       errEl.style.display = 'block';
       document.getElementById('cancelBtn').disabled = false;
-      document.getElementById('cancelBtn').textContent = '❌ ยืนยันยกเลิกคำร้อง';
+      document.getElementById('cancelBtn').textContent = 'ยืนยันยกเลิกคำร้อง';
     }
   } catch(e) {
-    errEl.textContent = '⚠️ ' + e.message;
+    errEl.textContent = '' + e.message;
     errEl.style.display = 'block';
     document.getElementById('cancelBtn').disabled = false;
-    document.getElementById('cancelBtn').textContent = '❌ ยืนยันยกเลิกคำร้อง';
+    document.getElementById('cancelBtn').textContent = 'ยืนยันยกเลิกคำร้อง';
   }
 }
 
@@ -757,7 +670,7 @@ async function submitForm() {
   // ── Disable button ─────────────────────────────────────────
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  document.getElementById('submitLabel').textContent = '⏳ กำลังบันทึก...';
+  document.getElementById('submitLabel').textContent = 'กำลังบันทึก...';
 
   const payload = {
     source         : 'webform',
@@ -787,12 +700,12 @@ async function submitForm() {
     } else {
       showError('บันทึกไม่สำเร็จ: ' + (data.error || 'กรุณาลองใหม่'));
       btn.disabled = false;
-      document.getElementById('submitLabel').textContent = isBorrow ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+      document.getElementById('submitLabel').textContent = isBorrow ? 'ยืนยันการยืม' : 'ยืนยันการคืน';
     }
   } catch (err) {
     showError('เกิดข้อผิดพลาด: ' + err.message + '\nกรุณาลองใหม่หรือติดต่อเจ้าหน้าที่');
     btn.disabled = false;
-    document.getElementById('submitLabel').textContent = isBorrow ? '📋 ยืนยันการยืม' : '↩️ ยืนยันการคืน';
+    document.getElementById('submitLabel').textContent = isBorrow ? 'ยืนยันการยืม' : 'ยืนยันการคืน';
   }
 }
 
@@ -803,23 +716,23 @@ function showQRMismatch(subId) {
 
   if (isBorrow) {
     // สแกน QR ยืม แต่ชิ้นนี้ถูกยืมไปแล้ว (ไม่อยู่ในรายการว่าง)
-    document.getElementById('qrMismatchIcon').textContent  = '🔴';
+    document.getElementById('qrMismatchIcon').innerHTML    = uiIcon('x-circle', { size: 36 });
     document.getElementById('qrMismatchTitle').textContent = subId + ' ไม่ว่าง — กำลังถูกยืมอยู่';
     document.getElementById('qrMismatchBody').innerHTML    =
       'คุณสแกน <strong>QR ยืม</strong> แต่อุปกรณ์ชิ้นนี้<strong>ถูกยืมออกไปแล้ว</strong><br>' +
       'ต้องการดำเนินการอย่างไรต่อ?';
     document.getElementById('qrMismatchActions').innerHTML =
-      '<button class="btn-mismatch blue"      onclick="redirectToForm(\'return\')">↩️  เปลี่ยนเป็นฟอร์มคืนอุปกรณ์</button>' +
+      '<button class="btn-mismatch blue"      onclick="redirectToForm(\'return\')">เปลี่ยนเป็นฟอร์มคืนอุปกรณ์</button>' +
       '<button class="btn-mismatch secondary" onclick="goBack()">← กลับ LINE OA เพื่อจองคิว</button>';
   } else {
     // สแกน QR คืน แต่ชิ้นนี้ยังว่าง (ไม่มีการยืม)
-    document.getElementById('qrMismatchIcon').textContent  = '🟡';
+    document.getElementById('qrMismatchIcon').innerHTML    = uiIcon('alert', { size: 36 });
     document.getElementById('qrMismatchTitle').textContent = subId + ' ยังไม่มีการยืม';
     document.getElementById('qrMismatchBody').innerHTML    =
       'คุณสแกน <strong>QR คืน</strong> แต่อุปกรณ์ชิ้นนี้<strong>ยังว่างอยู่ ไม่มีการยืมในระบบ</strong><br>' +
       'ต้องการยืมอุปกรณ์ชิ้นนี้แทนหรือไม่?';
     document.getElementById('qrMismatchActions').innerHTML =
-      '<button class="btn-mismatch primary"   onclick="redirectToForm(\'borrow\')">📋  เปลี่ยนเป็นฟอร์มยืมอุปกรณ์</button>' +
+      '<button class="btn-mismatch primary"   onclick="redirectToForm(\'borrow\')">เปลี่ยนเป็นฟอร์มยืมอุปกรณ์</button>' +
       '<button class="btn-mismatch secondary" onclick="goBack()">← ยกเลิก</button>';
   }
 
@@ -842,7 +755,7 @@ function showSuccess(payload) {
   ss.classList.add('show');
 
   const isBorrow = formType === 'borrow';
-  document.getElementById('successIcon').textContent  = isBorrow ? '✅' : '🔄';
+  document.getElementById('successIcon').innerHTML   = uiIcon('check-circle', { size: 64 });
   document.getElementById('successTitle').textContent = isBorrow ? 'ยืมอุปกรณ์สำเร็จ!' : 'คืนอุปกรณ์สำเร็จ!';
   document.getElementById('successSub').textContent   = 'ระบบบันทึกและแจ้งเตือน LINE group แล้ว';
 
@@ -871,14 +784,14 @@ function goBack() {
     window.history.back();
   } else {
     // ไม่มี history (เปิดตรงๆ) → ปิดเองไม่ได้ แจ้ง user
-    alert('บันทึกเรียบร้อยแล้ว!\nกรุณากดปุ่ม ← หรือ ✕ ของ browser เพื่อปิดหน้านี้ครับ');
+    uiToast('บันทึกเรียบร้อยแล้ว — กดปุ่ม ← หรือ ✕ ของ browser เพื่อปิดหน้านี้', 'info', 6000);
   }
 }
 
 // ── Helpers ───────────────────────────────────────────────────
 function showError(msg) {
   const el = document.getElementById('errorBanner');
-  el.textContent = '⚠️ ' + msg;
+  el.textContent = '' + msg;
   el.classList.add('show');
   el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }

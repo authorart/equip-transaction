@@ -6,15 +6,17 @@
 <title>Admin — Chest MSKH</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css?v=20261020">
+<script src="ui.js?v=20261020"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
-body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-height:1.6;min-height:100vh}
+body{font-family:'Sarabun',sans-serif;background:var(--mist);color:var(--slate);line-height:1.6;min-height:100vh}
 
 /* ── Header ── */
-.header{background:linear-gradient(135deg,#095E61,#0D7377);padding:16px 16px 0;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header{background:var(--ocean);padding:16px 16px 0;box-shadow:0 2px 10px rgba(0,0,0,.15)}
 .header-top{display:flex;align-items:center;gap:10px;padding-bottom:14px}
-.header-icon{font-size:26px}
+.header-icon{color:#fff;line-height:0}
 .header-title{font-size:18px;font-weight:800;color:#fff}
 .header-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:1px}
 
@@ -31,7 +33,7 @@ body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-heig
 .auth-loading,.auth-error{display:flex;flex-direction:column;align-items:center;justify-content:center;
   min-height:60vh;text-align:center;padding:40px 20px;gap:12px;color:#64748B}
 .auth-error{color:#B91C1C}
-.spinner{width:36px;height:36px;border:3px solid #D4DCE8;border-top-color:#0D7377;
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--ocean);
   border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -41,18 +43,18 @@ body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-heig
 @media(min-width:540px){.page{max-width:600px;margin:0 auto;padding:20px 20px 60px}}
 
 /* ── Cards ── */
-.card{background:#fff;border-radius:14px;border:1px solid #D4DCE8;
+.card{background:#fff;border-radius:14px;border:1px solid var(--border);
       box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden}
 .card-header{padding:12px 16px;background:#F8FAFC;border-bottom:1px solid #E5E7EB;
              display:flex;align-items:center;justify-content:space-between;gap:10px}
-.card-title{font-size:15px;font-weight:800;color:#1A2B45}
+.card-title{font-size:15px;font-weight:800;color:var(--slate)}
 .card-body{padding:16px}
 
 /* ── Info rows ── */
 .info-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid #F1F5F9;font-size:14px}
 .info-row:last-child{border-bottom:none}
 .info-lbl{color:#64748B;font-weight:600;min-width:90px;flex-shrink:0}
-.info-val{color:#1A2B45;font-weight:500;flex:1;word-break:break-all}
+.info-val{color:var(--slate);font-weight:500;flex:1;word-break:break-all}
 
 /* ── Timer badge ── */
 .timer{font-size:12px;font-weight:800;padding:4px 10px;border-radius:12px;white-space:nowrap}
@@ -60,25 +62,15 @@ body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-heig
 .timer.warn{background:#FEF3C7;color:#92400E}
 .timer.ok{background:#D1FAE5;color:#065F46}
 
-/* ── Status badge ── */
-.badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:10px}
-.badge.pending{background:#FEF3C7;color:#92400E}
-.badge.available{background:#D1FAE5;color:#065F46}
-.badge.in_use{background:#DBEAFE;color:#1E3A8A}
-.badge.pending_admin_return{background:#EDE9FE;color:#5B21B6}
-.badge.pending_sterilization{background:#FEE2E2;color:#9B1C1C}
-.badge.at_central{background:#E0F2FE;color:#075985}
-.badge.damaged{background:#FEE2E2;color:#7F1D1D}
-.badge.repair{background:#FEF3C7;color:#78350F}
-.badge.disposed,.badge.lost{background:#F1F5F9;color:#475569}
+/* ── Status badge: ดู brand.css ── */
 
 /* ── Fields ── */
 .field{margin-bottom:16px}
 .field-label{display:block;font-size:14px;font-weight:700;color:#374151;margin-bottom:6px}
-.field-control{width:100%;padding:12px 14px;border:2px solid #D4DCE8;border-radius:10px;
-  font-size:15px;font-family:'Sarabun',sans-serif;color:#1A2B45;background:#fff;
+.field-control{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;
+  font-size:15px;font-family:'Sarabun',sans-serif;color:var(--slate);background:#fff;
   transition:border-color .15s;-webkit-appearance:none;appearance:none}
-.field-control:focus{border-color:#0D7377;outline:none;box-shadow:0 0 0 3px rgba(13,115,119,.12)}
+.field-control:focus{border-color:var(--ocean);outline:none;box-shadow:0 0 0 3px rgba(12,74,110,.12)}
 .field-control:disabled{background:#F1F5F9;color:#64748B;cursor:not-allowed}
 select.field-control{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748B' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
 textarea.field-control{resize:vertical;min-height:80px}
@@ -88,11 +80,11 @@ textarea.field-control{resize:vertical;min-height:80px}
      font-family:'Sarabun',sans-serif;cursor:pointer;transition:opacity .15s,transform .1s;margin-top:6px}
 .btn:active{transform:scale(.98);opacity:.85}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.btn-approve{background:#0D7377;color:#fff;box-shadow:0 3px 10px rgba(13,115,119,.3)}
+.btn-approve{background:var(--ocean);color:#fff;box-shadow:0 3px 10px rgba(12,74,110,.3)}
 .btn-reject{background:#B91C1C;color:#fff;box-shadow:0 3px 10px rgba(185,28,28,.25)}
-.btn-primary{background:#0D7377;color:#fff;box-shadow:0 3px 10px rgba(13,115,119,.3)}
-.btn-blue{background:#1A6DC8;color:#fff;box-shadow:0 3px 10px rgba(26,109,200,.25)}
-.btn-amber{background:#D97706;color:#fff}
+.btn-primary{background:var(--ocean);color:#fff;box-shadow:0 3px 10px rgba(12,74,110,.3)}
+.btn-blue{background:var(--air-dk);color:#fff;box-shadow:0 3px 10px rgba(3,105,161,.25)}
+.btn-amber{background:var(--amber-strong);color:#fff}
 .btn-sm{padding:9px 14px;font-size:14px;border-radius:8px;width:auto}
 .btn-row{display:flex;gap:8px;margin-top:8px}
 .btn-row .btn{flex:1;margin-top:0}
@@ -103,12 +95,12 @@ textarea.field-control{resize:vertical;min-height:80px}
            margin-bottom:14px;display:none}
 .error-box.show{display:block}
 .empty-state{text-align:center;padding:40px 20px;color:#64748B;font-size:15px}
-.empty-state .icon{font-size:40px;margin-bottom:10px}
+.empty-state .icon{margin-bottom:10px;color:var(--muted);line-height:0}
 .success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;
   min-height:60vh;text-align:center;padding:40px 20px}
 .success-screen.show{display:flex}
-.success-icon{font-size:64px;margin-bottom:16px}
-.success-title{font-size:22px;font-weight:800;color:#0D7377;margin-bottom:8px}
+.success-icon{margin-bottom:16px;color:var(--teal);line-height:0}
+.success-title{font-size:22px;font-weight:800;color:var(--ocean);margin-bottom:8px}
 .success-sub{font-size:15px;color:#64748B;margin-bottom:24px}
 
 /* ── Condition warning ── */
@@ -119,123 +111,34 @@ textarea.field-control{resize:vertical;min-height:80px}
 /* ── Loading overlay ── */
 .loading-row{display:none;align-items:center;gap:8px;padding:12px 0;color:#64748B;font-size:14px}
 .loading-row.show{display:flex}
-.spinner-sm{width:18px;height:18px;border:2.5px solid #D4DCE8;border-top-color:#0D7377;
+.spinner-sm{width:18px;height:18px;border:2.5px solid var(--border);border-top-color:var(--ocean);
   border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 
 /* ── Refresh btn ── */
 .refresh-btn{background:none;border:none;color:rgba(255,255,255,.75);font-size:18px;
-  cursor:pointer;padding:4px;flex-shrink:0}
+  cursor:pointer;padding:10px;min-width:44px;min-height:44px;border-radius:10px;flex-shrink:0;line-height:0}
 
-/* ── Accessibility baseline (UX phase 1) ── */
-:focus-visible{outline:3px solid #0EA5E9;outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 
-<style id="cdd-style">
-.cdd-wrap{position:relative;width:100%;display:block}
-.cdd-btn{width:100%;min-height:46px;padding:11px 36px 11px 14px;
-  border:2px solid #D4DCE8;border-radius:10px;font-size:15px;font-family:inherit;
-  color:#1A2B45;background:#fff;text-align:left;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  transition:border-color .15s;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
-.cdd-btn.placeholder .cdd-txt{color:#64748B}
-.cdd-arr{font-size:11px;color:#64748B;flex-shrink:0;transition:transform .2s;margin-left:auto}
-.cdd-wrap.open .cdd-arr{transform:rotate(180deg)}
-.cdd-list{position:fixed;background:#fff;border:2px solid #0D7377;border-radius:10px;
-  box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:99999;
-  max-height:250px;overflow-y:auto;display:none}
-.cdd-wrap.open .cdd-list{display:block}
-.cdd-opt{padding:13px 16px;font-size:15px;font-family:inherit;color:#1A2B45;
-  cursor:pointer;border-bottom:.5px solid #F3F4F6;-webkit-tap-highlight-color:transparent;user-select:none}
-.cdd-opt:last-child{border-bottom:none}
-.cdd-opt.cdd-ph{color:#64748B}
-.cdd-opt.sel{background:#E1F5EE;color:#085041;font-weight:600}
-</style>
-
-<script id="cdd-lib">
-(function(){
-var _ow=null;
-document.addEventListener('click',function(e){
-  if(_ow&&!_ow.contains(e.target)){_ow.classList.remove('open');_ow=null;}
-},true);
-function pos(wrap){
-  var btn=wrap.querySelector('.cdd-btn'),list=wrap.querySelector('.cdd-list');
-  var r=btn.getBoundingClientRect();
-  list.style.width=Math.max(r.width,180)+'px';
-  list.style.left=r.left+'px';
-  if(window.innerHeight-r.bottom>160){list.style.top=(r.bottom+2)+'px';list.style.bottom='';}
-  else{list.style.bottom=(window.innerHeight-r.top+2)+'px';list.style.top='';}
-}
-window.makeCDD=function(id,opts,ph,cb){
-  var wrap=document.createElement('div');wrap.className='cdd-wrap';wrap.id='cdd_'+id;
-  var btn=document.createElement('button');btn.type='button';btn.className='cdd-btn placeholder';
-  btn.innerHTML='<span class="cdd-txt">'+ph+'</span><span class="cdd-arr">&#9660;</span>';
-  var list=document.createElement('div');list.className='cdd-list';
-  var inp=document.createElement('input');inp.type='hidden';inp.id=id;inp.name=id;inp.value='';
-  function ao(v,l,p){
-    var o=document.createElement('div');o.className='cdd-opt'+(p?' cdd-ph':'');
-    o.textContent=l;o.dataset.value=v||'';list.appendChild(o);
-  }
-  ao('',ph,true);
-  (opts||[]).forEach(function(o){ao(typeof o==='string'?o:o.value,typeof o==='string'?o:o.label,false);});
-  btn.addEventListener('click',function(e){
-    e.preventDefault();e.stopPropagation();
-    var op=wrap.classList.contains('open');
-    if(_ow&&_ow!==wrap){_ow.classList.remove('open');}
-    if(op){wrap.classList.remove('open');_ow=null;}
-    else{wrap.classList.add('open');_ow=wrap;pos(wrap);}
-  });
-  list.addEventListener('click',function(e){
-    var o=e.target.closest('.cdd-opt');if(!o)return;
-    var v=o.dataset.value||'';inp.value=v;
-    btn.querySelector('.cdd-txt').textContent=v?o.textContent:ph;
-    btn.classList.toggle('placeholder',!v);
-    list.querySelectorAll('.cdd-opt').forEach(function(x){x.classList.remove('sel');});
-    o.classList.add('sel');
-    wrap.classList.remove('open');_ow=null;
-    if(cb)cb(v);
-  });
-  wrap.appendChild(btn);wrap.appendChild(list);wrap.appendChild(inp);
-  return wrap;
-};
-window.cddUpdate=function(id,opts,ph){
-  var wrap=document.getElementById('cdd_'+id);if(!wrap)return;
-  var list=wrap.querySelector('.cdd-list'),inp=document.getElementById(id),btn=wrap.querySelector('.cdd-btn');
-  list.innerHTML='';
-  function ao(v,l,p){var o=document.createElement('div');o.className='cdd-opt'+(p?' cdd-ph':'');o.textContent=l;o.dataset.value=v||'';list.appendChild(o);}
-  ao('',ph||'— กรุณาเลือก —',true);
-  (opts||[]).forEach(function(o){ao(typeof o==='string'?o:o.value,typeof o==='string'?o:o.label,false);});
-  inp.value='';btn.querySelector('.cdd-txt').textContent=ph||'— กรุณาเลือก —';btn.classList.add('placeholder');
-};
-window.cddSet=function(id,v,l){
-  var wrap=document.getElementById('cdd_'+id);if(!wrap)return;
-  var inp=document.getElementById(id),btn=wrap.querySelector('.cdd-btn'),list=wrap.querySelector('.cdd-list');
-  inp.value=v||'';btn.querySelector('.cdd-txt').textContent=(v&&l)?l:(v||btn.querySelector('.cdd-txt').textContent);
-  btn.classList.toggle('placeholder',!v);
-  list.querySelectorAll('.cdd-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.value===v);});
-};
-window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:'';};
-})();
-</script>
 </head>
 <body>
 
 <!-- ── Header + Tabs ── -->
 <div class="header">
   <div class="header-top">
-    <div class="header-icon">🔑</div>
+    <div class="header-icon"><i data-icon="key" data-size="26"></i></div>
     <div style="flex:1">
       <div class="header-title">Admin Panel</div>
       <div class="header-sub" id="adminName">กำลังตรวจสิทธิ์...</div>
     </div>
-    <button class="refresh-btn" onclick="refreshCurrentTab()" title="รีเฟรช">🔄</button>
+    <button class="refresh-btn" onclick="refreshCurrentTab()" title="รีเฟรช" aria-label="รีเฟรชข้อมูล"><i data-icon="refresh" data-size="20"></i></button>
   </div>
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('approve')" id="tab-approve">✅ อนุมัติ</button>
-    <button class="tab" onclick="switchTab('return')"  id="tab-return">📥 รับคืน</button>
-    <button class="tab" onclick="switchTab('central')" id="tab-central">📤 ส่งจ่ายกลาง</button>
-    <button class="tab" onclick="switchTab('receive_central')" id="tab-receive_central">📦 รับจากจ่ายกลาง</button>
-    <button class="tab" onclick="switchTab('status')"  id="tab-status">🔧 จัดการสถานะ</button>
+    <button class="tab active" onclick="switchTab('approve')" id="tab-approve">อนุมัติ</button>
+    <button class="tab" onclick="switchTab('return')"  id="tab-return">รับคืน</button>
+    <button class="tab" onclick="switchTab('central')" id="tab-central">ส่งจ่ายกลาง</button>
+    <button class="tab" onclick="switchTab('receive_central')" id="tab-receive_central">รับจากจ่ายกลาง</button>
+    <button class="tab" onclick="switchTab('status')"  id="tab-status">จัดการสถานะ</button>
   </div>
 </div>
 
@@ -245,7 +148,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
   <div>กำลังตรวจสิทธิ์...</div>
 </div>
 <div id="authError" class="auth-error" style="display:none">
-  <div style="font-size:48px">🔒</div>
+  <div style="line-height:0"><i data-icon="lock" data-size="48"></i></div>
   <div style="font-size:18px;font-weight:800;margin-bottom:4px">ไม่มีสิทธิ์เข้าถึง</div>
   <div style="font-size:14px" id="authErrorMsg">กรุณาติดต่อผู้ดูแลระบบ</div>
 </div>
@@ -257,7 +160,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
   </div>
   <div id="approve-list"></div>
   <div id="approve-success" class="success-screen">
-    <div class="success-icon">✅</div>
+    <div class="success-icon"><i data-icon="check-circle" data-size="64"></i></div>
     <div class="success-title" id="approve-success-title">ดำเนินการสำเร็จ</div>
     <div class="success-sub" id="approve-success-sub"></div>
     <button class="btn btn-primary" style="max-width:280px" onclick="reloadApprove()">← ดูรายการอื่น</button>
@@ -273,7 +176,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
   <div id="return-form" style="display:none">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">📥 รับคืนอุปกรณ์</div>
+        <div class="card-title">รับคืนอุปกรณ์</div>
       </div>
       <div class="card-body">
         <div class="error-box" id="return-error"></div>
@@ -281,21 +184,21 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
         <div class="field" style="margin-top:14px">
           <label class="field-label">ประเมินสภาพอุปกรณ์หลังใช้ <span style="color:#B91C1C">*</span></label>
           <div id="cdd_ret_cond_wrap"></div>
-          <div class="condition-warn" id="return-condition-warn">⚠️ สภาพชำรุดมาก — อุปกรณ์จะถูกระงับการใช้งาน กรุณาระบุรายละเอียดในหมายเหตุ</div>
+          <div class="condition-warn" id="return-condition-warn">สภาพชำรุดมาก — อุปกรณ์จะถูกระงับการใช้งาน กรุณาระบุรายละเอียดในหมายเหตุ</div>
         </div>
         <div class="field">
           <label class="field-label">หมายเหตุ</label>
           <textarea class="field-control" id="return-notes" placeholder="รายละเอียดสภาพอุปกรณ์ ข้อสังเกต ฯลฯ"></textarea>
         </div>
         <button class="btn btn-primary" id="return-submit-btn" onclick="submitConfirmReturn()">
-          <span id="return-submit-label">📥 ยืนยันรับคืน</span>
+          <span id="return-submit-label">ยืนยันรับคืน</span>
         </button>
         <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToReturnList()">← กลับรายการ</button>
       </div>
     </div>
   </div>
   <div id="return-success" class="success-screen">
-    <div class="success-icon">📥</div>
+    <div class="success-icon"><i data-icon="check-circle" data-size="64"></i></div>
     <div class="success-title">รับคืนอุปกรณ์สำเร็จ</div>
     <div class="success-sub" id="return-success-sub"></div>
     <button class="btn btn-primary" style="max-width:280px" onclick="reloadReturn()">← ดูรายการอื่น</button>
@@ -311,7 +214,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
   <div id="central-form" style="display:none">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">📤 ส่งอุปกรณ์ไปจ่ายกลาง</div>
+        <div class="card-title">ส่งอุปกรณ์ไปจ่ายกลาง</div>
       </div>
       <div class="card-body">
         <div class="error-box" id="central-error"></div>
@@ -321,14 +224,14 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
           <textarea class="field-control" id="central-notes" placeholder="ข้อมูลที่ต้องการแจ้งจ่ายกลาง (ถ้ามี)"></textarea>
         </div>
         <button class="btn btn-blue" id="central-submit-btn" onclick="submitSendCentral()">
-          <span id="central-submit-label">📤 ยืนยันส่งจ่ายกลาง</span>
+          <span id="central-submit-label">ยืนยันส่งจ่ายกลาง</span>
         </button>
         <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToCentralList()">← กลับรายการ</button>
       </div>
     </div>
   </div>
   <div id="central-success" class="success-screen">
-    <div class="success-icon">📤</div>
+    <div class="success-icon"><i data-icon="check-circle" data-size="64"></i></div>
     <div class="success-title">ส่งจ่ายกลางสำเร็จ</div>
     <div class="success-sub" id="central-success-sub"></div>
     <button class="btn btn-primary" style="max-width:280px" onclick="reloadCentral()">← ดูรายการอื่น</button>
@@ -344,7 +247,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
   <div id="receive_central-form" style="display:none">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">📦 รับอุปกรณ์จากจ่ายกลาง</div>
+        <div class="card-title">รับอุปกรณ์จากจ่ายกลาง</div>
       </div>
       <div class="card-body">
         <div class="error-box" id="receive_central-error"></div>
@@ -352,21 +255,21 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
         <div class="field" style="margin-top:14px">
           <label class="field-label">ประเมินสภาพหลังฆ่าเชื้อ <span style="color:#B91C1C">*</span></label>
           <div id="cdd_rc_cond_wrap"></div>
-          <div class="condition-warn" id="rc-condition-warn">⚠️ สภาพชำรุดมาก — อุปกรณ์จะถูกระงับการใช้งาน</div>
+          <div class="condition-warn" id="rc-condition-warn">สภาพชำรุดมาก — อุปกรณ์จะถูกระงับการใช้งาน</div>
         </div>
         <div class="field">
           <label class="field-label">หมายเหตุ</label>
           <textarea class="field-control" id="rc-notes" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
         </div>
         <button class="btn btn-primary" id="rc-submit-btn" onclick="submitReceiveCentral()">
-          <span id="rc-submit-label">📦 ยืนยันรับจากจ่ายกลาง</span>
+          <span id="rc-submit-label">ยืนยันรับจากจ่ายกลาง</span>
         </button>
         <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToRCList()">← กลับรายการ</button>
       </div>
     </div>
   </div>
   <div id="receive_central-success" class="success-screen">
-    <div class="success-icon">📦</div>
+    <div class="success-icon"><i data-icon="check-circle" data-size="64"></i></div>
     <div class="success-title">รับจากจ่ายกลางสำเร็จ</div>
     <div class="success-sub" id="receive_central-success-sub"></div>
     <button class="btn btn-primary" style="max-width:280px" onclick="reloadRC()">← ดูรายการอื่น</button>
@@ -382,7 +285,7 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
   <div id="status-form" style="display:none">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">🔧 อัปเดตสถานะอุปกรณ์</div>
+        <div class="card-title">อัปเดตสถานะอุปกรณ์</div>
       </div>
       <div class="card-body">
         <div class="error-box" id="status-error"></div>
@@ -396,14 +299,14 @@ window.cddVal=function(id){var e=document.getElementById(id);return e?e.value:''
           <textarea class="field-control" id="status-notes" placeholder="เหตุผลหรือรายละเอียดที่เกี่ยวข้อง"></textarea>
         </div>
         <button class="btn btn-amber" id="status-submit-btn" onclick="submitUpdateStatus()">
-          <span id="status-submit-label">🔧 ยืนยันอัปเดตสถานะ</span>
+          <span id="status-submit-label">ยืนยันอัปเดตสถานะ</span>
         </button>
         <button class="btn" style="background:#F1F5F9;color:#374151;margin-top:6px" onclick="backToStatusList()">← กลับรายการ</button>
       </div>
     </div>
   </div>
   <div id="status-success" class="success-screen">
-    <div class="success-icon">🔧</div>
+    <div class="success-icon"><i data-icon="check-circle" data-size="64"></i></div>
     <div class="success-title">อัปเดตสถานะสำเร็จ</div>
     <div class="success-sub" id="status-success-sub"></div>
     <button class="btn btn-primary" style="max-width:280px" onclick="reloadStatus()">← ดูรายการอื่น</button>
@@ -541,9 +444,9 @@ async function loadApprove() {
   try {
     const data = await apiFetch('getPendingRequests');
     document.getElementById('load-approve').classList.remove('show');
-    if (!data.success) { document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>'; return; }
+    if (!data.success) { document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>' + data.error + '</div>'; return; }
     if (!data.data || data.data.length === 0) {
-      document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">✅</div><div>ไม่มีคำร้องรออนุมัติ</div></div>';
+      document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">'+uiIcon('check-circle',{size:40})+'</div><div>ไม่มีคำร้องรออนุมัติ</div></div>';
       return;
     }
     document.getElementById('approve-list').innerHTML = data.data.map(function(r) {
@@ -553,31 +456,31 @@ async function loadApprove() {
       return `<div class="card">
         <div class="card-header">
           <div>
-            <div class="card-title">📦 ${r.equipmentSubId} — ${r.equipmentName}</div>
+            <div class="card-title">${r.equipmentSubId} — ${r.equipmentName}</div>
             <div style="font-size:12px;color:#64748B;margin-top:2px">🆔 ${r.requestId} · ${r.timestamp}</div>
           </div>
           <span class="timer ${timerCls}">${timerTxt}</span>
         </div>
         <div class="card-body">
-          ${infoRow('🏥 Ward ดูแล', r.homeWard)}
-          ${infoRow('👤 ผู้ขอ', r.requesterName)}
-          ${infoRow('🏢 Ward ผู้ขอ', r.requesterWard)}
-          ${infoRow('📞 โทร', r.phone)}
-          ${infoRow('📋 วัตถุประสงค์', r.purpose)}
-          ${infoRow('📅 คืนวันที่', r.returnDate)}
-          ${infoRow('🔍 สภาพก่อนยืม', r.conditionBefore)}
-          ${r.notes ? infoRow('📝 หมายเหตุ', r.notes) : ''}
+          ${infoRow('Ward ดูแล', r.homeWard)}
+          ${infoRow('ผู้ขอ', r.requesterName)}
+          ${infoRow('Ward ผู้ขอ', r.requesterWard)}
+          ${infoRow('โทร', r.phone)}
+          ${infoRow('วัตถุประสงค์', r.purpose)}
+          ${infoRow('คืนวันที่', r.returnDate)}
+          ${infoRow('สภาพก่อนยืม', r.conditionBefore)}
+          ${r.notes ? infoRow('หมายเหตุ', r.notes) : ''}
           <div id="approve-err-${r.requestId}" class="error-box"></div>
           <div class="btn-row" style="margin-top:12px">
-            <button class="btn btn-approve" onclick="submitApprove('${r.requestId}')">✅ อนุมัติ</button>
-            <button class="btn btn-reject"  onclick="openRejectModal('${r.requestId}','${r.equipmentSubId}')">❌ ปฏิเสธ</button>
+            <button class="btn btn-approve" onclick="submitApprove('${r.requestId}')">อนุมัติ</button>
+            <button class="btn btn-reject"  onclick="openRejectModal('${r.requestId}','${r.equipmentSubId}')">ปฏิเสธ</button>
           </div>
         </div>
       </div>`;
     }).join('');
   } catch (err) {
     document.getElementById('load-approve').classList.remove('show');
-    document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>โหลดไม่สำเร็จ: ' + err.message + '</div>';
+    document.getElementById('approve-list').innerHTML = '<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>โหลดไม่สำเร็จ: ' + err.message + '</div>';
   }
 }
 
@@ -592,15 +495,17 @@ async function submitApprove(requestId) {
       document.getElementById('approve-list').innerHTML             = '';
       document.getElementById('approve-success').classList.add('show');
     } else {
-      if (errEl) { errEl.textContent = '⚠️ ' + result.error; errEl.classList.add('show'); }
+      if (errEl) { errEl.textContent = '' + result.error; errEl.classList.add('show'); }
     }
   } catch (err) {
-    if (errEl) { errEl.textContent = '⚠️ เกิดข้อผิดพลาด: ' + err.message; errEl.classList.add('show'); }
+    if (errEl) { errEl.textContent = 'เกิดข้อผิดพลาด: ' + err.message; errEl.classList.add('show'); }
   }
 }
 
-function openRejectModal(requestId, subId) {
-  const reason = prompt('เหตุผลที่ปฏิเสธ (ถ้ามี):') || '';
+async function openRejectModal(requestId, subId) {
+  const reason = await uiPrompt({ title:'ปฏิเสธคำร้อง ' + subId + '?', label:'เหตุผลที่ปฏิเสธ (ถ้ามี)',
+    placeholder:'เช่น อุปกรณ์ไม่ว่าง / ข้อมูลไม่ครบ', ok:'ปฏิเสธคำร้อง', danger:true });
+  if (reason === null) return;   // กดยกเลิก → ไม่ปฏิเสธ
   submitReject(requestId, subId, reason);
 }
 
@@ -614,10 +519,10 @@ async function submitReject(requestId, subId, reason) {
       document.getElementById('approve-list').innerHTML             = '';
       document.getElementById('approve-success').classList.add('show');
     } else {
-      if (errEl) { errEl.textContent = '⚠️ ' + result.error; errEl.classList.add('show'); }
+      if (errEl) { errEl.textContent = '' + result.error; errEl.classList.add('show'); }
     }
   } catch (err) {
-    if (errEl) { errEl.textContent = '⚠️ ' + err.message; errEl.classList.add('show'); }
+    if (errEl) { errEl.textContent = '' + err.message; errEl.classList.add('show'); }
   }
 }
 
@@ -634,31 +539,31 @@ async function loadReturn() {
   try {
     const data = await apiFetch('getEquipmentByStatus', { status:'pending_admin_return' });
     document.getElementById('load-return').classList.remove('show');
-    if (!data.success) { document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + data.error + '</div>'; return; }
+    if (!data.success) { document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>' + data.error + '</div>'; return; }
     if (!data.data || data.data.length === 0) {
-      document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">📥</div><div>ไม่มีอุปกรณ์รอรับคืน</div></div>';
+      document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">'+uiIcon('inbox',{size:40})+'</div><div>ไม่มีอุปกรณ์รอรับคืน</div></div>';
       return;
     }
     document.getElementById('return-list').innerHTML = data.data.map(function(eq) {
-      return `<div class="card" onclick="openReturnForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+      return `<div class="card" role="button" tabindex="0" onclick="openReturnForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
         <div class="card-header">
           <div>
-            <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
-            <div style="font-size:12px;color:#64748B;margin-top:2px">🏥 ${eq.homeWard}</div>
+            <div class="card-title">${eq.equipmentSubId} — ${eq.equipmentName}</div>
+            <div style="font-size:12px;color:#64748B;margin-top:2px">${eq.homeWard}</div>
           </div>
           ${statusBadge(eq.status)}
         </div>
         <div class="card-body">
-          ${infoRow('👤 ผู้ยืม', eq.borrowerName)}
-          ${infoRow('🏢 Ward', eq.ward)}
-          ${infoRow('📅 กำหนดคืน', eq.expectedReturn)}
-          <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:8px">กดเพื่อรับคืน →</div>
+          ${infoRow('ผู้ยืม', eq.borrowerName)}
+          ${infoRow('Ward', eq.ward)}
+          ${infoRow('กำหนดคืน', eq.expectedReturn)}
+          <div style="font-size:13px;color:var(--ocean);font-weight:700;margin-top:8px">กดเพื่อรับคืน →</div>
         </div>
       </div>`;
     }).join('');
   } catch (err) {
     document.getElementById('load-return').classList.remove('show');
-    document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>' + err.message + '</div>';
+    document.getElementById('return-list').innerHTML = '<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>' + err.message + '</div>';
   }
 }
 
@@ -666,15 +571,15 @@ function openReturnForm(eq) {
   selectedItem = eq;
   document.getElementById('return-list').innerHTML  = '';
   document.getElementById('return-form').style.display = 'block';
-  document.getElementById('return-condition').value  = '';
+  cddSet('return-condition', '');
   document.getElementById('return-notes').value      = '';
   document.getElementById('return-error').classList.remove('show');
   document.getElementById('return-condition-warn').classList.remove('show');
   document.getElementById('return-info').innerHTML   =
-    infoRow('📦 อุปกรณ์', eq.equipmentSubId + ' — ' + eq.equipmentName) +
-    infoRow('👤 ผู้ยืม', eq.borrowerName) +
-    infoRow('🏢 Ward ผู้ยืม', eq.ward) +
-    infoRow('📅 กำหนดคืน', eq.expectedReturn);
+    infoRow('อุปกรณ์', eq.equipmentSubId + ' — ' + eq.equipmentName) +
+    infoRow('ผู้ยืม', eq.borrowerName) +
+    infoRow('Ward ผู้ยืม', eq.ward) +
+    infoRow('กำหนดคืน', eq.expectedReturn);
 }
 
 function onReturnConditionChange() {
@@ -686,23 +591,23 @@ async function submitConfirmReturn() {
   const condition = document.getElementById('return-condition').value;
   const notes     = document.getElementById('return-notes').value.trim();
   const errEl     = document.getElementById('return-error');
-  if (!condition) { errEl.textContent='⚠️ กรุณาประเมินสภาพอุปกรณ์'; errEl.classList.add('show'); return; }
-  setBtn('return-submit-btn', true, '⏳ กำลังบันทึก...');
+  if (!condition) { errEl.textContent='กรุณาประเมินสภาพอุปกรณ์'; errEl.classList.add('show'); return; }
+  setBtn('return-submit-btn', true, 'กำลังบันทึก...');
   try {
     const result = await apiPost({ source:'admin', action:'confirm_return', userId:currentUserId,
       equipmentSubId:selectedItem.equipmentSubId, condition, notes });
     if (result.success) {
       document.getElementById('return-form').style.display = 'none';
-      const nextMsg = { available:'✅ พร้อมใช้งานแล้ว', pending_sterilization:'🧪 รอส่งจ่ายกลาง', damaged:'🔴 บันทึกสถานะชำรุดแล้ว' };
+      const nextMsg = { available:'พร้อมใช้งานแล้ว', pending_sterilization:'รอส่งจ่ายกลาง', damaged:'บันทึกสถานะชำรุดแล้ว' };
       document.getElementById('return-success-sub').textContent = selectedItem.equipmentSubId + ' · ' + (nextMsg[result.nextStatus] || result.nextStatus);
       document.getElementById('return-success').classList.add('show');
     } else {
-      errEl.textContent='⚠️ '+result.error; errEl.classList.add('show');
-      setBtn('return-submit-btn', false, '📥 ยืนยันรับคืน');
+      errEl.textContent=''+result.error; errEl.classList.add('show');
+      setBtn('return-submit-btn', false, 'ยืนยันรับคืน');
     }
   } catch (err) {
-    errEl.textContent='⚠️ '+err.message; errEl.classList.add('show');
-    setBtn('return-submit-btn', false, '📥 ยืนยันรับคืน');
+    errEl.textContent=''+err.message; errEl.classList.add('show');
+    setBtn('return-submit-btn', false, 'ยืนยันรับคืน');
   }
 }
 
@@ -720,26 +625,26 @@ async function loadCentral() {
   try {
     const data = await apiFetch('getEquipmentByStatus', { status:'pending_sterilization' });
     document.getElementById('load-central').classList.remove('show');
-    if (!data.success) { document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+data.error+'</div>'; return; }
+    if (!data.success) { document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>'+data.error+'</div>'; return; }
     if (!data.data || data.data.length===0) {
-      document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">📤</div><div>ไม่มีอุปกรณ์รอส่งจ่ายกลาง</div></div>';
+      document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('send',{size:40})+'</div><div>ไม่มีอุปกรณ์รอส่งจ่ายกลาง</div></div>';
       return;
     }
     document.getElementById('central-list').innerHTML = data.data.map(function(eq) {
-      return `<div class="card" onclick="openCentralForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+      return `<div class="card" role="button" tabindex="0" onclick="openCentralForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
         <div class="card-header">
-          <div class="card-title">🧪 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+          <div class="card-title">${eq.equipmentSubId} — ${eq.equipmentName}</div>
           ${statusBadge(eq.status)}
         </div>
         <div class="card-body">
-          ${infoRow('🏥 Ward ดูแล', eq.homeWard)}
-          <div style="font-size:13px;color:#1A6DC8;font-weight:700;margin-top:6px">กดเพื่อส่งจ่ายกลาง →</div>
+          ${infoRow('Ward ดูแล', eq.homeWard)}
+          <div style="font-size:13px;color:var(--air-dk);font-weight:700;margin-top:6px">กดเพื่อส่งจ่ายกลาง →</div>
         </div>
       </div>`;
     }).join('');
   } catch(err) {
     document.getElementById('load-central').classList.remove('show');
-    document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+err.message+'</div>';
+    document.getElementById('central-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>'+err.message+'</div>';
   }
 }
 
@@ -750,14 +655,14 @@ function openCentralForm(eq) {
   document.getElementById('central-notes').value='';
   document.getElementById('central-error').classList.remove('show');
   document.getElementById('central-info').innerHTML=
-    infoRow('📦 อุปกรณ์', eq.equipmentSubId+' — '+eq.equipmentName)+
-    infoRow('🏥 Ward ดูแล', eq.homeWard);
+    infoRow('อุปกรณ์', eq.equipmentSubId+' — '+eq.equipmentName)+
+    infoRow('Ward ดูแล', eq.homeWard);
 }
 
 async function submitSendCentral() {
   const notes=document.getElementById('central-notes').value.trim();
   const errEl=document.getElementById('central-error');
-  setBtn('central-submit-btn',true,'⏳ กำลังบันทึก...');
+  setBtn('central-submit-btn',true,'กำลังบันทึก...');
   try {
     const result=await apiPost({source:'admin',action:'send_central',userId:currentUserId,
       equipmentSubId:selectedItem.equipmentSubId,notes});
@@ -766,10 +671,10 @@ async function submitSendCentral() {
       document.getElementById('central-success-sub').textContent=selectedItem.equipmentSubId+' · STR ID: '+(result.sterilId||'');
       document.getElementById('central-success').classList.add('show');
     } else {
-      errEl.textContent='⚠️ '+result.error; errEl.classList.add('show');
-      setBtn('central-submit-btn',false,'📤 ยืนยันส่งจ่ายกลาง');
+      errEl.textContent=''+result.error; errEl.classList.add('show');
+      setBtn('central-submit-btn',false,'ยืนยันส่งจ่ายกลาง');
     }
-  } catch(err){ errEl.textContent='⚠️ '+err.message; errEl.classList.add('show'); setBtn('central-submit-btn',false,'📤 ยืนยันส่งจ่ายกลาง'); }
+  } catch(err){ errEl.textContent=''+err.message; errEl.classList.add('show'); setBtn('central-submit-btn',false,'ยืนยันส่งจ่ายกลาง'); }
 }
 
 function backToCentralList(){ document.getElementById('central-form').style.display='none'; loadCentral(); }
@@ -786,26 +691,26 @@ async function loadRC() {
   try {
     const data=await apiFetch('getEquipmentByStatus',{status:'at_central'});
     document.getElementById('load-receive_central').classList.remove('show');
-    if(!data.success){document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+data.error+'</div>';return;}
+    if(!data.success){document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>'+data.error+'</div>';return;}
     if(!data.data||data.data.length===0){
-      document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">📦</div><div>ไม่มีอุปกรณ์รอรับจากจ่ายกลาง</div></div>';
+      document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('package',{size:40})+'</div><div>ไม่มีอุปกรณ์รอรับจากจ่ายกลาง</div></div>';
       return;
     }
     document.getElementById('receive_central-list').innerHTML=data.data.map(function(eq){
-      return `<div class="card" onclick="openRCForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+      return `<div class="card" role="button" tabindex="0" onclick="openRCForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
         <div class="card-header">
-          <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
+          <div class="card-title">${eq.equipmentSubId} — ${eq.equipmentName}</div>
           ${statusBadge(eq.status)}
         </div>
         <div class="card-body">
-          ${infoRow('🏥 Ward ดูแล', eq.homeWard)}
-          <div style="font-size:13px;color:#0D7377;font-weight:700;margin-top:6px">กดเพื่อรับจากจ่ายกลาง →</div>
+          ${infoRow('Ward ดูแล', eq.homeWard)}
+          <div style="font-size:13px;color:var(--ocean);font-weight:700;margin-top:6px">กดเพื่อรับจากจ่ายกลาง →</div>
         </div>
       </div>`;
     }).join('');
   } catch(err){
     document.getElementById('load-receive_central').classList.remove('show');
-    document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+err.message+'</div>';
+    document.getElementById('receive_central-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>'+err.message+'</div>';
   }
 }
 
@@ -813,13 +718,13 @@ function openRCForm(eq){
   selectedItem=eq;
   document.getElementById('receive_central-list').innerHTML='';
   document.getElementById('receive_central-form').style.display='block';
-  document.getElementById('rc-condition').value='';
+  cddSet('rc-condition','');
   document.getElementById('rc-notes').value='';
   document.getElementById('receive_central-error').classList.remove('show');
   document.getElementById('rc-condition-warn').classList.remove('show');
   document.getElementById('receive_central-info').innerHTML=
-    infoRow('📦 อุปกรณ์',eq.equipmentSubId+' — '+eq.equipmentName)+
-    infoRow('🏥 Ward ดูแล',eq.homeWard);
+    infoRow('อุปกรณ์',eq.equipmentSubId+' — '+eq.equipmentName)+
+    infoRow('Ward ดูแล',eq.homeWard);
 }
 
 function onRCConditionChange(){ document.getElementById('rc-condition-warn').classList.toggle('show',document.getElementById('rc-condition').value.includes('Major')); }
@@ -828,18 +733,18 @@ async function submitReceiveCentral(){
   const condition=document.getElementById('rc-condition').value;
   const notes=document.getElementById('rc-notes').value.trim();
   const errEl=document.getElementById('receive_central-error');
-  if(!condition){errEl.textContent='⚠️ กรุณาประเมินสภาพอุปกรณ์';errEl.classList.add('show');return;}
-  setBtn('rc-submit-btn',true,'⏳ กำลังบันทึก...');
+  if(!condition){errEl.textContent='กรุณาประเมินสภาพอุปกรณ์';errEl.classList.add('show');return;}
+  setBtn('rc-submit-btn',true,'กำลังบันทึก...');
   try {
     const result=await apiPost({source:'admin',action:'receive_central',userId:currentUserId,
       equipmentSubId:selectedItem.equipmentSubId,condition,notes});
     if(result.success){
       document.getElementById('receive_central-form').style.display='none';
-      const nm={available:'✅ พร้อมใช้งานแล้ว',damaged:'🔴 บันทึกชำรุด'};
+      const nm={available:'พร้อมใช้งานแล้ว',damaged:'บันทึกชำรุด'};
       document.getElementById('receive_central-success-sub').textContent=selectedItem.equipmentSubId+' · '+(nm[result.nextStatus]||result.nextStatus);
       document.getElementById('receive_central-success').classList.add('show');
-    } else { errEl.textContent='⚠️ '+result.error;errEl.classList.add('show');setBtn('rc-submit-btn',false,'📦 ยืนยันรับจากจ่ายกลาง'); }
-  } catch(err){ errEl.textContent='⚠️ '+err.message;errEl.classList.add('show');setBtn('rc-submit-btn',false,'📦 ยืนยันรับจากจ่ายกลาง'); }
+    } else { errEl.textContent=''+result.error;errEl.classList.add('show');setBtn('rc-submit-btn',false,'ยืนยันรับจากจ่ายกลาง'); }
+  } catch(err){ errEl.textContent=''+err.message;errEl.classList.add('show');setBtn('rc-submit-btn',false,'ยืนยันรับจากจ่ายกลาง'); }
 }
 
 function backToRCList(){ document.getElementById('receive_central-form').style.display='none'; loadRC(); }
@@ -856,16 +761,16 @@ async function loadStatus(){
   try {
     const data=await apiFetch('getEquipmentByStatus',{status:''}); // ทุกสถานะ
     document.getElementById('load-status').classList.remove('show');
-    if(!data.success){document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+data.error+'</div>';return;}
+    if(!data.success){document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>'+data.error+'</div>';return;}
     if(!data.data||data.data.length===0){
-      document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">📦</div><div>ไม่พบอุปกรณ์</div></div>';return;
+      document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('package',{size:40})+'</div><div>ไม่พบอุปกรณ์</div></div>';return;
     }
     document.getElementById('status-list').innerHTML=data.data.map(function(eq){
-      return `<div class="card" onclick="openStatusForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
+      return `<div class="card" role="button" tabindex="0" onclick="openStatusForm(${JSON.stringify(eq).split('"').join('&quot;')})" style="cursor:pointer">
         <div class="card-header">
           <div>
-            <div class="card-title">📦 ${eq.equipmentSubId} — ${eq.equipmentName}</div>
-            <div style="font-size:12px;color:#64748B;margin-top:2px">🏥 ${eq.homeWard}</div>
+            <div class="card-title">${eq.equipmentSubId} — ${eq.equipmentName}</div>
+            <div style="font-size:12px;color:#64748B;margin-top:2px">${eq.homeWard}</div>
           </div>
           ${statusBadge(eq.status)}
         </div>
@@ -873,7 +778,7 @@ async function loadStatus(){
     }).join('');
   } catch(err){
     document.getElementById('load-status').classList.remove('show');
-    document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">⚠️</div>'+err.message+'</div>';
+    document.getElementById('status-list').innerHTML='<div class="empty-state"><div class="icon">'+uiIcon('alert',{size:40})+'</div>'+err.message+'</div>';
   }
 }
 
@@ -881,23 +786,24 @@ function openStatusForm(eq){
   selectedItem=eq;
   document.getElementById('status-list').innerHTML='';
   document.getElementById('status-form').style.display='block';
-  document.getElementById('status-select').value='';
+  cddSet('status-select','');
   document.getElementById('status-notes').value='';
   document.getElementById('status-error').classList.remove('show');
   document.getElementById('status-info').innerHTML=
-    infoRow('📦 อุปกรณ์',eq.equipmentSubId+' — '+eq.equipmentName)+
-    infoRow('🏥 Ward ดูแล',eq.homeWard)+
-    infoRow('📋 สถานะปัจจุบัน','').replace('</div>','')+'<span class="badge '+eq.status+'">'+eq.status+'</span></span></div>';
+    infoRow('อุปกรณ์',eq.equipmentSubId+' — '+eq.equipmentName)+
+    infoRow('Ward ดูแล',eq.homeWard)+
+    '<div class="info-row"><span class="info-lbl">สถานะปัจจุบัน</span><span class="info-val">'+statusBadge(eq.status)+'</span></div>';
 }
 
 async function submitUpdateStatus(){
   const status=document.getElementById('status-select').value;
   const notes=document.getElementById('status-notes').value.trim();
   const errEl=document.getElementById('status-error');
-  if(!status){errEl.textContent='⚠️ กรุณาเลือกสถานะ';errEl.classList.add('show');return;}
-  if(!notes){errEl.textContent='⚠️ กรุณาระบุหมายเหตุ';errEl.classList.add('show');return;}
-  if((status==='disposed'||status==='lost')&&!confirm('⚠️ สถานะนี้เป็นการถาวร อุปกรณ์จะไม่สามารถนำกลับมาใช้งานได้ ยืนยันหรือไม่?'))return;
-  setBtn('status-submit-btn',true,'⏳ กำลังบันทึก...');
+  if(!status){errEl.textContent='กรุณาเลือกสถานะ';errEl.classList.add('show');return;}
+  if(!notes){errEl.textContent='กรุณาระบุหมายเหตุ';errEl.classList.add('show');return;}
+  if((status==='disposed'||status==='lost')&&!(await uiConfirm({title:'เปลี่ยนเป็น "'+(status==='lost'?'สูญหาย':'จำหน่าย')+'" ถาวร?',
+    message:selectedItem.equipmentSubId+' จะไม่สามารถนำกลับมาใช้งานได้อีก',ok:'ยืนยันเปลี่ยนสถานะ',danger:true})))return;
+  setBtn('status-submit-btn',true,'กำลังบันทึก...');
   try {
     const result=await apiPost({source:'admin',action:'update_status',userId:currentUserId,
       equipmentSubId:selectedItem.equipmentSubId,status,notes});
@@ -905,8 +811,8 @@ async function submitUpdateStatus(){
       document.getElementById('status-form').style.display='none';
       document.getElementById('status-success-sub').textContent=selectedItem.equipmentSubId+' → '+status;
       document.getElementById('status-success').classList.add('show');
-    } else { errEl.textContent='⚠️ '+result.error;errEl.classList.add('show');setBtn('status-submit-btn',false,'🔧 ยืนยันอัปเดตสถานะ'); }
-  } catch(err){ errEl.textContent='⚠️ '+err.message;errEl.classList.add('show');setBtn('status-submit-btn',false,'🔧 ยืนยันอัปเดตสถานะ'); }
+    } else { errEl.textContent=''+result.error;errEl.classList.add('show');setBtn('status-submit-btn',false,'ยืนยันอัปเดตสถานะ'); }
+  } catch(err){ errEl.textContent=''+err.message;errEl.classList.add('show');setBtn('status-submit-btn',false,'ยืนยันอัปเดตสถานะ'); }
 }
 
 function backToStatusList(){ document.getElementById('status-form').style.display='none'; loadStatus(); }
@@ -920,7 +826,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var w3=document.getElementById('cdd_status_wrap');
   if(w1) w1.appendChild(makeCDD('return-condition',[{value:'สภาพพร้อมใช้งาน (Ready for use)',label:'สภาพพร้อมใช้งาน (Ready for use)'},{value:'ชำรุดเล็กน้อย (Minor damage)',label:'ชำรุดเล็กน้อย (Minor damage)'},{value:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)',label:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage)'}],'— กรุณาเลือก —',function(v){if(typeof onReturnConditionChange==='function')onReturnConditionChange();}));
   if(w2) w2.appendChild(makeCDD('rc-condition',[{value:'สภาพพร้อมใช้งาน (Ready for use)',label:'สภาพพร้อมใช้งาน (Ready for use)'},{value:'ชำรุดเล็กน้อย (Minor damage)',label:'ชำรุดเล็กน้อย (Minor damage)'},{value:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)',label:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage)'}],'— กรุณาเลือก —',function(v){if(typeof onRCConditionChange==='function')onRCConditionChange();}));
-  if(w3) w3.appendChild(makeCDD('status-select',[{value:'damaged',label:'🔴 ชำรุด (Damaged)'},{value:'repair',label:'🔧 ส่งซ่อม (Under Repair)'},{value:'available',label:'✅ พร้อมใช้งาน (Available)'},{value:'disposed',label:'🗑️ จำหน่าย (Disposed) — ถาวร'},{value:'lost',label:'❓ สูญหาย (Lost) — ถาวร'}],'— กรุณาเลือก —',null));
+  if(w3) w3.appendChild(makeCDD('status-select',[{value:'damaged',label:'ชำรุด (Damaged)'},{value:'repair',label:'ส่งซ่อม (Under Repair)'},{value:'available',label:'พร้อมใช้งาน (Available)'},{value:'disposed',label:'จำหน่าย (Disposed) — ถาวร'},{value:'lost',label:'สูญหาย (Lost) — ถาวร'}],'— กรุณาเลือก —',null));
 });
 </script>
 </body>
