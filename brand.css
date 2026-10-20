@@ -89,6 +89,14 @@
 .ui-btn.ghost{background:var(--mist);color:var(--slate)}
 .ui-btn:disabled{opacity:.45;cursor:not-allowed}
 
+/* ── ปุ่มย้อนกลับบนแถบหัว (พื้นสีเข้ม) ── */
+.hdr-back{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:44px;min-height:44px;
+  padding:0 10px 0 6px;border:none;border-radius:10px;background:rgba(255,255,255,.16);color:#fff;
+  font:inherit;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.hdr-back:hover{background:rgba(255,255,255,.26)}
+.hdr-back[hidden]{display:none}
+.hdr-back.float{position:absolute;left:10px;top:10px}
+
 /* ── Toast ── */
 .ui-toasts{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);
   z-index:100001;display:flex;flex-direction:column;gap:8px;width:calc(100% - 32px);max-width:420px;pointer-events:none}

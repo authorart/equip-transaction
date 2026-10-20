@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>จ่ายกลาง — Chest Equipment MSKH</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="brand.css?v=20261020">
-<script src="ui.js?v=20261020"></script>
+<link rel="stylesheet" href="brand.css?v=20261021">
+<script src="ui.js?v=20261021"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
@@ -72,6 +72,7 @@ textarea.fld{resize:vertical;min-height:70px}
 <body>
 
 <div class="header">
+  <button type="button" class="hdr-back" onclick="centralBack()" aria-label="ย้อนกลับ"><i data-icon="arrow-left" data-size="22"></i></button>
   <div class="hicon"><i data-icon="hospital" data-size="24"></i></div>
   <div class="hsub">
     <div class="htitle">จ่ายกลาง — Chest Equipment MSKH</div>
@@ -171,6 +172,14 @@ function showDash() {
   hide('menuScreen'); showFlex('dashScreen');
   loadDash();
 }
+// ปุ่มย้อนกลับบนหัว: อยู่หน้าย่อย → กลับเมนู, อยู่เมนู → กลับหน้าก่อนหน้า
+function centralBack() {
+  const inSub = ['confirmScreen','dashScreen','successScreen'].some(function(id){
+    const e = document.getElementById(id); return e && e.style.display && e.style.display !== 'none';
+  });
+  if (inSub) back(); else uiBack({ fallback:'dashboard.html' });
+}
+
 function back() {
   ['menuScreen','confirmScreen','dashScreen','successScreen'].forEach(hide);
   showFlex('menuScreen');

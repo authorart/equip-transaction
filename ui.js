@@ -34,6 +34,7 @@ var ICONS = {
   'flask'       : p('M9 3h6M10 3v6.5L4.6 18.4A1.7 1.7 0 006 21h12a1.7 1.7 0 001.4-2.6L14 9.5V3M7.5 15h9'),
   'search'      : '<circle cx="11" cy="11" r="7"/>' + p('M21 21l-4.35-4.35'),
   'x'           : p('M18 6L6 18M6 6l12 12'),
+  'arrow-left'  : p('M19 12H5M12 19l-7-7 7-7'),
   'chevron-down': p('M6 9l6 6 6-6'),
   'lock'        : '<rect x="5" y="11" width="14" height="10" rx="2"/>' + p('M8 11V7a4 4 0 018 0v4'),
   'shield'      : p('M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'),
@@ -364,6 +365,30 @@ window.uiToast = function (msg, type, ms) {
   t.lastChild.textContent = msg;
   host.appendChild(t);
   setTimeout(function () { t.classList.add('out'); setTimeout(function () { t.remove(); }, 250); }, ms || (type === 'error' ? 6000 : 3500));
+};
+
+// ── ปุ่มย้อนกลับ ─────────────────────────────────────────────
+// ลำดับ: มีหน้าก่อนหน้า → ย้อนกลับ · เปิดจากหน้าอื่นเป็นหน้าต่างใหม่ → ปิด ·
+//        เปิดใน LINE (LIFF) → ปิดหน้าต่าง · ไม่มีทางกลับ → ไปหน้า fallback
+// o.fallback   หน้าที่จะไปเมื่อย้อนกลับไม่ได้ (เช่น 'dashboard.html')
+// o.isDirty()  คืน true ถ้ามีข้อมูลที่ยังไม่บันทึก → ถามก่อนออก
+// o.preferClose  หน้า LIFF (dashboard/admin): ใน LINE ให้ปิดหน้าต่างก่อน (history มีหน้า login ของ LINE ปนอยู่)
+function inLiffClient() {
+  try { return !!(window.liff && liff.isInClient && liff.isInClient()); } catch (e) { return false; }
+}
+window.uiCanGoBack = function (o) {
+  o = o || {};
+  return history.length > 1 || !!window.opener || inLiffClient() || !!o.fallback;
+};
+window.uiBack = async function (o) {
+  o = o || {};
+  if (o.isDirty && o.isDirty() && !(await uiConfirm({
+    title: 'ออกจากหน้านี้?', message: 'ข้อมูลที่กรอกไว้จะไม่ถูกบันทึก', ok: 'ออกจากหน้านี้', cancel: 'กรอกต่อ', danger: true }))) return;
+  if (o.preferClose && inLiffClient()) { liff.closeWindow(); return; }
+  if (history.length > 1) { history.back(); return; }
+  if (window.opener) { window.close(); }
+  if (inLiffClient()) { liff.closeWindow(); return; }
+  setTimeout(function () { if (o.fallback) location.href = o.fallback; }, window.opener ? 300 : 0);
 };
 
 // ── การ์ด/แถวที่กดได้ (role="button" หรือ data-click) → กด Enter/Space ได้เหมือนปุ่ม ──

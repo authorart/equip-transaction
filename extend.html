@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ขยายกำหนดคืน — Chest MSKH</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="brand.css?v=20261020">
-<script src="ui.js?v=20261020"></script>
+<link rel="stylesheet" href="brand.css?v=20261021">
+<script src="ui.js?v=20261021"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
 body{font-family:'Sarabun',sans-serif;background:var(--mist);color:var(--slate);min-height:100vh;display:flex;flex-direction:column}
 
-.header{background:var(--ocean);padding:18px 16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header{position:relative;background:var(--ocean);padding:18px 16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.15)}
 .header-icon{margin-bottom:6px;color:#fff;line-height:0}
 .header-title{font-size:19px;font-weight:800;color:#fff}
 .header-sub{font-size:13px;color:rgba(255,255,255,.8);margin-top:3px}
@@ -78,6 +78,7 @@ textarea.field-control{resize:vertical;min-height:80px}
 <body>
 
 <div class="header">
+  <button type="button" class="hdr-back float" onclick="uiBack({fallback:'dashboard.html',isDirty:function(){return !!document.getElementById('extendNotes').value.trim()&&!document.getElementById('successScreen').classList.contains('show');}})" aria-label="ย้อนกลับ"><i data-icon="arrow-left" data-size="22"></i></button>
   <div class="header-icon"><i data-icon="calendar" data-size="32"></i></div>
   <div class="header-title">ขยายกำหนดคืนอุปกรณ์</div>
   <div class="header-sub">Chest Equipment MSKH</div>

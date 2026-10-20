@@ -7,8 +7,8 @@
 <script defer src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="brand.css?v=20261020">
-<script src="ui.js?v=20261020"></script>
+<link rel="stylesheet" href="brand.css?v=20261021">
+<script src="ui.js?v=20261021"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
@@ -315,6 +315,7 @@ tfoot td{font-weight:800;background:#E0F2FE!important;border-top:2px solid var(-
 <body>
 
 <div class="header" id="mainHeader" style="display:none">
+  <button type="button" class="hdr-back" onclick="uiBack({preferClose:true})" aria-label="ย้อนกลับ" id="btnBack" hidden><i data-icon="arrow-left" data-size="22"></i></button>
   <div class="header-logo"><i data-icon="lungs" data-size="28"></i></div>
   <div class="header-info">
     <div class="header-title">ระบบจัดการอุปกรณ์หน่วยโรคระบบหายใจ</div>
@@ -462,6 +463,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   document.getElementById('authBox').style.display    = 'none';
   document.getElementById('mainHeader').style.display = 'flex';
+  // ปุ่มย้อนกลับ: แสดงเมื่อมีหน้าก่อนหน้า หรือเปิดอยู่ใน LINE (กดแล้วปิดหน้าต่าง)
+  document.getElementById('btnBack').hidden = !uiCanGoBack();
   document.getElementById('btnLogin').style.display   = (!userAuth && window.liff && !liff.isLoggedIn()) ? '' : 'none';
   if (userAuth) document.getElementById('headerSub').textContent =
     userAuth.name + ' · ' + (userAuth.role==='superadmin'?'Superadmin':userAuth.role==='admin'?'Admin '+userAuth.ward:'จ่ายกลาง');

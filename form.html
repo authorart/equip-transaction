@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ยืม/คืนอุปกรณ์ — Chest MSKH</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="brand.css?v=20261020">
-<script src="ui.js?v=20261020"></script>
+<link rel="stylesheet" href="brand.css?v=20261021">
+<script src="ui.js?v=20261021"></script>
 <style>
 /* ── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,6 +21,7 @@ body {
 
 /* ── Header ────────────────────────────────────────────────── */
 .header {
+  position: relative;
   background: var(--ocean);
   padding: 18px 20px 20px;
   text-align: center;
@@ -244,6 +245,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   background: linear-gradient(90deg, var(--mist) 25%, #E2E8F0 50%, var(--mist) 75%); background-size: 200% 100%;
   animation: skel 1.2s ease-in-out infinite; }
 .skel.h { height: 46px; border-radius: 10px; margin-bottom: 20px; }
+#loadingRow:not(.show) { display: none; }
 @keyframes skel { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -259,6 +261,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 <!-- ── Main form ────────────────────────────────────────────── -->
 <!-- ── CANCEL SECTION (แสดงเมื่อ type=cancel) ── -->
 <div id="cancelSection" style="display:none;padding:20px">
+  <button type="button" class="hdr-back" onclick="goBack()" aria-label="ย้อนกลับ" style="background:var(--mist);color:var(--ocean);margin-bottom:12px"><i data-icon="arrow-left" data-size="22"></i></button>
   <div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:14px;padding:24px;text-align:center;margin-bottom:16px">
     <div style="margin-bottom:12px;line-height:0;color:#B91C1C"><i data-icon="x-circle" data-size="48"></i></div>
     <div style="font-size:18px;font-weight:800;color:#B91C1C;margin-bottom:8px">ยืนยันยกเลิกคำร้อง</div>
@@ -281,6 +284,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 
 <div id="mainForm">
   <div class="header">
+    <button type="button" class="hdr-back float" onclick="goBack()" aria-label="ย้อนกลับ"><i data-icon="arrow-left" data-size="22"></i></button>
     <div class="header-icon" id="headerIcon" aria-hidden="true"></div>
     <div class="header-title" id="headerTitle">กำลังโหลด...</div>
     <div class="header-sub">หน่วยโรคระบบการหายใจ · MSKH</div>
@@ -525,8 +529,8 @@ function initForm() {
   }
 
   // แก้ช่องไหน → ลบข้อความ error ของช่องนั้น
-  document.getElementById('formBody').addEventListener('input',  function(e) { clearFieldError(e.target.closest('.field')); });
-  document.getElementById('formBody').addEventListener('change', function(e) { clearFieldError(e.target.closest('.field')); });
+  document.getElementById('formBody').addEventListener('input',  function(e) { formDirty = true; clearFieldError(e.target.closest('.field')); });
+  document.getElementById('formBody').addEventListener('change', function(e) { formDirty = true; clearFieldError(e.target.closest('.field')); });
 
   fetchSubIds();
 }
@@ -1024,18 +1028,13 @@ function showSuccess(payload) {
 }
 
 // ── Close / go back ───────────────────────────────────────────
+// ปุ่มย้อนกลับ: กลับหน้าก่อนหน้า (ไม่มี → ไป dashboard); ถ้ากรอกข้อมูลไว้แล้วจะถามก่อน
+let formDirty = false;
 function goBack() {
-  // LINE LIFF (ถ้า init แล้ว)
-  if (window.liff && typeof window.liff.closeWindow === 'function') {
-    try { window.liff.closeWindow(); return; } catch(e) {}
-  }
-  // มี history → ย้อนกลับ
-  if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    // ไม่มี history (เปิดตรงๆ) → ปิดเองไม่ได้ แจ้ง user
-    uiToast('กดปุ่ม ✕ หรือ ← ที่มุมบนของหน้าจอเพื่อปิดหน้านี้', 'info', 6000);
-  }
+  uiBack({
+    fallback: 'dashboard.html',
+    isDirty: function() { return formDirty && !document.getElementById('successScreen').classList.contains('show'); }
+  });
 }
 
 // ── Helpers ───────────────────────────────────────────────────

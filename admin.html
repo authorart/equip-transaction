@@ -6,8 +6,8 @@
 <title>Admin — Chest MSKH</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="brand.css?v=20261020">
-<script src="ui.js?v=20261020"></script>
+<link rel="stylesheet" href="brand.css?v=20261021">
+<script src="ui.js?v=20261021"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;-webkit-text-size-adjust:100%}
@@ -126,6 +126,7 @@ textarea.field-control{resize:vertical;min-height:80px}
 <!-- ── Header + Tabs ── -->
 <div class="header">
   <div class="header-top">
+    <button type="button" class="hdr-back" onclick="uiBack({fallback:'dashboard.html',preferClose:true})" aria-label="ย้อนกลับ"><i data-icon="arrow-left" data-size="22"></i></button>
     <div class="header-icon"><i data-icon="key" data-size="26"></i></div>
     <div style="flex:1">
       <div class="header-title">Admin Panel</div>
