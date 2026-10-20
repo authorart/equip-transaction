@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard — Chest Equipment MSKH</title>
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script defer src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="brand.css?v=20261020">
 <script src="ui.js?v=20261020"></script>
@@ -227,6 +227,32 @@ body{font-size:14px;background:linear-gradient(180deg,#EAF4FA 0,#F1F5F9 260px);b
 .view{max-width:980px}
 .page-title{font-size:24px;font-weight:800;color:var(--ocean);line-height:1.3;margin:4px 0 2px}
 .page-sub{font-size:14px;color:var(--muted);margin-bottom:14px}
+/* ── UX phase 3 ── */
+.fresh{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin:-8px 0 14px}
+.fresh.stale{color:var(--amber-text)}
+.fbar,.sec{scroll-margin-top:120px}
+.header-info{min-width:0}
+.header-title,.header-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:420px){.header-title{font-size:15px}}
+.kpi-btn{font:inherit;color:inherit;width:100%;cursor:pointer;position:relative;transition:border-color .15s,box-shadow .15s}
+.kpi-btn:hover{border-color:var(--air)}
+.kpi-btn::after{content:'';position:absolute;right:12px;top:14px;width:7px;height:7px;border-right:2px solid var(--border);border-bottom:2px solid var(--border);transform:rotate(-45deg)}
+.kpi-btn[aria-pressed="true"]{border-color:var(--ocean);box-shadow:inset 0 0 0 1px var(--ocean)}
+.tab-bar{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+.skel{display:block;border-radius:12px;background:linear-gradient(90deg,#E9EEF4 25%,#F4F7FA 50%,#E9EEF4 75%);background-size:200% 100%;animation:skel 1.2s ease-in-out infinite}
+@keyframes skel{from{background-position:200% 0}to{background-position:-200% 0}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* ตารางรายเครื่อง/ชำรุด: บนมือถือแสดงเป็นการ์ดทีละแถว */
+@media(max-width:600px){
+  .tbl-cards{border:none;background:none}
+  .tbl-cards table{min-width:0;border-collapse:separate;border-spacing:0 8px}
+  .tbl-cards tr:first-child{display:none}
+  .tbl-cards tr{display:block;position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 34px 10px 12px;margin-bottom:8px}
+  .tbl-cards tr[data-click]::after{content:'';position:absolute;right:14px;top:50%;width:8px;height:8px;margin-top:-4px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg)}
+  .tbl-cards td{display:flex;gap:10px;padding:3px 0;border:none;background:none!important;text-align:left!important}
+  .tbl-cards td[data-label]::before{content:attr(data-label);flex:0 0 72px;color:var(--muted);font-size:12px;font-weight:700;padding-top:2px}
+  .tbl-cards td:first-child{padding-bottom:6px;margin-bottom:4px;border-bottom:1px solid var(--mist)}
+}
 .sec{font-size:18px;font-weight:800;color:var(--ocean);text-transform:none;letter-spacing:0;margin:22px 0 10px}
 .sec::after{background:var(--line)}
 .kpi{border-radius:16px;border:1px solid var(--line);box-shadow:0 1px 4px rgba(12,74,110,.06);padding:14px 12px;text-align:left}
@@ -440,7 +466,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   if (userAuth) document.getElementById('headerSub').textContent =
     userAuth.name + ' · ' + (userAuth.role==='superadmin'?'Superadmin':userAuth.role==='admin'?'Admin '+userAuth.ward:'จ่ายกลาง');
   buildMainTabs();
-  goSection('status');
+  // deep link: dashboard.html#problem เปิดแท็บนั้นเลย (ถ้ามีสิทธิ์เห็นแท็บ)
+  const want = location.hash.slice(1);
+  goSection(mainTabs().some(t => t[0] === want) ? want : 'status');
   ensurePub().then(updateProblemBadge).catch(function(){});
 });
 
@@ -463,8 +491,10 @@ function mainTabs() {
 
 function buildMainTabs() {
   const bar = document.getElementById('tabBar');
+  bar.setAttribute('role', 'tablist');
+  bar.setAttribute('aria-label', 'เมนูหลัก');
   bar.innerHTML = mainTabs().map(([id,lbl]) =>
-    `<button class="tab-btn" id="tab-${id}" onclick="goSection('${id}')">${lbl}${id==='problem'?'<span class="cnt" id="problemCnt" style="display:none"></span>':''}</button>`
+    `<button class="tab-btn" role="tab" aria-selected="false" id="tab-${id}" onclick="goSection('${id}')">${lbl}${id==='problem'?'<span class="cnt" id="problemCnt" style="display:none"></span>':''}</button>`
   ).join('');
   show('tabBar');
 }
@@ -474,12 +504,19 @@ function updateProblemBadge() {
   if (!el || !pubData) return;
   const n = allUnits(pubData).filter(u => PROBLEM_ST.includes(u.status)).length;
   el.textContent = n; el.style.display = n ? '' : 'none';
+  el.setAttribute('aria-label', n + ' รายการ');
 }
 
 function goSection(sec) {
   curSection = sec;
   ['public','admin','central','super'].forEach(v => hide('view-'+v));
-  document.querySelectorAll('#tabBar .tab-btn').forEach(b => b.classList.toggle('active', b.id === 'tab-'+sec));
+  document.querySelectorAll('#tabBar .tab-btn').forEach(b => {
+    const on = b.id === 'tab-'+sec;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+    if (on) b.scrollIntoView({ block:'nearest', inline:'center' });
+  });
+  try { history.replaceState(null, '', '#' + sec); } catch(e) {}
 
   if (PUBLIC_SECTIONS.includes(sec)) {
     curView = 'public';
@@ -592,7 +629,7 @@ async function loadPane(sec) {
     if (c && c.data) { if (k === 'pub') pubData = c.data; else usageData = c.data; stale[k] = c.t || 1; }
   });
   const haveAll = kinds.every(k => (k === 'pub' ? pubData : usageData));
-  if (haveAll) renderPane(sec); else setContent(id, spinHTML());
+  if (haveAll) renderPane(sec); else setContent(id, skeletonHTML());
   try {
     await Promise.all(kinds.map(k => k === 'pub' ? ensurePub() : ensureUsage()));
     if (curSection === sec) renderPane(sec);   // แทนที่ด้วยข้อมูลสด
@@ -619,6 +656,14 @@ function mkChart(id, cfg) {
   cfg.options = cfg.options || {};
   cfg.options.responsive = true;
   cfg.options.maintainAspectRatio = false;
+  // กราฟแท่งแนวนอน: ชื่อยาวตัดเป็น … (ชื่อเต็มยังดูได้ใน tooltip)
+  if (cfg.options.indexAxis === 'y') {
+    const y = ((cfg.options.scales = cfg.options.scales || {}).y = cfg.options.scales.y || {});
+    y.ticks = Object.assign({ callback: function(v) {
+      const l = String(this.getLabelForValue(v));
+      return l.length > 20 ? l.slice(0, 19) + '…' : l;
+    } }, y.ticks || {});
+  }
   charts[id] = new Chart(el, cfg);
 }
 function chartBox(id, h, label) {
@@ -656,9 +701,39 @@ function statusIcon(kind, size) {
     : '<path d="M8 15V12m4 3V9m4 6v-4"/>';
   return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/>${inner}</svg>`;
 }
-function kpiCard(kind, label, val, color, extra) {
-  return `<div class="kpi"><div class="kpi-ic">${statusIcon(kind,20)}${esc(label)}</div>
-    <div class="kpi-val" style="color:${color}">${val}</div>${extra?`<div class="kpi-lbl">${extra}</div>`:''}</div>`;
+// action (ถ้ามี) = โค้ดที่รันเมื่อกด → การ์ดกลายเป็นปุ่ม
+function kpiCard(kind, label, val, color, extra, action, hint) {
+  const inner = `<div class="kpi-ic">${statusIcon(kind,20)}${esc(label)}</div>
+    <div class="kpi-val" style="color:${color}">${val}</div>${extra?`<div class="kpi-lbl">${extra}</div>`:''}`;
+  return action
+    ? `<button type="button" class="kpi kpi-btn" data-kpi="${esc(kind)}" aria-pressed="false" title="${esc(hint||'')}" onclick="${action}">${inner}<span class="sr-only">${esc(hint||'')}</span></button>`
+    : `<div class="kpi">${inner}</div>`;
+}
+
+// กด KPI → กรองตารางรายเครื่องตามสถานะ แล้วเลื่อนลงไปที่ตาราง
+function kpiFilter(val) {
+  const sel = document.getElementById('unitStatus');
+  if (!sel) return;
+  sel.value = val;
+  filterUnits();
+  document.getElementById('unitTable').closest('.tbl-wrap').previousElementSibling
+    .scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// เวลาอัปเดตข้อมูล + แจ้งเมื่อกำลังแสดงข้อมูลเก่าจากแคช
+function freshHTML(k, lastUpdated) {
+  return stale[k]
+    ? `<div class="fresh stale" role="status">${uiIcon('clock',{size:16})}แสดงข้อมูลที่บันทึกไว้ · กำลังโหลดข้อมูลล่าสุด...</div>`
+    : `<div class="fresh">${uiIcon('refresh',{size:15})}อัปเดตล่าสุด ${fmtTime(lastUpdated)} น.</div>`;
+}
+
+function skeletonHTML() {
+  const k = '<span class="skel" style="height:104px"></span>';
+  return `<div role="status"><span class="sr-only">กำลังโหลด...</span>
+    <span class="skel" style="height:30px;width:55%;margin:6px 0 10px"></span>
+    <span class="skel" style="height:16px;width:75%;margin-bottom:18px"></span>
+    <div class="kpi-row">${k+k+k+k}</div>
+    <span class="skel" style="height:260px;margin-bottom:12px"></span></div>`;
 }
 
 // ═══════════════════════════════════════════════════
@@ -704,12 +779,13 @@ function renderStatus(d) {
 
     let h = `<h1 class="page-title">สถานะอุปกรณ์</h1>
       <div class="page-sub">ภาพรวมอุปกรณ์ทั้งหมดของหน่วยโรคระบบหายใจ ณ ปัจจุบัน</div>
+      ${freshHTML('pub', d.lastUpdated)}
       <div class="kpi-row">
-        ${kpiCard('all','อุปกรณ์ทั้งหมด',total,C.ocean,'ชิ้น')}
-        ${kpiCard('available','พร้อมใช้งาน',gc.available,C.teal,'ชิ้น')}
-        ${kpiCard('in_use','กำลังใช้งาน',gc.in_use,'#B45309','ชิ้น')}
-        ${kpiCard('process','รอดำเนินการ',gc.process,C.ocean,'อนุมัติ/รับคืน/จ่ายกลาง')}
-        ${kpiCard('problem','ชำรุด/ซ่อม/สูญหาย',gc.problem,C.red,'ชิ้น')}
+        ${kpiCard('all','อุปกรณ์ทั้งหมด',total,C.ocean,'ชิ้น',"kpiFilter('')",'แสดงทุกเครื่องในตารางด้านล่าง')}
+        ${kpiCard('available','พร้อมใช้งาน',gc.available,C.teal,'ชิ้น',"kpiFilter('available')",'แสดงเครื่องที่พร้อมใช้งาน')}
+        ${kpiCard('in_use','กำลังใช้งาน',gc.in_use,'#B45309','ชิ้น',"kpiFilter('in_use')",'แสดงเครื่องที่กำลังถูกยืม')}
+        ${kpiCard('process','รอดำเนินการ',gc.process,C.ocean,'อนุมัติ/รับคืน/จ่ายกลาง',"kpiFilter('g:process')",'แสดงเครื่องที่รอดำเนินการ')}
+        ${kpiCard('problem','ชำรุด/ซ่อม/สูญหาย',gc.problem,C.red,'ชิ้น',"goSection('problem')",'ไปที่หน้าชำรุด/ซ่อม/สูญหาย')}
       </div>`;
 
     h += gc.problem > 0
@@ -718,9 +794,9 @@ function renderStatus(d) {
 
     h += `<div class="grid2">
       <div class="cc"><div class="cc-t">สัดส่วนสถานะอุปกรณ์</div><div class="cc-s">จำนวนชิ้นแยกตามสถานะ</div>
-        ${chartBox('chStatusDonut',260,'กราฟโดนัทสัดส่วนสถานะอุปกรณ์')}</div>
+        ${chartBox('chStatusDonut',260,'สัดส่วนสถานะอุปกรณ์ ทั้งหมด '+total+' ชิ้น: '+GROUPS.filter(g => gc[g.key] > 0).map(g => g.label+' '+gc[g.key]+' ชิ้น').join(', '))}</div>
       <div class="cc"><div class="cc-t">สถานะแยกตามชนิดอุปกรณ์</div><div class="cc-s">จำนวนชิ้นของแต่ละชนิด</div>
-        ${chartBox('chStatusByType',barH((d.equipment||[]).length),'กราฟแท่งสถานะแยกตามชนิดอุปกรณ์')}</div>
+        ${chartBox('chStatusByType',barH((d.equipment||[]).length),'สถานะแยกตามชนิดอุปกรณ์: '+(d.equipment||[]).map(e => e.equipmentName+' ว่าง '+e.units.filter(u => u.status==='available').length+' จาก '+e.units.length+' ชิ้น').join(', '))}</div>
     </div>`;
 
     h += '<div class="sec">อุปกรณ์แต่ละชนิด</div><div class="eq-grid">';
@@ -762,8 +838,8 @@ function renderStatus(d) {
       });
       h += '</table></div>';
     }
-    h += `<div style="font-size:12px;color:#64748B;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(d.lastUpdated)}</div>`;
     setContent('pane-status', h);
+    filterUnits();
 
     // โดนัท
     const act = GROUPS.filter(g => gc[g.key] > 0);
@@ -798,18 +874,20 @@ function renderUnitTable(d) {
   const units = allUnits(d);
   let h = '<div class="sec">รายเครื่อง <span style="font-size:13px;font-weight:600;color:var(--muted)">(กดที่แถวเพื่อดูประวัติ)</span></div>' +
     '<div class="fbar" style="padding:10px 12px"><div class="fgrp" style="flex:1;min-width:180px">' +
-    '<input id="unitSearch" oninput="filterUnits()" placeholder="ค้นหา รหัส / ชื่อ / ที่อยู่"></div>' +
-    '<div class="fgrp"><select id="unitStatus" onchange="filterUnits()">' +
+    '<input id="unitSearch" type="search" aria-label="ค้นหาเครื่อง" oninput="filterUnits()" placeholder="ค้นหา รหัส / ชื่อ / ที่อยู่"></div>' +
+    '<div class="fgrp"><select id="unitStatus" aria-label="กรองตามสถานะ" onchange="filterUnits()">' +
     '<option value="">ทุกสถานะ</option>' +
+    '<option value="g:process">รอดำเนินการ (ทุกขั้นตอน)</option><option value="g:problem">ชำรุด/ซ่อม/สูญหาย (ทั้งหมด)</option>' +
     Object.keys(STATUS_TH).map(k => `<option value="${k}">${STATUS_TH[k]}</option>`).join('') +
     '</select></div></div>' +
-    '<div class="tbl-wrap"><table id="unitTable"><tr><th>เครื่อง</th><th>สถานะ</th><th>ที่อยู่</th><th>นาน</th></tr>';
+    '<div class="legend-note" id="unitCount" role="status" style="margin:-6px 0 8px"></div>' +
+    '<div class="tbl-wrap tbl-cards"><table id="unitTable"><tr><th>เครื่อง</th><th>สถานะ</th><th>ที่อยู่</th><th>นาน</th></tr>';
   units.forEach(u => {
     const where = whereOf(u);
     const hay = (u.subId + ' ' + u.name + ' ' + where + ' ' + (STATUS_TH[u.status]||'')).toLowerCase();
     h += `<tr data-st="${esc(u.status)}" data-hay="${esc(hay)}" style="cursor:pointer" tabindex="0" data-click onclick="openUnitPanel('${esc(u.subId)}')">
-      <td><strong>${esc(u.subId)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(u.name)}</span></td>
-      <td>${stBadge(u.status)}</td><td style="font-size:13px">${esc(where)}</td><td>${daysTxt(u.daysInStatus)}</td></tr>`;
+      <td><span><strong>${esc(u.subId)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(u.name)}</span></span></td>
+      <td data-label="สถานะ">${stBadge(u.status)}</td><td data-label="ที่อยู่" style="font-size:13px">${esc(where)}</td><td data-label="นาน">${daysTxt(u.daysInStatus)}</td></tr>`;
   });
   return h + '</table></div>';
 }
@@ -817,10 +895,20 @@ function renderUnitTable(d) {
 function filterUnits() {
   const q  = (document.getElementById('unitSearch').value || '').toLowerCase().trim();
   const st = document.getElementById('unitStatus').value;
+  const grp = st.indexOf('g:') === 0 ? st.slice(2) : '';   // g:process / g:problem = ทั้งกลุ่มสถานะ
+  let shown = 0, all = 0;
   document.querySelectorAll('#unitTable tr[data-st]').forEach(tr => {
-    const ok = (!st || tr.dataset.st === st) && (!q || tr.dataset.hay.includes(q));
+    const stOk = !st || (grp ? groupOf(tr.dataset.st).key === grp : tr.dataset.st === st);
+    const ok = stOk && (!q || tr.dataset.hay.includes(q));
     tr.style.display = ok ? '' : 'none';
+    all++; if (ok) shown++;
   });
+  const cnt = document.getElementById('unitCount');
+  if (cnt) cnt.textContent = (st || q) ? `แสดง ${shown} จาก ${all} เครื่อง` : `ทั้งหมด ${all} เครื่อง`;
+  // ไฮไลต์ KPI ที่ตรงกับตัวกรองปัจจุบัน
+  const kind = { '':'all', available:'available', in_use:'in_use', 'g:process':'process' }[st];
+  document.querySelectorAll('#pane-status .kpi-btn').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.kpi === kind && b.dataset.kpi !== 'all' && !!st)));
 }
 
 // ═══════════════════════════════════════════════════
@@ -838,6 +926,7 @@ function renderProblem(d) {
 
     let h = `<h1 class="page-title">อุปกรณ์ชำรุด / ส่งซ่อม / สูญหาย</h1>
       <div class="page-sub">ติดตามอุปกรณ์ที่ใช้งานไม่ได้ — ตั้งแต่เมื่อไหร่ นานกี่วัน และอาการ/เหตุผล</div>
+      ${freshHTML('pub', d.lastUpdated)}
       <div class="kpi-row">
         ${kpiCard('problem','ชำรุด',cnt.damaged,C.red,'ชิ้น')}
         ${kpiCard('problem','ส่งซ่อม',cnt.repair,'#991B1B','ชิ้น')}
@@ -854,23 +943,23 @@ function renderProblem(d) {
     const top = bad.slice(0, 10);
     h += `<div class="grid2">
       <div class="cc"><div class="cc-t">จำนวนแยกตามชนิดอุปกรณ์</div><div class="cc-s">ชิ้นที่ชำรุด/ส่งซ่อม/สูญหาย</div>
-        ${chartBox('chProbByType',barH(eqs.length),'กราฟแท่งจำนวนอุปกรณ์ชำรุดแยกตามชนิด')}</div>
+        ${chartBox('chProbByType',barH(eqs.length),'อุปกรณ์ชำรุด/ซ่อม/สูญหายแยกตามชนิด: '+eqs.map(e => e.equipmentName+' '+e.units.filter(u => PROBLEM_ST.includes(u.status)).length+' ชิ้น').join(', '))}</div>
       <div class="cc"><div class="cc-t">ระยะเวลาที่ค้างสถานะ (วัน)</div><div class="cc-s">${bad.length>10?'10 อันดับแรก':'ทุกเครื่อง'} เรียงจากนานที่สุด</div>
-        ${chartBox('chProbDays',barH(top.length),'กราฟแท่งจำนวนวันที่อุปกรณ์ค้างสถานะ')}</div>
+        ${chartBox('chProbDays',barH(top.length),'จำนวนวันที่ค้างสถานะ เรียงจากนานที่สุด: '+top.map(u => u.subId+' '+(u.daysInStatus||0)+' วัน').join(', '))}</div>
     </div>`;
 
     h += '<div class="sec">รายการที่ต้องดำเนินการ</div><div class="chips" id="probChips">' +
       [['','ทั้งหมด ('+bad.length+')'],['damaged','ชำรุด ('+cnt.damaged+')'],['repair','ส่งซ่อม ('+cnt.repair+')'],['lost','สูญหาย ('+cnt.lost+')']]
         .map(([k,l]) => `<button class="chip${probFilter===k?' on':''}" onclick="setProbFilter('${k}')">${l}</button>`).join('') + '</div>';
-    h += '<div class="tbl-wrap"><table id="probTable"><tr><th>เครื่อง</th><th>สถานะ</th><th>ตั้งแต่</th><th class="num">นาน</th><th>อาการ / เหตุผล</th><th>ที่อยู่</th></tr>';
+    h += '<div class="tbl-wrap tbl-cards"><table id="probTable"><tr><th>เครื่อง</th><th>สถานะ</th><th>ตั้งแต่</th><th class="num">นาน</th><th>อาการ / เหตุผล</th><th>ที่อยู่</th></tr>';
     bad.forEach(u => {
       const long = (u.daysInStatus||0) >= 7;
       h += `<tr data-st="${esc(u.status)}" style="cursor:pointer" tabindex="0" data-click onclick="openUnitPanel('${esc(u.subId)}')">
-        <td><strong>${esc(u.subId)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(u.name)}</span></td>
-        <td>${stBadge(u.status)}</td><td>${fmtDay(u.since)}</td>
-        <td class="num" style="font-weight:800;color:${long?'#B91C1C':'#92400E'}">${daysTxt(u.daysInStatus)}${long?' '+uiIcon('alert',{size:14}):''}</td>
-        <td style="font-size:13px">${esc(u.note)||'<span style="color:#64748B">ไม่ระบุ</span>'}</td>
-        <td style="font-size:13px">${esc(u.location||u.homeWard)}</td></tr>`;
+        <td><span><strong>${esc(u.subId)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(u.name)}</span></span></td>
+        <td data-label="สถานะ">${stBadge(u.status)}</td><td data-label="ตั้งแต่">${fmtDay(u.since)}</td>
+        <td data-label="นาน" class="num" style="font-weight:800;color:${long?'#B91C1C':'#92400E'}">${daysTxt(u.daysInStatus)}${long?' '+uiIcon('alert',{size:14}):''}</td>
+        <td data-label="อาการ" style="font-size:13px">${esc(u.note)||'<span style="color:#64748B">ไม่ระบุ</span>'}</td>
+        <td data-label="ที่อยู่" style="font-size:13px">${esc(u.location||u.homeWard)}</td></tr>`;
     });
     h += '</table></div><div class="legend-note">' + uiIcon('alert',{size:14}) + ' = ค้างตั้งแต่ 7 วันขึ้นไป</div>';
     setContent('pane-problem', h);
@@ -995,15 +1084,25 @@ function renderUsage() {
         <input type="date" id="uFrom" value="${U.from}" onchange="U.from=this.value;updateUsage()"></div>
       <div class="fgrp" id="uToG" ${U.mode==='range'?'':'style="display:none"'}><label>ถึง</label>
         <input type="date" id="uTo" value="${U.to}" onchange="U.to=this.value;updateUsage()"></div>
-      <div class="fgrp" style="flex:1"><label>ชนิดอุปกรณ์</label>
-        <select id="uType" onchange="U.type=this.value;updateUsage()">${opt('','ทุกชนิด',!U.type)}${types.map(t => opt(t.id,t.name,t.id===U.type)).join('')}</select></div>
-      <div class="fgrp" style="flex:1"><label>หน่วยงาน</label>
-        <select id="uWard" onchange="U.ward=this.value;updateUsage()">${opt('','ทุกหน่วยงาน',!U.ward)}${wards.map(w => opt(w,w,w===U.ward)).join('')}</select></div>
+      <div class="fgrp" style="flex:1"><label for="uType">ชนิดอุปกรณ์</label>
+        <select id="uType" onchange="U.type=this.value;updateUsage();syncClearBtn()">${opt('','ทุกชนิด',!U.type)}${types.map(t => opt(t.id,t.name,t.id===U.type)).join('')}</select></div>
+      <div class="fgrp" style="flex:1"><label for="uWard">หน่วยงาน</label>
+        <select id="uWard" onchange="U.ward=this.value;updateUsage();syncClearBtn()">${opt('','ทุกหน่วยงาน',!U.ward)}${wards.map(w => opt(w,w,w===U.ward)).join('')}</select></div>
+      <button type="button" class="chip" id="uClear" onclick="clearUsageFilters()" style="min-height:40px" ${U.type||U.ward?'':'hidden'}>ล้างตัวกรอง</button>
     </div>
     <div id="uResult"></div>
     <div style="font-size:12px;color:#64748B;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(usageData.lastUpdated)} · ไม่แสดงชื่อ/เบอร์ผู้ยืม</div>`;
   setContent('pane-usage', h);
   updateUsage();
+}
+
+function syncClearBtn() { const b = document.getElementById('uClear'); if (b) b.hidden = !(U.type || U.ward); }
+function clearUsageFilters() {
+  U.type = ''; U.ward = '';
+  document.getElementById('uType').value = '';
+  document.getElementById('uWard').value = '';
+  syncClearBtn(); updateUsage();
+  document.getElementById('uType').focus();
 }
 
 function setUsageMode(m) {

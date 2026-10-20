@@ -96,9 +96,8 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 
 /* ── Section divider ────────────────────────────────────────── */
 .section-title {
-  font-size: 13px; font-weight: 800; color: #64748B;
-  text-transform: uppercase; letter-spacing: .08em;
-  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 800; color: var(--ocean);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
 }
 .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
@@ -158,7 +157,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 /* ── No units warning ───────────────────────────────────────── */
 .no-units {
   text-align: center; padding: 30px 20px; color: #64748B;
-  font-size: 16px; display: none;
+  font-size: 16px; display: none; white-space: pre-line;
 }
 .no-units.show { display: block; }
 .no-units .icon { margin-bottom: 12px; color: var(--muted); line-height: 0; }
@@ -191,6 +190,66 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   background: transparent; color: #64748B;
   border: 1.5px solid var(--border);
 }
+
+/* ── UX phase 3: inline validation ─────────────────────────── */
+.field-error { display: flex; gap: 6px; align-items: flex-start; margin-top: 6px;
+  font-size: 14px; font-weight: 600; color: var(--red-text); }
+.field-error .ic { margin-top: 3px; }
+.field-control[aria-invalid="true"], .is-invalid .cdd-btn { border-color: var(--red-text); }
+.cond-cards.is-invalid .cond-card, .chip-group.is-invalid .unit-chip { border-color: var(--red-text); }
+.field-hint { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+/* ── สภาพอุปกรณ์: การ์ดเลือก 3 ระดับ ── */
+.cond-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.cond-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 12px 6px 10px; border: 2px solid var(--border); border-radius: 12px; background: #fff;
+  text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 96px; }
+.cond-card input { position: absolute; opacity: 0; pointer-events: none; }
+.cond-card .cc-ic { line-height: 0; margin-bottom: 4px; }
+.cond-card.ok .cc-ic { color: var(--teal); }
+.cond-card.minor .cc-ic { color: var(--amber-strong); }
+.cond-card.major .cc-ic { color: var(--red-text); }
+.cond-card .cc-t { font-size: 14px; font-weight: 800; line-height: 1.3; color: var(--slate); }
+.cond-card .cc-s { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+.cond-card:has(input:focus-visible) { outline: 3px solid var(--air); outline-offset: 2px; }
+.cond-card.ok:has(input:checked)    { border-color: var(--teal); background: var(--fresh); }
+.cond-card.minor:has(input:checked) { border-color: var(--amber-strong); background: var(--amber-tint); }
+.cond-card.major:has(input:checked) { border-color: var(--red-text); background: var(--red-tint); }
+.cond-card.checked.ok    { border-color: var(--teal); background: var(--fresh); }
+.cond-card.checked.minor { border-color: var(--amber-strong); background: var(--amber-tint); }
+.cond-card.checked.major { border-color: var(--red-text); background: var(--red-tint); }
+
+/* ── เลือกชิ้นแบบปุ่ม (≤ 6 ชิ้น) และปุ่มวันที่ด่วน ── */
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.unit-chip, .qd-chip { min-height: 44px; padding: 8px 16px; border: 2px solid var(--border); border-radius: 22px;
+  background: #fff; font: inherit; font-size: 15px; font-weight: 700; color: var(--slate); cursor: pointer; }
+.unit-chip[aria-pressed="true"], .qd-chip[aria-pressed="true"] { border-color: var(--ocean); background: var(--ocean); color: #fff; }
+.qd-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.qd-chip { min-height: 40px; padding: 6px 14px; font-size: 14px; }
+
+/* ── สรุปผู้ยืม (กรอกให้อัตโนมัติ) ── */
+.who-card { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; margin-bottom: 18px;
+  background: var(--air-tint); border: 1px solid #BAE6FD; border-radius: 12px; }
+.who-card .ic { color: var(--ocean); margin-top: 2px; }
+.who-main { flex: 1; min-width: 0; }
+.who-src  { font-size: 12px; color: var(--ocean); font-weight: 700; }
+.who-name { font-size: 16px; font-weight: 800; color: var(--slate); }
+.who-meta { font-size: 14px; color: var(--slate); word-break: break-word; }
+.who-actions { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.link-btn { background: none; border: none; font: inherit; font-size: 14px; font-weight: 700; color: var(--air-dk);
+  text-decoration: underline; cursor: pointer; padding: 6px 2px; min-height: 32px; }
+
+/* ── โหลดครั้งแรก: โครงร่างฟอร์ม ── */
+.skel { display: block; height: 14px; border-radius: 7px; margin-bottom: 12px;
+  background: linear-gradient(90deg, var(--mist) 25%, #E2E8F0 50%, var(--mist) 75%); background-size: 200% 100%;
+  animation: skel 1.2s ease-in-out infinite; }
+.skel.h { height: 46px; border-radius: 10px; margin-bottom: 20px; }
+@keyframes skel { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.success-hint { margin-top: 18px; font-size: 14px; color: var(--muted); max-width: 360px; }
+.success-link { display: inline-block; margin-top: 14px; padding: 12px 22px; border-radius: 12px; border: 2px solid var(--ocean);
+  color: var(--ocean); font-weight: 800; text-decoration: none; }
 
 </style>
 
@@ -242,9 +301,11 @@ textarea.field-control { resize: vertical; min-height: 90px; }
     </div>
 
     <!-- Loading state -->
-    <div class="loading-row show" id="loadingRow" style="justify-content:center">
-      <div class="spinner-sm"></div>
-      <span>กำลังโหลดข้อมูลอุปกรณ์...</span>
+    <div class="show" id="loadingRow" role="status" aria-live="polite">
+      <span class="sr-only">กำลังโหลดข้อมูลอุปกรณ์...</span>
+      <span class="skel" style="width:40%"></span><span class="skel h"></span>
+      <span class="skel" style="width:55%"></span><span class="skel h"></span>
+      <span class="skel" style="width:35%"></span><span class="skel h"></span>
     </div>
 
     <!-- No units warning -->
@@ -261,6 +322,7 @@ textarea.field-control { resize: vertical; min-height: 90px; }
       <div class="field">
         <label class="field-label required" id="subIdLabel">เลือกชิ้นอุปกรณ์</label>
         <div id="cdd_subId_wrap"></div>
+        <div class="chip-group" id="unitChips" role="group" aria-labelledby="subIdLabel" hidden></div>
         <div class="loading-row" id="borrowerLoadingRow">
           <div class="spinner-sm"></div><span>กำลังดึงข้อมูล...</span>
         </div>
@@ -268,19 +330,44 @@ textarea.field-control { resize: vertical; min-height: 90px; }
 
       <!-- ── สภาพอุปกรณ์ (ทั้งยืมและคืน) ── -->
       <div class="field">
-        <label class="field-label required" id="conditionLabel">ประเมินสภาพอุปกรณ์ก่อนยืม</label>
-        <div id="cdd_cond_wrap"></div>
+        <div class="field-label required" id="conditionLabel">ประเมินสภาพอุปกรณ์ก่อนยืม</div>
+        <div class="cond-cards" id="condGroup" role="radiogroup" aria-labelledby="conditionLabel">
+          <label class="cond-card ok"><input type="radio" name="condition" value="สภาพพร้อมใช้งาน (Ready for use)">
+            <span class="cc-ic"><i data-icon="check-circle" data-size="26"></i></span>
+            <span class="cc-t">พร้อมใช้งาน</span><span class="cc-s">Ready for use</span></label>
+          <label class="cond-card minor"><input type="radio" name="condition" value="ชำรุดเล็กน้อย (Minor damage)">
+            <span class="cc-ic"><i data-icon="alert" data-size="26"></i></span>
+            <span class="cc-t">ชำรุดเล็กน้อย</span><span class="cc-s">Minor damage</span></label>
+          <label class="cond-card major"><input type="radio" name="condition" value="ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)">
+            <span class="cc-ic"><i data-icon="x-circle" data-size="26"></i></span>
+            <span class="cc-t">ชำรุดมาก</span><span class="cc-s">ใช้งานไม่ได้</span></label>
+        </div>
         <!-- แจ้งเตือนกรณีชำรุดมาก -->
         <div id="conditionWarning" style="display:none;margin-top:8px;padding:10px 14px;background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;font-size:13px;color:#92400E;font-weight:600;">
-          อุปกรณ์ชำรุด — กรุณาแจ้งรายละเอียดในช่องหมายเหตุ และแจ้งผู้รับผิดชอบทราบด้วย
+          อุปกรณ์ชำรุดมาก — กรุณาระบุอาการในช่องหมายเหตุ (จำเป็น) และแจ้งผู้รับผิดชอบทราบด้วย
         </div>
       </div>
 
       <!-- ── ข้อมูลผู้ยืม/คืน ── -->
       <div class="section-title">ข้อมูลผู้<span id="borrowReturnText">ยืม</span></div>
 
+      <!-- สรุปข้อมูลผู้ยืมที่กรอกให้อัตโนมัติ (แตะ "แก้ไข" เพื่อเปิดช่องกรอก) -->
+      <div class="who-card" id="whoCard" hidden>
+        <i data-icon="clipboard" data-size="22"></i>
+        <div class="who-main">
+          <div class="who-src" id="whoSrc"></div>
+          <div class="who-name" id="whoName"></div>
+          <div class="who-meta" id="whoMeta"></div>
+        </div>
+        <div class="who-actions">
+          <button type="button" class="link-btn" onclick="editWho()">แก้ไข</button>
+          <button type="button" class="link-btn" id="whoForget" onclick="forgetWho()" hidden>ไม่ใช่ฉัน</button>
+        </div>
+      </div>
+      <div id="whoFields">
+
       <div class="field">
-        <label class="field-label required">ชื่อ-นามสกุล</label>
+        <label class="field-label required" for="borrowerName">ชื่อ-นามสกุล</label>
         <input type="text" class="field-control" id="borrowerName" placeholder="เช่น นพ.สมชาย ใจดี" autocomplete="name">
         <div class="autofill-note" id="noteNameAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
       </div>
@@ -296,10 +383,11 @@ textarea.field-control { resize: vertical; min-height: 90px; }
       </div>
 
       <div class="field">
-        <label class="field-label required">เบอร์โทรติดต่อ</label>
-        <input type="tel" class="field-control" id="phone" placeholder="เช่น 081-234-5678" autocomplete="tel">
+        <label class="field-label required" for="phone">เบอร์โทรติดต่อ</label>
+        <input type="tel" inputmode="tel" class="field-control" id="phone" placeholder="เช่น 081-234-5678" autocomplete="tel">
         <div class="autofill-note" id="notePhoneAutofill">✦ ดึงข้อมูลจากการยืมอัตโนมัติ</div>
       </div>
+      </div><!-- /whoFields -->
 
 
       <!-- ── Borrow only fields ── -->
@@ -314,14 +402,20 @@ textarea.field-control { resize: vertical; min-height: 90px; }
         </div>
 
         <div class="field">
-          <label class="field-label required">วันที่คาดว่าจะคืน</label>
-          <input type="date" class="field-control" id="returnDate">
+          <label class="field-label required" for="returnDate">วันที่คาดว่าจะคืน</label>
+          <input type="date" class="field-control" id="returnDate" aria-describedby="returnDateHint" oninput="onReturnDateInput()">
+          <div class="qd-row" role="group" aria-label="เลือกวันคืนแบบด่วน">
+            <button type="button" class="qd-chip" data-days="3" onclick="setReturnIn(3)">อีก 3 วัน</button>
+            <button type="button" class="qd-chip" data-days="7" onclick="setReturnIn(7)">อีก 7 วัน</button>
+            <button type="button" class="qd-chip" data-days="14" onclick="setReturnIn(14)">อีก 14 วัน</button>
+          </div>
+          <div class="field-hint" id="returnDateHint"></div>
         </div>
       </div>
 
       <!-- ── หมายเหตุ (ทั้งยืมและคืน) ── -->
       <div class="field">
-        <label class="field-label">หมายเหตุเพิ่มเติม</label>
+        <label class="field-label" id="notesLabel" for="notes">หมายเหตุเพิ่มเติม</label>
         <textarea class="field-control" id="notes"
           placeholder="รายละเอียดเพิ่มเติม เช่น อาการชำรุด ข้อสังเกต หรือข้อมูลที่ต้องการแจ้ง"></textarea>
       </div>
@@ -340,11 +434,8 @@ textarea.field-control { resize: vertical; min-height: 90px; }
   <div class="success-title" id="successTitle">บันทึกสำเร็จ!</div>
   <div class="success-sub" id="successSub">ระบบได้แจ้งเตือน LINE group แล้ว</div>
   <div class="success-detail" id="successDetail"></div>
-  <div style="margin-top:20px;padding:12px 16px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;font-size:14px;color:#166534;text-align:center;max-width:360px;width:100%;">
-    บันทึกเรียบร้อยแล้ว<br>
-    <span style="font-size:13px;color:#4B7A5E;">กรุณากดปุ่ม <strong>← ย้อนกลับ</strong> หรือ <strong>✕</strong> ของ browser เพื่อปิดหน้านี้</span>
-  </div>
-  <button class="btn-close" onclick="goBack()">← กลับหน้าก่อนหน้า</button>
+  <a class="success-link" href="dashboard.html">ดูสถานะอุปกรณ์ทั้งหมด</a>
+  <div class="success-hint">ปิดหน้านี้ได้ด้วยปุ่ม <strong>✕</strong> หรือ <strong>←</strong> ที่มุมบนของหน้าจอ</div>
 </div>
 
 <script>
@@ -377,13 +468,9 @@ function initForm() {
   document.getElementById('cdd_subId_wrap').appendChild(
     makeCDD('subIdSelect',[],'— กรุณาเลือก —',function(v){onSubIdChange();})
   );
-  document.getElementById('cdd_cond_wrap').appendChild(
-    makeCDD('condition',[
-    {value:'สภาพพร้อมใช้งาน (Ready for use)',label:'สภาพพร้อมใช้งาน (Ready for use)'},
-    {value:'ชำรุดเล็กน้อย (Minor damage)',label:'ชำรุดเล็กน้อย (Minor damage)'},
-    {value:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)',label:'ชำรุดมาก/ใช้งานไม่ได้ (Major damage/Unusable)'}
-  ],'— กรุณาเลือก —',function(v){onConditionChange();})
-  );
+  document.querySelectorAll('input[name="condition"]').forEach(function(r) {
+    r.addEventListener('change', onConditionChange);
+  });
   document.getElementById('cdd_ward_wrap').appendChild(
     makeCDD('wardSelect',[
     {value:'MICU1',label:'MICU1'},{value:'MICU2',label:'MICU2'},{value:'MICU3',label:'MICU3'},
@@ -432,11 +519,14 @@ function initForm() {
   if (!isBorrow) document.getElementById('submitBtn').classList.add('return-btn');
 
   if (isBorrow) {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    document.getElementById('returnDate').value = isoDate(d);
-    document.getElementById('returnDate').min   = isoDate(new Date());
+    document.getElementById('returnDate').min = isoDate(new Date());
+    setReturnIn(7);
+    restoreBorrower();
   }
+
+  // แก้ช่องไหน → ลบข้อความ error ของช่องนั้น
+  document.getElementById('formBody').addEventListener('input',  function(e) { clearFieldError(e.target.closest('.field')); });
+  document.getElementById('formBody').addEventListener('change', function(e) { clearFieldError(e.target.closest('.field')); });
 
   fetchSubIds();
 }
@@ -462,8 +552,8 @@ async function fetchSubIds() {
         showQRMismatch(scannedSubId);
       } else {
         const noMsg = formType === 'borrow'
-          ? '' + equipmentId + ' ไม่มีชิ้นว่างในขณะนี้\nลองจองคิวจาก LINE OA ได้ครับ'
-          : '' + equipmentId + ' ไม่มีชิ้นที่ถูกยืมอยู่ในขณะนี้';
+          ? equipmentId + ' ไม่มีชิ้นว่างในขณะนี้\nลองจองคิวจาก LINE OA ได้ครับ'
+          : equipmentId + ' ไม่มีชิ้นที่ถูกยืมอยู่ในขณะนี้';
         document.getElementById('noUnitsIcon').innerHTML = uiIcon(formType === 'borrow' ? 'package' : 'check-circle', { size: 40 });
         document.getElementById('noUnitsText').textContent = noMsg;
         document.getElementById('noUnitsMsg').classList.add('show');
@@ -476,6 +566,7 @@ async function fetchSubIds() {
       return {value:item.subId, label:item.subId};
     });
     cddUpdate('subIdSelect', cddOpts, '— กรุณาเลือก —');
+    renderUnitChips(data.subIds.map(function(item){ return item.subId; }));
 
     document.getElementById('formBody').style.display = 'block';
 
@@ -491,16 +582,12 @@ async function fetchSubIds() {
         return;
       }
       // พบ subId ที่สแกนมาในรายการ → auto-select ทันที
-      cddSet('subIdSelect', scannedSubId, scannedSubId);
-      onSubIdChange();
+      selectUnit(scannedSubId);
       return;
     }
 
     // ── ไม่ได้มาจาก QR: auto-select ถ้ามีแค่ชิ้นเดียว ────────
-    if (data.subIds.length === 1) {
-      cddSet('subIdSelect', data.subIds[0].subId, data.subIds[0].subId);
-      onSubIdChange();
-    }
+    if (data.subIds.length === 1) selectUnit(data.subIds[0].subId);
 
   } catch (err) {
     document.getElementById('loadingRow').classList.remove('show');
@@ -551,7 +638,7 @@ async function onSubIdChange() {
         document.getElementById('phone').value = data.phone;
         document.getElementById('notePhoneAutofill').classList.add('show');
       }
-
+      if (data.borrowerName && data.ward && data.phone) showWho('ข้อมูลจากการยืมครั้งนี้', false);
     }
   } catch (err) {
     document.getElementById('borrowerLoadingRow').classList.remove('show');
@@ -585,10 +672,145 @@ function onPurposeChange() {
 }
 
 // ── Condition change: แสดง warning ถ้าชำรุดมาก ───────────────
+// ชำรุดมาก → หมายเหตุกลายเป็นช่องจำเป็น
 function onConditionChange() {
-  const val  = document.getElementById('condition').value;
-  const warn = document.getElementById('conditionWarning');
-  warn.style.display = val.includes('Major damage') ? 'block' : 'none';
+  const major = condVal().includes('Major damage');
+  document.getElementById('conditionWarning').style.display = major ? 'block' : 'none';
+  document.getElementById('notesLabel').classList.toggle('required', major);
+  document.querySelectorAll('.cond-card').forEach(function(c) {
+    c.classList.toggle('checked', c.querySelector('input').checked);   // สำรองสำหรับเบราว์เซอร์ที่ไม่รองรับ :has()
+  });
+}
+function condVal() {
+  const r = document.querySelector('input[name="condition"]:checked');
+  return r ? r.value : '';
+}
+
+// ── เลือกชิ้น: ≤ 6 ชิ้นแสดงเป็นปุ่ม, มากกว่านั้นใช้ dropdown ──
+function renderUnitChips(ids) {
+  const box = document.getElementById('unitChips');
+  const useChips = ids.length > 0 && ids.length <= 6;
+  box.hidden = !useChips;
+  document.getElementById('cdd_subId_wrap').hidden = useChips;
+  if (!useChips) return;
+  box.innerHTML = '';
+  ids.forEach(function(id) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'unit-chip'; b.textContent = id;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function() { selectUnit(id); clearFieldError(box.closest('.field')); });
+    box.appendChild(b);
+  });
+}
+function selectUnit(id) {
+  cddSet('subIdSelect', id, id);
+  document.querySelectorAll('#unitChips .unit-chip').forEach(function(b) {
+    b.setAttribute('aria-pressed', b.textContent.toUpperCase() === String(id).toUpperCase() ? 'true' : 'false');
+  });
+  onSubIdChange();
+}
+
+// ── วันคืน: ปุ่มด่วน + แสดงวันที่แบบไทย ──
+function setReturnIn(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  document.getElementById('returnDate').value = isoDate(d);
+  onReturnDateInput();
+}
+function onReturnDateInput() {
+  const v = document.getElementById('returnDate').value;
+  let days = null;
+  if (v) days = Math.round((new Date(v + 'T00:00:00') - new Date(isoDate(new Date()) + 'T00:00:00')) / 86400000);
+  document.querySelectorAll('.qd-chip').forEach(function(b) {
+    b.setAttribute('aria-pressed', String(+b.dataset.days === days));
+  });
+  document.getElementById('returnDateHint').textContent = v
+    ? 'คืนภายใน ' + formatDateTH(v) + (days === 0 ? ' (วันนี้)' : days > 0 ? ' (อีก ' + days + ' วัน)' : '')
+    : '';
+}
+
+// ── ข้อมูลผู้ยืม: สรุปเป็นการ์ด / จำไว้ใช้ครั้งถัดไป (เฉพาะเครื่องนี้) ──
+const WHO_KEY = 'ce_borrower';
+function wardValue() {
+  const sel = document.getElementById('wardSelect').value;
+  return sel === 'other' ? document.getElementById('wardOther').value.trim() : sel;
+}
+function showWho(source, canForget) {
+  document.getElementById('whoSrc').textContent  = source;
+  document.getElementById('whoName').textContent = document.getElementById('borrowerName').value;
+  document.getElementById('whoMeta').textContent = wardValue() + ' · โทร ' + document.getElementById('phone').value;
+  document.getElementById('whoForget').hidden = !canForget;
+  document.getElementById('whoCard').hidden   = false;
+  document.getElementById('whoFields').hidden = true;
+}
+function editWho() {
+  document.getElementById('whoCard').hidden   = true;
+  document.getElementById('whoFields').hidden = false;
+  document.getElementById('borrowerName').focus();
+}
+function forgetWho() {
+  try { localStorage.removeItem(WHO_KEY); } catch(e) {}
+  ['borrowerName','phone','wardOther'].forEach(function(id) { document.getElementById(id).value = ''; });
+  cddSet('wardSelect', '');
+  document.getElementById('wardOther').style.display = 'none';
+  editWho();
+}
+function restoreBorrower() {
+  let w = null;
+  try { w = JSON.parse(localStorage.getItem(WHO_KEY)); } catch(e) {}
+  if (!w || !w.name || !w.ward || !w.phone) return;
+  document.getElementById('borrowerName').value = w.name;
+  document.getElementById('phone').value = w.phone;
+  if (w.wardSel === 'other') {
+    cddSet('wardSelect', 'other', 'อื่นๆ ระบุ...');
+    document.getElementById('wardOther').value = w.ward;
+    document.getElementById('wardOther').style.display = 'block';
+  } else {
+    cddSet('wardSelect', w.wardSel);
+  }
+  showWho('ข้อมูลจากการยืมครั้งก่อนบนเครื่องนี้', true);
+}
+function rememberBorrower(p) {
+  try {
+    localStorage.setItem(WHO_KEY, JSON.stringify({
+      name: p.borrowerName, ward: p.ward, phone: p.phone,
+      wardSel: document.getElementById('wardSelect').value }));
+  } catch(e) {}
+}
+
+// ── Inline validation ──
+function setFieldError(field, msg) {
+  if (!field) return;
+  let el = field.querySelector('.field-error');
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'field-error';
+    el.id = 'err_' + Math.random().toString(36).slice(2, 8);
+    field.appendChild(el);
+  }
+  el.innerHTML = uiIcon('alert', { size: 16 }) + '<span></span>';
+  el.lastChild.textContent = msg;
+  field.querySelectorAll('.field-control:not([type=hidden]), .cdd-btn').forEach(function(c) {
+    if (c.offsetParent === null) return;
+    c.setAttribute('aria-invalid', 'true');
+    c.setAttribute('aria-describedby', el.id);
+  });
+  field.querySelectorAll('.cdd-wrap, .cond-cards, .chip-group').forEach(function(c) { c.classList.add('is-invalid'); });
+}
+function clearFieldError(field) {
+  if (!field) return;
+  const el = field.querySelector('.field-error');
+  if (el) el.remove();
+  field.querySelectorAll('[aria-invalid]').forEach(function(c) { c.removeAttribute('aria-invalid'); c.removeAttribute('aria-describedby'); });
+  field.querySelectorAll('.is-invalid').forEach(function(c) { c.classList.remove('is-invalid'); });
+}
+// คืนค่า element ที่ควรได้ focus สำหรับช่องนั้น
+function focusTarget(field) {
+  const radio = field.querySelector('input[type=radio]');
+  if (radio) return radio;
+  return Array.prototype.find.call(
+    field.querySelectorAll('[aria-invalid], .unit-chip, .cdd-btn, .field-control'),
+    function(c) { return c.offsetParent !== null; });
 }
 
 // ── Submit ────────────────────────────────────────────────────
@@ -640,13 +862,12 @@ async function submitForm() {
   const subId        = document.getElementById('subIdSelect').value;
   const borrowerName = document.getElementById('borrowerName').value.trim();
   const phone        = document.getElementById('phone').value.trim();
-  const condition    = document.getElementById('condition').value;
+  const condition    = condVal();
   const notes        = document.getElementById('notes').value.trim();
 
   // Ward: dropdown + อื่นๆ
   const wardSel   = document.getElementById('wardSelect').value;
-  const wardOther = document.getElementById('wardOther').value.trim();
-  const ward      = wardSel === 'other' ? wardOther : wardSel;
+  const ward      = wardValue();
 
   // Purpose (borrow only): dropdown + อื่นๆ
   let purpose = '';
@@ -658,14 +879,34 @@ async function submitForm() {
 
   const returnDate = isBorrow ? document.getElementById('returnDate').value : '';
 
-  // ── Validate ───────────────────────────────────────────────
-  if (!subId)        { showError('กรุณาเลือกชิ้นอุปกรณ์'); return; }
-  if (!condition)    { showError('กรุณาประเมินสภาพอุปกรณ์'); return; }
-  if (!borrowerName) { showError('กรุณากรอกชื่อ-นามสกุล'); return; }
-  if (!ward)         { showError('กรุณาเลือก Ward / หน่วยงาน'); return; }
-  if (!phone)        { showError('กรุณากรอกเบอร์โทรติดต่อ'); return; }
-  if (isBorrow && !purpose)    { showError('กรุณาเลือกวัตถุประสงค์การยืม'); return; }
-  if (isBorrow && !returnDate) { showError('กรุณาเลือกวันที่คาดว่าจะคืน'); return; }
+  // ── Validate: ตรวจทุกช่องพร้อมกัน แสดงข้อความใต้ช่อง แล้วพาไปช่องแรกที่ผิด ──
+  const fieldOf = function(id) { return document.getElementById(id).closest('.field'); };
+  const errs = [];
+  if (!subId)        errs.push([fieldOf('subIdLabel'), 'กรุณาเลือกชิ้นอุปกรณ์']);
+  if (!condition)    errs.push([fieldOf('conditionLabel'), 'กรุณาประเมินสภาพอุปกรณ์']);
+  if (!borrowerName) errs.push([fieldOf('borrowerName'), 'กรุณากรอกชื่อ-นามสกุล']);
+  if (!ward)         errs.push([fieldOf('wardOther'), wardSel === 'other' ? 'กรุณาระบุชื่อ Ward / หน่วยงาน' : 'กรุณาเลือก Ward / หน่วยงาน']);
+  if (!phone)        errs.push([fieldOf('phone'), 'กรุณากรอกเบอร์โทรติดต่อ']);
+  if (isBorrow && !purpose)    errs.push([fieldOf('purposeOther'), 'กรุณาเลือกวัตถุประสงค์การยืม']);
+  if (isBorrow && !returnDate) errs.push([fieldOf('returnDate'), 'กรุณาเลือกวันที่คาดว่าจะคืน']);
+  if (isBorrow && returnDate && returnDate < isoDate(new Date())) errs.push([fieldOf('returnDate'), 'วันที่คืนต้องไม่ก่อนวันนี้']);
+  if (condition.includes('Major damage') && !notes) errs.push([fieldOf('notes'), 'อุปกรณ์ชำรุดมาก — กรุณาระบุอาการ']);
+
+  document.querySelectorAll('#formBody .field').forEach(clearFieldError);
+  if (errs.length) {
+    if (errs.some(function(e) { return document.getElementById('whoFields').contains(e[0]); })) {
+      document.getElementById('whoCard').hidden = true;
+      document.getElementById('whoFields').hidden = false;
+    }
+    errs.forEach(function(e) { setFieldError(e[0], e[1]); });
+    const banner = document.getElementById('errorBanner');
+    banner.textContent = errs.length === 1 ? errs[0][1] : 'กรอกข้อมูลไม่ครบ ' + errs.length + ' ช่อง — ดูข้อความสีแดงใต้แต่ละช่อง';
+    banner.classList.add('show');
+    const t = focusTarget(errs[0][0]);
+    errs[0][0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (t) t.focus({ preventScroll: true });
+    return;
+  }
 
   // ── Disable button ─────────────────────────────────────────
   const btn = document.getElementById('submitBtn');
@@ -696,6 +937,7 @@ async function submitForm() {
     const data = await resp.json();
 
     if (data.success) {
+      if (isBorrow) rememberBorrower(payload);
       showSuccess(payload);
     } else {
       showError('บันทึกไม่สำเร็จ: ' + (data.error || 'กรุณาลองใหม่'));
@@ -768,9 +1010,17 @@ function showSuccess(payload) {
   if (isBorrow && payload.returnDate) rows.push({ label: 'คืนวันที่', value: formatDateTH(payload.returnDate) });
   if (payload.notes) rows.push({ label: 'หมายเหตุ', value: payload.notes });
 
-  document.getElementById('successDetail').innerHTML = rows.map(function(r) {
-    return '<div class="detail-row"><span class="detail-lbl">' + r.label + '</span><span class="detail-val">' + r.value + '</span></div>';
-  }).join('');
+  const box = document.getElementById('successDetail');
+  box.innerHTML = '';
+  rows.forEach(function(r) {   // textContent: ไม่ตีความข้อความที่ผู้ใช้กรอกเป็น HTML
+    const row = document.createElement('div'); row.className = 'detail-row';
+    const l = document.createElement('span'); l.className = 'detail-lbl'; l.textContent = r.label;
+    const v = document.createElement('span'); v.className = 'detail-val'; v.textContent = r.value;
+    row.appendChild(l); row.appendChild(v); box.appendChild(row);
+  });
+  window.scrollTo(0, 0);
+  document.getElementById('successTitle').setAttribute('tabindex', '-1');
+  document.getElementById('successTitle').focus();
 }
 
 // ── Close / go back ───────────────────────────────────────────
@@ -784,7 +1034,7 @@ function goBack() {
     window.history.back();
   } else {
     // ไม่มี history (เปิดตรงๆ) → ปิดเองไม่ได้ แจ้ง user
-    uiToast('บันทึกเรียบร้อยแล้ว — กดปุ่ม ← หรือ ✕ ของ browser เพื่อปิดหน้านี้', 'info', 6000);
+    uiToast('กดปุ่ม ✕ หรือ ← ที่มุมบนของหน้าจอเพื่อปิดหน้านี้', 'info', 6000);
   }
 }
 
