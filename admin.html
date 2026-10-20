@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin — Chest MSKH</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,7 +51,7 @@ body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;line-heig
 /* ── Info rows ── */
 .info-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid #F1F5F9;font-size:14px}
 .info-row:last-child{border-bottom:none}
-.info-lbl{color:#94A3B8;font-weight:600;min-width:90px;flex-shrink:0}
+.info-lbl{color:#64748B;font-weight:600;min-width:90px;flex-shrink:0}
 .info-val{color:#1A2B45;font-weight:500;flex:1;word-break:break-all}
 
 /* ── Timer badge ── */
@@ -102,7 +102,7 @@ textarea.field-control{resize:vertical;min-height:80px}
            padding:12px 14px;color:#B91C1C;font-size:14px;font-weight:600;
            margin-bottom:14px;display:none}
 .error-box.show{display:block}
-.empty-state{text-align:center;padding:40px 20px;color:#94A3B8;font-size:15px}
+.empty-state{text-align:center;padding:40px 20px;color:#64748B;font-size:15px}
 .empty-state .icon{font-size:40px;margin-bottom:10px}
 .success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;
   min-height:60vh;text-align:center;padding:40px 20px}
@@ -125,6 +125,10 @@ textarea.field-control{resize:vertical;min-height:80px}
 /* ── Refresh btn ── */
 .refresh-btn{background:none;border:none;color:rgba(255,255,255,.75);font-size:18px;
   cursor:pointer;padding:4px;flex-shrink:0}
+
+/* ── Accessibility baseline (UX phase 1) ── */
+:focus-visible{outline:3px solid #0EA5E9;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 
 <style id="cdd-style">
@@ -134,8 +138,8 @@ textarea.field-control{resize:vertical;min-height:80px}
   color:#1A2B45;background:#fff;text-align:left;cursor:pointer;
   display:flex;align-items:center;justify-content:space-between;gap:8px;
   transition:border-color .15s;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
-.cdd-btn.placeholder .cdd-txt{color:#9CA3AF}
-.cdd-arr{font-size:11px;color:#9CA3AF;flex-shrink:0;transition:transform .2s;margin-left:auto}
+.cdd-btn.placeholder .cdd-txt{color:#64748B}
+.cdd-arr{font-size:11px;color:#64748B;flex-shrink:0;transition:transform .2s;margin-left:auto}
 .cdd-wrap.open .cdd-arr{transform:rotate(180deg)}
 .cdd-list{position:fixed;background:#fff;border:2px solid #0D7377;border-radius:10px;
   box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:99999;
@@ -144,7 +148,7 @@ textarea.field-control{resize:vertical;min-height:80px}
 .cdd-opt{padding:13px 16px;font-size:15px;font-family:inherit;color:#1A2B45;
   cursor:pointer;border-bottom:.5px solid #F3F4F6;-webkit-tap-highlight-color:transparent;user-select:none}
 .cdd-opt:last-child{border-bottom:none}
-.cdd-opt.cdd-ph{color:#9CA3AF}
+.cdd-opt.cdd-ph{color:#64748B}
 .cdd-opt.sel{background:#E1F5EE;color:#085041;font-weight:600}
 </style>
 

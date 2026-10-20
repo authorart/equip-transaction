@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ขยายกำหนดคืน — Chest MSKH</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -20,7 +20,7 @@ body{font-family:'Sarabun',sans-serif;background:#EEF2F7;color:#1A2B45;min-heigh
 .info-card{background:#FEE2E2;border:1.5px solid #FECACA;border-radius:14px;padding:16px;margin-bottom:20px}
 .info-card-title{font-size:14px;font-weight:800;color:#B91C1C;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .info-row{display:flex;gap:8px;padding:4px 0;font-size:14px}
-.info-lbl{color:#9CA3AF;min-width:80px;flex-shrink:0;font-weight:600}
+.info-lbl{color:#64748B;min-width:80px;flex-shrink:0;font-weight:600}
 .info-val{color:#1A2B45;font-weight:600;flex:1}
 
 .form-card{background:#fff;border-radius:14px;border:1px solid #D4DCE8;box-shadow:0 1px 6px rgba(0,0,0,.07);padding:20px}
@@ -70,6 +70,10 @@ textarea.field-control{resize:vertical;min-height:80px}
 .spinner{width:36px;height:36px;border:3px solid #D4DCE8;border-top-color:#0D7377;
   border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Accessibility baseline (UX phase 1) ── */
+:focus-visible{outline:3px solid #0EA5E9;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>

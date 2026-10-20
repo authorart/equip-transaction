@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard — Chest Equipment MSKH</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -23,20 +23,6 @@ body{font-family:'Sarabun',sans-serif;background:#F1F5F9;color:#334155;line-heig
 .btn-hdr{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;
   padding:7px 10px;cursor:pointer;font-size:13px;font-family:'Sarabun',sans-serif;font-weight:700}
 .btn-hdr:hover{background:rgba(255,255,255,.28)}
-
-/* ── Landing ── */
-#landing{padding:32px 16px 60px;max-width:480px;margin:0 auto;text-align:center}
-.land-hero{font-size:60px;margin-bottom:12px}
-.land-title{font-size:22px;font-weight:800;margin-bottom:6px}
-.land-sub{font-size:14px;color:#64748B;margin-bottom:28px}
-.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.role-card{background:#fff;border:2px solid #D4DCE8;border-radius:16px;padding:20px 14px;
-  text-align:center;cursor:pointer;transition:.15s}
-.role-card:hover{border-color:#0C4A6E;transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,115,119,.15)}
-.role-card.full{grid-column:1/-1}
-.role-icon{font-size:34px;margin-bottom:8px}
-.role-name{font-size:15px;font-weight:800}
-.role-desc{font-size:12px;color:#64748B;margin-top:3px}
 
 /* ── Tab bar ── */
 .tab-bar{display:flex;background:#fff;border-bottom:2px solid #E5E7EB;
@@ -122,7 +108,7 @@ body{font-family:'Sarabun',sans-serif;background:#F1F5F9;color:#334155;line-heig
 /* ── Info row ── */
 .ir{display:flex;gap:6px;padding:4px 0;border-bottom:1px solid #F1F5F9;font-size:13px}
 .ir:last-child{border:none}
-.ir-l{color:#94A3B8;min-width:85px;flex-shrink:0;font-weight:600}
+.ir-l{color:#64748B;min-width:85px;flex-shrink:0;font-weight:600}
 .ir-v{color:#334155;font-weight:500;flex:1;word-break:break-all}
 
 /* ── Action buttons (admin) ── */
@@ -159,7 +145,7 @@ tr:nth-child(even) td{background:#F8FAFC}
 .date-filter .btn{padding:8px 14px}
 
 /* ── Empty state ── */
-.empty{text-align:center;padding:30px 16px;color:#94A3B8}
+.empty{text-align:center;padding:30px 16px;color:#64748B}
 .empty .icon{font-size:36px;margin-bottom:8px}
 
 /* ── Pipeline steps ── */
@@ -210,11 +196,15 @@ label.lbl{font-size:14px;font-weight:700;color:#374151;display:block;margin-top:
 
 /* ── Print/PDF ── */
 @media print{
-  .header,.tab-bar,.btn,.btn-row,.date-filter,#landing,.eq-footer{display:none!important}
+  .header,.tab-bar,.btn,.btn-row,.date-filter,.eq-footer{display:none!important}
   .view{display:block!important;padding:0}
   .card,.kpi,.tbl-wrap,.chart-wrap{box-shadow:none;border:1px solid #ccc}
   body{background:#fff}
 }
+
+/* ── Accessibility baseline (UX phase 1) ── */
+:focus-visible{outline:3px solid #0EA5E9;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 
 <style id="cdd-style">
@@ -224,8 +214,8 @@ label.lbl{font-size:14px;font-weight:700;color:#374151;display:block;margin-top:
   color:#334155;background:#fff;text-align:left;cursor:pointer;
   display:flex;align-items:center;justify-content:space-between;gap:8px;
   transition:border-color .15s;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
-.cdd-btn.placeholder .cdd-txt{color:#9CA3AF}
-.cdd-arr{font-size:11px;color:#9CA3AF;flex-shrink:0;transition:transform .2s;margin-left:auto}
+.cdd-btn.placeholder .cdd-txt{color:#64748B}
+.cdd-arr{font-size:11px;color:#64748B;flex-shrink:0;transition:transform .2s;margin-left:auto}
 .cdd-wrap.open .cdd-arr{transform:rotate(180deg)}
 .cdd-list{position:fixed;background:#fff;border:2px solid #0C4A6E;border-radius:10px;
   box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:99999;
@@ -234,7 +224,7 @@ label.lbl{font-size:14px;font-weight:700;color:#374151;display:block;margin-top:
 .cdd-opt{padding:13px 16px;font-size:15px;font-family:inherit;color:#334155;
   cursor:pointer;border-bottom:.5px solid #F3F4F6;-webkit-tap-highlight-color:transparent;user-select:none}
 .cdd-opt:last-child{border-bottom:none}
-.cdd-opt.cdd-ph{color:#9CA3AF}
+.cdd-opt.cdd-ph{color:#64748B}
 .cdd-opt.sel{background:#E0F2FE;color:#0C4A6E;font-weight:600}
 </style>
 
@@ -391,7 +381,7 @@ tfoot td{font-weight:800;background:#E0F2FE!important;border-top:2px solid var(-
     <div class="header-sub" id="headerSub">Sustaining Life, Syncing Assets · MSKH</div>
   </div>
   <button class="btn-hdr" id="btnLogin" onclick="doLogin()" style="display:none;margin-right:4px">🔑 เจ้าหน้าที่</button>
-  <button class="btn-hdr" onclick="refreshData()" title="รีเฟรชข้อมูล">🔄</button>
+  <button class="btn-hdr" onclick="refreshData()" title="รีเฟรชข้อมูล" aria-label="รีเฟรชข้อมูล">🔄</button>
 </div>
 
 <div id="authBox"><div class="spinner"></div><div>กำลังเชื่อมต่อ...</div></div>
@@ -450,7 +440,7 @@ tfoot td{font-weight:800;background:#E0F2FE!important;border-top:2px solid var(-
 <!-- ── Detail Panel (bottom sheet) ── -->
 <div class="panel-bg" id="panelBg" onclick="closePanel()"></div>
 <div class="panel" id="detailPanel" style="display:none">
-  <div class="panel-title"><span id="panelTitle">รายละเอียด</span><button class="close-btn" onclick="closePanel()">✕</button></div>
+  <div class="panel-title"><span id="panelTitle">รายละเอียด</span><button class="close-btn" onclick="closePanel()" aria-label="ปิด">✕</button></div>
   <div id="panelBody"></div>
 </div>
 
@@ -858,7 +848,7 @@ function renderStatus(d) {
       });
       h += '</table></div>';
     }
-    h += `<div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(d.lastUpdated)}</div>`;
+    h += `<div style="font-size:12px;color:#64748B;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(d.lastUpdated)}</div>`;
     setContent('pane-status', h);
 
     // โดนัท
@@ -965,7 +955,7 @@ function renderProblem(d) {
         <td><strong>${esc(u.subId)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(u.name)}</span></td>
         <td>${stBadge(u.status)}</td><td>${fmtDay(u.since)}</td>
         <td class="num" style="font-weight:800;color:${long?'#B91C1C':'#92400E'}">${daysTxt(u.daysInStatus)}${long?' ⚠':''}</td>
-        <td style="font-size:13px">${esc(u.note)||'<span style="color:#94A3B8">ไม่ระบุ</span>'}</td>
+        <td style="font-size:13px">${esc(u.note)||'<span style="color:#64748B">ไม่ระบุ</span>'}</td>
         <td style="font-size:13px">${esc(u.location||u.homeWard)}</td></tr>`;
     });
     h += '</table></div><div class="legend-note">⚠ = ค้างตั้งแต่ 7 วันขึ้นไป</div>';
@@ -1040,7 +1030,7 @@ async function openUnitPanel(subId) {
         <div style="font-size:12px;color:#475569">${ev.by ? '👤 ' + esc(ev.by) : ''}${ev.location ? ' · 📍 ' + esc(ev.location) : ''}</div>
         ${ev.reason ? `<div style="font-size:13px">📝 ${esc(ev.reason)}</div>` : ''}</div>`;
     });
-    if (!userAuth) h += '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:10px">ชื่อผู้ดำเนินการแสดงเฉพาะเจ้าหน้าที่ที่เข้าสู่ระบบ</div>';
+    if (!userAuth) h += '<div style="font-size:12px;color:#64748B;text-align:center;padding:10px">ชื่อผู้ดำเนินการแสดงเฉพาะเจ้าหน้าที่ที่เข้าสู่ระบบ</div>';
     document.getElementById('unitHist').innerHTML = h;
   } catch(e) { document.getElementById('unitHist').innerHTML = errHTML(esc(e.message)); }
 }
@@ -1097,7 +1087,7 @@ function renderUsage() {
         <select id="uWard" onchange="U.ward=this.value;updateUsage()">${opt('','ทุกหน่วยงาน',!U.ward)}${wards.map(w => opt(w,w,w===U.ward)).join('')}</select></div>
     </div>
     <div id="uResult"></div>
-    <div style="font-size:12px;color:#94A3B8;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(usageData.lastUpdated)} · ไม่แสดงชื่อ/เบอร์ผู้ยืม</div>`;
+    <div style="font-size:12px;color:#64748B;text-align:center;margin-top:14px">อัปเดต: ${fmtTime(usageData.lastUpdated)} · ไม่แสดงชื่อ/เบอร์ผู้ยืม</div>`;
   setContent('pane-usage', h);
   updateUsage();
 }
@@ -1429,7 +1419,7 @@ function openReturnPanel(subId, name, borrower, ward) {
     <div class="cond-warn" id="p-cond-warn">⚠️ สภาพชำรุดมาก — จะระงับการใช้งานทันที</div>
     <label class="lbl">หมายเหตุ</label>
     <textarea class="fld" id="p-notes" placeholder="รายละเอียด..."></textarea>
-    <div class="err-box" id="p-err"></div>
+    <div class="err-box" id="p-err" role="alert"></div>
     <div class="btn-row" style="margin-top:14px">
       <button class="btn primary btn-full" id="p-submit" onclick="submitReturn('${subId}')">📥 ยืนยันรับคืน</button>
     </div>
@@ -1442,7 +1432,7 @@ function openSendCentralPanel(subId, name, homeWard) {
     <div class="ir"><span class="ir-l">🏥 Ward ดูแล</span><span class="ir-v">${homeWard}</span></div>
     <label class="lbl">หมายเหตุ</label>
     <textarea class="fld" id="p-notes" placeholder="ข้อมูลแจ้งจ่ายกลาง..."></textarea>
-    <div class="err-box" id="p-err"></div>
+    <div class="err-box" id="p-err" role="alert"></div>
     <div class="btn-row" style="margin-top:14px">
       <button class="btn blue btn-full" id="p-submit" onclick="submitSendCentral('${subId}')">📤 ส่งจ่ายกลาง</button>
     </div>
@@ -1458,7 +1448,7 @@ function openReceiveCentralPanel(subId, name, homeWard) {
     <div class="cond-warn" id="p-cond-warn">⚠️ สภาพชำรุดมาก — จะระงับการใช้งานทันที</div>
     <label class="lbl">หมายเหตุ</label>
     <textarea class="fld" id="p-notes"></textarea>
-    <div class="err-box" id="p-err"></div>
+    <div class="err-box" id="p-err" role="alert"></div>
     <div class="btn-row" style="margin-top:14px">
       <button class="btn primary btn-full" id="p-submit" onclick="submitReceiveCentral('${subId}')">📦 ยืนยันรับ</button>
     </div>
@@ -1473,7 +1463,7 @@ function openStatusPanel(subId, name, curStatus) {
     <div id="cdd_pstatus_wrap"></div>
     <label class="lbl">หมายเหตุ <span style="color:#B91C1C">*</span></label>
     <textarea class="fld" id="p-notes" placeholder="เหตุผล..."></textarea>
-    <div class="err-box" id="p-err"></div>
+    <div class="err-box" id="p-err" role="alert"></div>
     <div class="btn-row" style="margin-top:14px">
       <button class="btn primary btn-full" id="p-submit" onclick="submitStatus('${subId}')">🔧 ยืนยัน</button>
     </div>
@@ -1676,7 +1666,7 @@ function openCenReceivePanel(subId, name, homeWard) {
     <input type="text" class="fld" id="p-by" placeholder="ชื่อเจ้าหน้าที่จ่ายกลาง">
     <label class="lbl">หมายเหตุ</label>
     <textarea class="fld" id="p-notes"></textarea>
-    <div class="err-box" id="p-err"></div>
+    <div class="err-box" id="p-err" role="alert"></div>
     <div class="btn-row" style="margin-top:14px">
       <button class="btn primary btn-full" id="p-submit" onclick="submitCenReceive('${subId}')">📥 ยืนยันรับ</button>
     </div>
@@ -1691,7 +1681,7 @@ function openCenReturnPanel(subId, name, homeWard) {
     <input type="text" class="fld" id="p-by" placeholder="ชื่อเจ้าหน้าที่จ่ายกลาง">
     <label class="lbl">หมายเหตุ</label>
     <textarea class="fld" id="p-notes" placeholder="รายละเอียดการฆ่าเชื้อ..."></textarea>
-    <div class="err-box" id="p-err"></div>
+    <div class="err-box" id="p-err" role="alert"></div>
     <div class="btn-row" style="margin-top:14px">
       <button class="btn primary btn-full" id="p-submit" onclick="submitCenReturn('${subId}')">📤 ส่งคืน</button>
     </div>
